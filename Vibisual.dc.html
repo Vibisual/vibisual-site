@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@400;500;600;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root { --sans: 'Geist', 'IBM Plex Sans KR', Helvetica, sans-serif; --mono: 'Geist Mono', ui-monospace, monospace; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; padding: 0; background: #0d0e11; word-break: keep-all; overflow-wrap: break-word; }
+  * { box-sizing: border-box; }
+  a { color: oklch(0.78 0.13 195); text-decoration: none; }
+  a:hover { color: oklch(0.88 0.11 195); }
+  ::selection { background: oklch(0.55 0.13 195 / 0.4); }
+  section[id] { scroll-margin-top: 84px; }
+  body::-webkit-scrollbar { width: 10px; }
+  body::-webkit-scrollbar-track { background: #0b0c0f; }
+  body::-webkit-scrollbar-thumb { background: oklch(0.32 0.012 250); border-radius: 999px; border: 2px solid #0b0c0f; }
+  body::-webkit-scrollbar-thumb:hover { background: oklch(0.44 0.03 210); }
+  aside, main div { scrollbar-width: thin; scrollbar-color: oklch(0.34 0.012 250) transparent; }
+  aside::-webkit-scrollbar, main div::-webkit-scrollbar { width: 6px; height: 6px; }
+  aside::-webkit-scrollbar-track, main div::-webkit-scrollbar-track { background: transparent; }
+  aside::-webkit-scrollbar-thumb, main div::-webkit-scrollbar-thumb { background: oklch(0.34 0.012 250); border-radius: 999px; }
+  @keyframes vbPulse { 0%,100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 1; transform: scale(1.4); } }
+</style>
+</helmet>
+
+<div style="background:transparent; color:oklch(0.93 0.008 250); font-family:var(--sans); min-height:100vh; overflow-x:clip; position:relative; isolation:isolate">
+
+  <div id="vbBg" aria-hidden="true" style="position:fixed; inset:0; z-index:-1; pointer-events:none; background:#000000">
+    <div style="position:absolute; inset:0; background:#000000"></div>
+    <canvas id="vbBgCanvas" style="position:absolute; inset:0; display:block; width:100%; height:100%; opacity:0.95"></canvas>
+    <div id="vbBgFloor" style="position:absolute; left:0; right:0; bottom:0; height:40%; opacity:0.8; background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.22) 60%, rgba(0,0,0,0.42) 100%)"></div>
+    <div style="position:absolute; inset:0; background:radial-gradient(92% 70% at 50% 40%, rgba(0,0,0,0) 36%, rgba(0,0,0,0.44) 100%)"></div>
+  </div>
+
+
+  <div id="vbVeil" aria-hidden="true" style="position:absolute; top:0; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:1280px; z-index:-1; pointer-events:none; background:rgba(9,11,14,0.9)"></div>
+
+  <header style="position:sticky; top:0; z-index:60; background:rgba(13,14,17,0.86); backdrop-filter:blur(14px); border-bottom:1px solid oklch(0.28 0.012 250)">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:24px; max-width:1280px; margin:0 auto; padding:14px 32px">
+      <div style="display:flex; align-items:center; gap:12px">
+        <div style="width:20px; height:20px; border-radius:50%; background:oklch(0.72 0.14 195); box-shadow:0 0 0 4px oklch(0.72 0.14 195 / 0.16), 11px 7px 0 -3px oklch(0.66 0.15 300)"></div>
+        <span style="font-size:17px; font-weight:700; letter-spacing:-0.02em">vibisual</span>
+        <span style="font-family:var(--mono); font-size:11px; color:oklch(0.62 0.01 250); border:1px solid oklch(0.3 0.012 250); border-radius:4px; padding:2px 6px">v0.1.9 preview</span>
+      </div>
+      <nav style="display:flex; align-items:center; gap:18px; font-size:14px; color:oklch(0.78 0.01 250)">
+        <button onClick="{{ goHome }}" style="font-family:inherit; font-size:14px; background:none; border:none; padding:3px 0; cursor:pointer; border-bottom:1.5px solid transparent; color:{{ homeFg }}; border-bottom-color:{{ homeUl }}" style-hover="color:oklch(0.96 0.008 250)">{{ ui.home }}</button>
+        <button onClick="{{ goBlog }}" style="font-family:inherit; font-size:14px; background:none; border:none; padding:3px 0; cursor:pointer; border-bottom:1.5px solid transparent; color:{{ blogFg }}; border-bottom-color:{{ blogUl }}" style-hover="color:oklch(0.96 0.008 250)">{{ ui.blog }}</button>
+        <button onClick="{{ goDocs }}" style="font-family:inherit; font-size:14px; background:none; border:none; padding:3px 0; cursor:pointer; border-bottom:1.5px solid transparent; color:{{ docsFg }}; border-bottom-color:{{ docsUl }}" style-hover="color:oklch(0.96 0.008 250)">{{ ui.docs }}</button>
+        <a href="https://github.com/Vibisual/vibisual" style="color:inherit">GitHub</a>
+        <div style="position:relative">
+          <button onClick="{{ toggleLang }}" style="display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:12px; color:oklch(0.9 0.008 250); background:oklch(0.24 0.01 260); border:1px solid oklch(0.34 0.012 250); border-radius:6px; padding:8px 12px; cursor:pointer" style-hover="border-color:oklch(0.5 0.08 195)">
+            <span style="opacity:0.7">⊕</span>{{ langLabel }}<span style="opacity:0.6; font-size:9px">▾</span>
+          </button>
+          <div style="position:absolute; right:0; top:44px; width:216px; max-height:{{ langPanelH }}; overflow:hidden; border:1px solid oklch(0.32 0.012 250); border-radius:8px; background:oklch(0.17 0.01 260); box-shadow:0 24px 48px -20px rgba(0,0,0,0.95); opacity:{{ langPanelO }}; transition:max-height 0.22s ease, opacity 0.18s ease; padding:6px">
+            <sc-for list="{{ langs }}" as="l" hint-placeholder-count="12">
+              <button onClick="{{ l.pick }}" style="display:flex; align-items:center; justify-content:space-between; width:100%; padding:9px 12px; border:none; border-radius:6px; cursor:pointer; font-family:inherit; font-size:14px; text-align:left; color:{{ l.fg }}; background:{{ l.bg }}" style-hover="background:oklch(0.26 0.01 260)">
+                <span>{{ l.label }}</span>
+                <span style="width:7px; height:7px; border-radius:50%; background:{{ l.dot }}"></span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <a href="https://github.com/Vibisual/vibisual/releases/latest" style="font-family:var(--mono); font-size:12px; color:#0a0b0d; background:oklch(0.84 0.13 195); padding:9px 14px; border-radius:6px; font-weight:600; box-shadow:0 6px 22px -8px oklch(0.72 0.14 195 / 0.55)">{{ t.navDl }}</a>
+      </nav>
+    </div>
+    <div style="height:2px; background:transparent">
+      <div style="height:2px; width:{{ progress }}; background:linear-gradient(90deg, oklch(0.66 0.15 300), oklch(0.82 0.13 195))"></div>
+    </div>
+  </header>
+
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <div>
+
+  <section style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:96px 32px 48px">
+    <div style="display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:12px; letter-spacing:{{ eyeSpacing }}; text-transform:{{ eyeCase }}; color:oklch(0.82 0.12 195 / 0.95); text-shadow:0 0 20px oklch(0.72 0.14 195 / 0.45)">
+      <span style="width:6px; height:6px; border-radius:50%; background:oklch(0.72 0.14 195); animation:vbPulse 2.4s ease-in-out infinite"></span>
+      {{ t.eyebrow }}
+    </div>
+    <h1 style="font-size:78px; line-height:0.97; letter-spacing:-0.045em; font-weight:600; margin:24px 0 0; max-width:960px; text-wrap:balance; background-image:linear-gradient(180deg, oklch(0.99 0.004 250), oklch(0.74 0.012 250)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent">{{ t.h1a }} <em style="color:oklch(0.86 0.14 195); -webkit-text-fill-color:oklch(0.86 0.14 195); text-shadow:0 0 24px oklch(0.74 0.15 195 / 0.38); font-style:normal">{{ t.h1em }}</em></h1>
+    <p style="font-size:21px; line-height:1.5; color:oklch(0.97 0.008 250 / 0.66); max-width:680px; margin:26px 0 0; text-wrap:pretty">{{ t.sub }}</p>
+
+    <div style="display:flex; flex-wrap:wrap; align-items:center; gap:14px; margin-top:36px">
+      <a href="https://github.com/Vibisual/vibisual/releases/latest" style="background:oklch(0.84 0.13 195); color:#0a0b0d; font-weight:600; font-size:15px; padding:14px 22px; border-radius:8px; box-shadow:0 10px 34px -10px oklch(0.72 0.14 195 / 0.6)">{{ t.ctaDl }}</a>
+      <a href="https://youtu.be/asJ_Z-75uqc" style="border:1px solid oklch(0.34 0.012 250); color:oklch(0.9 0.008 250); font-size:15px; padding:14px 20px; border-radius:8px">▶ {{ t.ctaWatch }}</a>
+      <span style="font-family:var(--mono); font-size:13px; color:oklch(0.97 0.008 250 / 0.44)">{{ t.heroMeta }}</span>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:1px; margin:52px -32px 0; background:oklch(0.26 0.012 250); border-top:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250)">
+      <a href="https://github.com/Vibisual/vibisual/stargazers" style="display:flex; flex-direction:column; gap:12px; padding:26px 32px 24px; background:#0f1013; color:inherit" style-hover="background:#131419">
+        <span style="font-size:34px; font-weight:700; letter-spacing:-0.03em; line-height:1; color:oklch(0.99 0.004 250)">1,284</span>
+        <span style="display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.52)"><span style="color:oklch(0.7 0.15 300)">★</span>{{ t.st1 }}</span>
+      </a>
+      <a href="https://github.com/Vibisual/vibisual/releases" style="display:flex; flex-direction:column; gap:12px; padding:26px 32px 24px; background:#0f1013; color:inherit" style-hover="background:#131419">
+        <span style="font-size:34px; font-weight:700; letter-spacing:-0.03em; line-height:1; color:oklch(0.99 0.004 250)">9,730</span>
+        <span style="display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.52)"><span style="color:oklch(0.78 0.13 195)">⤓</span>{{ t.st2 }}</span>
+      </a>
+      <div style="display:flex; flex-direction:column; gap:12px; padding:26px 32px 24px; background:#0f1013">
+        <span style="font-size:34px; font-weight:700; letter-spacing:-0.03em; line-height:1; color:oklch(0.99 0.004 250)">2,140</span>
+        <span style="display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.52)"><span style="color:oklch(0.78 0.15 165)">◉</span>{{ t.st3 }}</span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px; padding:26px 32px 24px; background:#0f1013">
+        <span style="font-size:34px; font-weight:700; letter-spacing:-0.03em; line-height:1; color:oklch(0.99 0.004 250)">46,800</span>
+        <span style="display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.52)"><span style="color:oklch(0.76 0.16 65)">◧</span>{{ t.st4 }}</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="canvas" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:32px">
+    <div style="display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin-bottom:12px; font-family:var(--mono); font-size:12px; color:oklch(0.97 0.008 250 / 0.44)">
+      <span>{{ t.canvasHint }}</span>
+      <span>vibisual · ~/projects/checkout-service</span>
+    </div>
+
+    <div style="display:grid; grid-template-columns:236px minmax(0,1fr) 320px; min-height:560px; border:1px solid oklch(0.3 0.012 250); border-radius:0; overflow:hidden; background:#101116">
+
+      <aside style="display:flex; flex-direction:column; border-right:1px solid oklch(0.26 0.012 250); background:oklch(0.19 0.008 260)">
+        <div style="padding:14px 16px; border-bottom:1px solid oklch(0.26 0.012 250); font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.42)">harness graph</div>
+        <div style="display:flex; flex-direction:column; padding:8px">
+          <sc-for list="{{ agents }}" as="a" hint-placeholder-count="5">
+            <button onClick="{{ a.select }}" style="display:flex; align-items:center; gap:10px; width:100%; text-align:left; padding:10px; border:none; border-radius:8px; cursor:pointer; font-family:inherit; font-size:13px; color:oklch(0.9 0.008 250); background:{{ a.rowBg }}" style-hover="background:oklch(0.26 0.01 260)">
+              <span style="width:8px; height:8px; border-radius:50%; flex:none; background:{{ a.color }}"></span>
+              <span style="display:flex; flex-direction:column; gap:2px; min-width:0">
+                <span style="font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ a.name }}</span>
+                <span style="font-family:var(--mono); font-size:10.5px; color:oklch(0.97 0.008 250 / 0.46)">{{ a.statusLine }}</span>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="margin-top:auto; padding:14px 16px; border-top:1px solid oklch(0.26 0.012 250); font-family:var(--mono); font-size:11px; line-height:1.7; color:oklch(0.97 0.008 250 / 0.38)">
+          5 nodes · 5 task edges<br />
+          hooks: streaming<br />
+          elapsed 00:14:22
+        </div>
+      </aside>
+
+      <div style="position:relative; background-color:#0f1014; background-image:radial-gradient(oklch(0.32 0.01 250) 1px, transparent 1px); background-size:26px 26px">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none">
+          <sc-for list="{{ edges }}" as="e" hint-placeholder-count="5">
+            <line x1="{{ e.x1 }}" y1="{{ e.y1 }}" x2="{{ e.x2 }}" y2="{{ e.y2 }}" stroke="{{ e.stroke }}" stroke-width="0.22" vector-effect="non-scaling-stroke" stroke-dasharray="{{ e.dash }}"></line>
+          </sc-for>
+        </svg>
+        <sc-for list="{{ agents }}" as="a" hint-placeholder-count="5">
+          <div onClick="{{ a.select }}" style="position:absolute; left:{{ a.left }}; top:{{ a.top }}; transform:translate(-50%,-50%); cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:8px; opacity:{{ a.opacity }}">
+            <div style="position:relative; width:{{ a.size }}; height:{{ a.size }}; border-radius:50%; display:grid; place-items:center; background:{{ a.bubbleBg }}; border:1.5px solid {{ a.color }}; box-shadow:{{ a.ring }}">
+              <span style="font-family:var(--mono); font-size:11px; color:{{ a.color }}">{{ a.glyph }}</span>
+            </div>
+            <span style="font-family:var(--mono); font-size:11px; color:oklch(0.86 0.008 250); background:rgba(13,14,17,0.72); padding:2px 6px; border-radius:4px; white-space:nowrap">{{ a.name }}</span>
+          </div>
+        </sc-for>
+        <div style="position:absolute; left:16px; bottom:14px; display:flex; gap:14px; font-family:var(--mono); font-size:10.5px; color:oklch(0.97 0.008 250 / 0.42)">
+          <span style="display:flex; align-items:center; gap:6px"><span style="width:7px; height:7px; border-radius:50%; background:oklch(0.78 0.15 165)"></span>working</span>
+          <span style="display:flex; align-items:center; gap:6px"><span style="width:7px; height:7px; border-radius:50%; background:oklch(0.76 0.16 65)"></span>blocked</span>
+          <span style="display:flex; align-items:center; gap:6px"><span style="width:7px; height:7px; border-radius:50%; background:oklch(0.7 0.1 195)"></span>done</span>
+          <span style="display:flex; align-items:center; gap:6px"><span style="width:7px; height:7px; border-radius:50%; background:oklch(0.5 0.01 250)"></span>idle</span>
+        </div>
+      </div>
+
+      <aside style="display:flex; flex-direction:column; border-left:1px solid oklch(0.26 0.012 250); background:oklch(0.185 0.008 260); min-width:0">
+        <div style="padding:16px; border-bottom:1px solid oklch(0.26 0.012 250)">
+          <div style="display:flex; align-items:center; gap:8px">
+            <span style="width:9px; height:9px; border-radius:50%; background:{{ sel.color }}"></span>
+            <span style="font-size:15px; font-weight:700">{{ sel.name }}</span>
+          </div>
+          <p style="margin:10px 0 0; font-size:13px; line-height:1.5; color:oklch(0.97 0.008 250 / 0.62)">{{ sel.note }}</p>
+        </div>
+        <div style="display:grid; grid-template-columns:auto 1fr; gap:8px 14px; padding:16px; border-bottom:1px solid oklch(0.26 0.012 250); font-family:var(--mono); font-size:11.5px">
+          <span style="color:oklch(0.97 0.008 250 / 0.38)">model</span><span style="color:oklch(0.9 0.008 250)">{{ sel.model }}</span>
+          <span style="color:oklch(0.97 0.008 250 / 0.38)">permission</span><span style="color:oklch(0.9 0.008 250)">{{ sel.mode }}</span>
+          <span style="color:oklch(0.97 0.008 250 / 0.38)">tools</span><span style="color:oklch(0.9 0.008 250)">{{ sel.tools }}</span>
+          <span style="color:oklch(0.97 0.008 250 / 0.38)">isolation</span><span style="color:oklch(0.9 0.008 250)">{{ sel.isolation }}</span>
+          <span style="color:oklch(0.97 0.008 250 / 0.38)">max turns</span><span style="color:oklch(0.9 0.008 250)">{{ sel.turns }}</span>
+        </div>
+        <div style="padding:12px 16px 6px; font-family:var(--mono); font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.38)">hook stream</div>
+        <div style="display:flex; flex-direction:column; gap:6px; padding:4px 16px 16px; font-family:var(--mono); font-size:11.5px; line-height:1.45">
+          <sc-for list="{{ lines }}" as="l" hint-placeholder-count="7">
+            <div style="display:flex; gap:8px; color:{{ l.color }}">
+              <span style="color:oklch(0.97 0.008 250 / 0.3); flex:none">{{ l.time }}</span>
+              <span style="min-width:0">{{ l.text }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </aside>
+    </div>
+    <p style="margin:14px 0 0; font-size:14px; color:oklch(0.97 0.008 250 / 0.46); font-style:italic">{{ t.canvasCaption }}</p>
+  </section>
+
+  <section id="vde" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:80px 32px 24px">
+    <h2 style="font-size:40px; letter-spacing:-0.03em; margin:0; font-weight:600; background-image:linear-gradient(180deg, oklch(0.98 0.004 250), oklch(0.78 0.012 250)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent">IDE → ADE → VDE</h2>
+    <p style="font-size:18px; line-height:1.55; color:oklch(0.97 0.008 250 / 0.62); max-width:660px; margin:16px 0 36px; text-wrap:pretty">{{ t.vdeLead }}</p>
+    <div style="display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:1px; background:oklch(0.28 0.012 250); border:1px solid oklch(0.28 0.012 250); border-radius:0; overflow:hidden">
+      <div style="display:flex; flex-direction:column; gap:14px; padding:26px; background:#101116">
+        <span style="font-family:var(--mono); font-size:13px; color:oklch(0.97 0.008 250 / 0.42)">IDE</span>
+        <span style="font-size:26px; font-weight:700; letter-spacing:-0.02em">{{ t.vde1 }}</span>
+        <span style="font-size:14px; color:oklch(0.97 0.008 250 / 0.56); line-height:1.5">VS Code, Cursor</span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:14px; padding:26px; background:#101116">
+        <span style="font-family:var(--mono); font-size:13px; color:oklch(0.97 0.008 250 / 0.42)">ADE</span>
+        <span style="font-size:26px; font-weight:700; letter-spacing:-0.02em">{{ t.vde2 }}</span>
+        <span style="font-size:14px; color:oklch(0.97 0.008 250 / 0.56); line-height:1.5">Warp</span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:14px; padding:26px; background:oklch(0.24 0.03 210)">
+        <span style="font-family:var(--mono); font-size:13px; color:oklch(0.8 0.12 195)">VDE</span>
+        <span style="font-size:26px; font-weight:700; letter-spacing:-0.02em; color:oklch(0.96 0.02 195)">{{ t.vde3 }}</span>
+        <span style="font-size:14px; color:oklch(0.8 0.02 200); line-height:1.5">Vibisual</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="what" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:64px 32px 24px; display:flex; flex-direction:column; gap:0">
+    <h2 style="font-size:40px; letter-spacing:-0.03em; margin:0 0 12px; font-weight:700">{{ t.whatTitle }}</h2>
+
+    <article style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,0.95fr); gap:40px; align-items:start; padding:44px 0; border-top:1px solid oklch(0.26 0.012 250); background:transparent">
+      <div style="display:flex; flex-direction:column; gap:14px">
+        <span style="font-family:var(--mono); font-size:12px; color:oklch(0.82 0.12 195 / 0.9); text-shadow:0 0 16px oklch(0.72 0.14 195 / 0.35)">01</span>
+        <h3 style="font-size:28px; letter-spacing:-0.02em; margin:0; font-weight:600; color:oklch(0.98 0.006 250 / 0.9)">{{ t.f1t }}</h3>
+        <p style="margin:0; font-size:16px; line-height:1.6; color:oklch(0.97 0.008 250 / 0.62); text-wrap:pretty">{{ t.f1b }}</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px; padding:18px; border:1px solid oklch(0.26 0.012 250); border-radius:3px; background:#0f1014; font-family:var(--mono); font-size:12px; line-height:1.6">
+        <span style="color:oklch(0.97 0.008 250 / 0.42)">SessionStart<span style="color:oklch(0.8 0.008 250)"> → node created · orchestrator</span></span>
+        <span style="color:oklch(0.97 0.008 250 / 0.42)">UserPromptSubmit<span style="color:oklch(0.8 0.008 250)"> → "split the checkout refactor"</span></span>
+        <span style="color:oklch(0.97 0.008 250 / 0.42)">PreToolUse<span style="color:oklch(0.8 0.008 250)"> Task → edge → api-builder</span></span>
+        <span style="color:oklch(0.97 0.008 250 / 0.42)">PreToolUse<span style="color:oklch(0.8 0.008 250)"> Edit → bubble · routes/checkout.ts</span></span>
+        <span style="color:oklch(0.97 0.008 250 / 0.42)">PostToolUse<span style="color:oklch(0.78 0.14 165)"> Bash → 41 passed</span></span>
+      </div>
+    </article>
+
+    <article style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,0.95fr); gap:40px; align-items:start; padding:44px 0; border-top:1px solid oklch(0.26 0.012 250); background:transparent">
+      <div style="display:flex; flex-direction:column; gap:14px">
+        <span style="font-family:var(--mono); font-size:12px; color:oklch(0.82 0.12 195 / 0.9); text-shadow:0 0 16px oklch(0.72 0.14 195 / 0.35)">02</span>
+        <h3 style="font-size:28px; letter-spacing:-0.02em; margin:0; font-weight:600; color:oklch(0.98 0.006 250 / 0.9)">{{ t.f2t }}</h3>
+        <p style="margin:0; font-size:16px; line-height:1.6; color:oklch(0.97 0.008 250 / 0.62); text-wrap:pretty">{{ t.f2b }}</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:10px; padding:18px; border:1px solid oklch(0.26 0.012 250); border-radius:3px; background:#0f1014">
+        <div style="display:flex; justify-content:space-between; font-family:var(--mono); font-size:11px; color:oklch(0.97 0.008 250 / 0.38)"><span>node · test-runner</span><span>unsaved</span></div>
+        <div style="display:grid; grid-template-columns:auto 1fr; gap:8px 14px; font-family:var(--mono); font-size:11.5px">
+          <span style="color:oklch(0.97 0.008 250 / 0.38)">model</span><span>claude-sonnet-4.6</span>
+          <span style="color:oklch(0.97 0.008 250 / 0.38)">tools</span><span>Bash, Read, Grep</span>
+          <span style="color:oklch(0.97 0.008 250 / 0.38)">rules</span><span>never edit src/**</span>
+          <span style="color:oklch(0.97 0.008 250 / 0.38)">in-edge</span><span>api-builder → test-runner</span>
+        </div>
+      </div>
+    </article>
+
+    <article style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,0.95fr); gap:40px; align-items:start; padding:44px 0; border-top:1px solid oklch(0.26 0.012 250); background:transparent">
+      <div style="display:flex; flex-direction:column; gap:14px">
+        <span style="font-family:var(--mono); font-size:12px; color:oklch(0.82 0.12 195 / 0.9); text-shadow:0 0 16px oklch(0.72 0.14 195 / 0.35)">03</span>
+        <h3 style="font-size:28px; letter-spacing:-0.02em; margin:0; font-weight:600; color:oklch(0.98 0.006 250 / 0.9)">{{ t.f3t }}</h3>
+        <p style="margin:0; font-size:16px; line-height:1.6; color:oklch(0.97 0.008 250 / 0.62); text-wrap:pretty">{{ t.f3b }}</p>
+      </div>
+      <div style="display:flex; flex-direction:column; border:1px solid oklch(0.26 0.012 250); border-radius:3px; overflow:hidden; background:#0f1014">
+        <div style="display:flex; gap:2px; padding:8px 10px; border-bottom:1px solid oklch(0.24 0.012 250); font-family:var(--mono); font-size:11px">
+          <span style="padding:4px 10px; border-radius:5px; background:oklch(0.26 0.01 260); color:oklch(0.92 0.008 250)">stream</span>
+          <span style="padding:4px 10px; color:oklch(0.97 0.008 250 / 0.44)">files</span>
+          <span style="padding:4px 10px; color:oklch(0.97 0.008 250 / 0.44)">diff</span>
+          <span style="padding:4px 10px; color:oklch(0.97 0.008 250 / 0.44)">terminal</span>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:4px; padding:14px; font-family:var(--mono); font-size:11.5px; line-height:1.55">
+          <span style="color:oklch(0.97 0.008 250 / 0.42)">routes/checkout.ts</span>
+          <span style="color:oklch(0.76 0.16 25)">- const total = items.reduce(sum)</span>
+          <span style="color:oklch(0.78 0.14 165)">+ const total = priceWithTax(items)</span>
+          <span style="color:oklch(0.78 0.14 165)">+ if (!total) throw new BadRequest()</span>
+          <span style="color:oklch(0.97 0.008 250 / 0.42)">2 files changed · saved to the agent's branch</span>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:64px 32px 8px">
+    <a href="https://youtu.be/asJ_Z-75uqc" style="display:flex; align-items:center; justify-content:space-between; gap:24px; padding:36px 34px; border:1px solid oklch(0.26 0.012 250); border-radius:0; background:#101116; color:inherit" style-hover="border-color:oklch(0.5 0.08 195)">
+      <span style="display:flex; flex-direction:column; gap:8px">
+        <span style="font-family:var(--mono); font-size:12px; color:oklch(0.78 0.12 195)">walkthrough</span>
+        <span style="font-size:26px; font-weight:700; letter-spacing:-0.02em">{{ t.videoTitle }}</span>
+        <span style="font-size:14px; color:oklch(0.97 0.008 250 / 0.6)">{{ t.videoSub }}</span>
+      </span>
+      <span style="flex:none; width:64px; height:64px; border-radius:50%; display:grid; place-items:center; background:oklch(0.82 0.13 195); color:#0d0e11; font-size:22px">▶</span>
+    </a>
+  </section>
+
+  <section id="install" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:72px 32px 24px">
+    <h2 style="font-size:40px; letter-spacing:-0.03em; margin:0; font-weight:600; background-image:linear-gradient(180deg, oklch(0.98 0.004 250), oklch(0.78 0.012 250)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent">{{ t.instTitle }}</h2>
+    <p style="font-size:18px; color:oklch(0.97 0.008 250 / 0.62); margin:14px 0 32px; max-width:620px">{{ t.instLead }}</p>
+    <div style="display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:1px; background:oklch(0.26 0.012 250); border:1px solid oklch(0.26 0.012 250)">
+      <div style="display:flex; flex-direction:column; gap:16px; padding:32px; background:#101116">
+        <span style="font-size:20px; font-weight:700">{{ t.instWin }}</span>
+        <div style="display:flex; align-items:center; gap:10px; padding:14px 16px; border-radius:8px; background:#0b0c0f; border:1px solid oklch(0.26 0.012 250); font-family:var(--mono); font-size:13px"><span style="color:oklch(0.6 0.1 195)">›</span> Vibisual-0.1.9-setup.exe</div>
+        <p style="margin:0; font-size:14px; line-height:1.6; color:oklch(0.97 0.008 250 / 0.6)">{{ t.instWinBody }}</p>
+        <a href="https://github.com/Vibisual/vibisual/releases/latest" style="margin-top:auto; font-family:var(--mono); font-size:13px">Releases →</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:16px; padding:32px; background:#101116">
+        <span style="font-size:20px; font-weight:700">{{ t.instSrc }}</span>
+        <div style="display:flex; flex-direction:column; gap:4px; padding:14px 16px; border-radius:8px; background:#0b0c0f; border:1px solid oklch(0.26 0.012 250); font-family:var(--mono); font-size:12.5px; line-height:1.7">
+          <span><span style="color:oklch(0.6 0.1 195)">$</span> git clone https://github.com/Vibisual/vibisual.git</span>
+          <span><span style="color:oklch(0.6 0.1 195)">$</span> cd vibisual &amp;&amp; pnpm install</span>
+          <span><span style="color:oklch(0.6 0.1 195)">$</span> node scripts/runapp.mjs</span>
+          <span style="color:oklch(0.97 0.008 250 / 0.34)"># pnpm build:win</span>
+        </div>
+        <p style="margin:0; font-size:14px; line-height:1.6; color:oklch(0.97 0.008 250 / 0.6)">{{ t.instSrcBody }}</p>
+        <a href="https://github.com/Vibisual/vibisual/blob/main/CONTRIBUTING.md" style="margin-top:auto; font-family:var(--mono); font-size:13px">Contributing →</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:56px 32px 24px">
+    <div style="display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:1px; background:oklch(0.26 0.012 250); border:1px solid oklch(0.26 0.012 250)">
+      <div style="display:flex; flex-direction:column; gap:12px; padding:32px; background:oklch(0.195 0.028 65)">
+        <span style="font-family:var(--mono); font-size:12px; color:oklch(0.8 0.14 65)">{{ t.statusLabel }}</span>
+        <p style="margin:0; font-size:15px; line-height:1.6; color:oklch(0.86 0.02 70)">{{ t.statusBody }}</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px; padding:32px; background:#101116">
+        <span style="font-family:var(--mono); font-size:12px; color:oklch(0.97 0.008 250 / 0.56)">{{ t.secLabel }}</span>
+        <p style="margin:0; font-size:15px; line-height:1.6; color:oklch(0.97 0.008 250 / 0.66)">{{ t.secBody }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:72px 32px 96px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:22px">
+    <h2 style="font-size:52px; letter-spacing:-0.04em; margin:0; font-weight:600; max-width:820px; text-wrap:balance; background-image:linear-gradient(180deg, oklch(0.99 0.004 250), oklch(0.72 0.012 250)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent">{{ t.ctaTitle }}</h2>
+    <p style="margin:0; font-size:18px; color:oklch(0.97 0.008 250 / 0.62); max-width:580px">{{ t.ctaSub }}</p>
+    <div style="display:flex; flex-wrap:wrap; gap:14px; justify-content:center">
+      <a href="https://github.com/Vibisual/vibisual/releases/latest" style="background:oklch(0.84 0.13 195); color:#0a0b0d; font-weight:600; font-size:15px; padding:15px 26px; border-radius:8px; box-shadow:0 10px 34px -10px oklch(0.72 0.14 195 / 0.6)">{{ t.ctaDl }}</a>
+      <a href="https://github.com/Vibisual/vibisual" style="border:1px solid oklch(0.34 0.012 250); color:oklch(0.9 0.008 250); font-size:15px; padding:15px 24px; border-radius:8px">{{ t.ctaStar }}</a>
+    </div>
+  </section>
+
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isBlog }}">
+  <div>
+    <sc-if value="{{ noPost }}">
+    <div>
+      <section style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:72px 32px 44px">
+        <div style="display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:oklch(0.82 0.12 195 / 0.95)">
+          <span style="width:6px; height:6px; border-radius:50%; background:oklch(0.72 0.14 195)"></span>{{ ui.blog }}
+        </div>
+        <h1 style="font-size:58px; line-height:1.02; letter-spacing:-0.04em; font-weight:600; margin:22px 0 0; max-width:780px; text-wrap:balance; background-image:linear-gradient(180deg, oklch(0.99 0.004 250), oklch(0.76 0.012 250)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent">{{ ui.blogTitle }}</h1>
+        <p style="font-size:19px; line-height:1.55; color:oklch(0.97 0.008 250 / 0.62); max-width:620px; margin:22px 0 0; text-wrap:pretty">{{ ui.blogLead }}</p>
+      </section>
+
+      <section style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250)">
+        <button onClick="{{ feat.open }}" style="display:flex; flex-direction:column; gap:16px; width:100%; text-align:left; padding:44px 32px; background:#101116; border:none; cursor:pointer; font-family:inherit; color:inherit" style-hover="background:#14151b">
+          <span style="display:flex; align-items:center; gap:14px; font-family:var(--mono); font-size:11.5px; color:oklch(0.97 0.008 250 / 0.44)">
+            <span style="color:oklch(0.82 0.12 195); letter-spacing:0.1em; text-transform:uppercase">{{ ui.latest }}</span>
+            <span>{{ feat.date }}</span>
+            <span style="color:{{ feat.tagFg }}">{{ feat.tag }}</span>
+            <span>{{ feat.read }}</span>
+          </span>
+          <span style="font-size:38px; font-weight:600; letter-spacing:-0.035em; line-height:1.12; color:oklch(0.99 0.004 250); max-width:24ch; text-wrap:balance">{{ feat.title }}</span>
+          <span style="font-size:17.5px; line-height:1.6; color:oklch(0.97 0.008 250 / 0.62); max-width:64ch; text-wrap:pretty">{{ feat.excerpt }}</span>
+          <span style="font-family:var(--mono); font-size:12.5px; color:oklch(0.82 0.12 195); margin-top:4px">{{ ui.more }} →</span>
+        </button>
+        <sc-for list="{{ posts }}" as="p" hint-placeholder-count="3">
+          <button onClick="{{ p.open }}" style="display:grid; grid-template-columns:136px minmax(0,1fr) 88px; gap:26px; align-items:start; width:100%; text-align:left; padding:30px 32px; background:transparent; border:none; border-top:1px solid oklch(0.26 0.012 250); cursor:pointer; font-family:inherit; color:inherit" style-hover="background:#101116">
+            <span style="display:flex; flex-direction:column; gap:7px; font-family:var(--mono); font-size:11.5px; color:oklch(0.97 0.008 250 / 0.44)">
+              {{ p.date }}<span style="color:{{ p.tagFg }}">{{ p.tag }}</span>
+            </span>
+            <span style="display:flex; flex-direction:column; gap:9px; min-width:0">
+              <span style="font-size:22px; font-weight:600; letter-spacing:-0.022em; line-height:1.25; color:oklch(0.97 0.006 250)">{{ p.title }}</span>
+              <span style="font-size:15px; line-height:1.6; color:oklch(0.97 0.008 250 / 0.56); max-width:68ch; text-wrap:pretty">{{ p.excerpt }}</span>
+            </span>
+            <span style="font-family:var(--mono); font-size:11.5px; color:oklch(0.97 0.008 250 / 0.36); text-align:right">{{ p.read }}</span>
+          </button>
+        </sc-for>
+      </section>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ hasPost }}">
+    <section style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:48px 32px 88px">
+      <div style="display:flex; flex-direction:column; max-width:720px; margin:0 auto">
+        <button onClick="{{ backToList }}" style="align-self:flex-start; font-family:var(--mono); font-size:12px; color:oklch(0.97 0.008 250 / 0.5); background:none; border:none; padding:0; cursor:pointer" style-hover="color:oklch(0.86 0.11 195)">← {{ ui.back }}</button>
+        <div style="display:flex; align-items:center; gap:14px; font-family:var(--mono); font-size:11.5px; color:oklch(0.97 0.008 250 / 0.44); margin-top:36px">
+          <span>{{ art.date }}</span><span style="color:{{ art.tagFg }}">{{ art.tag }}</span><span>{{ art.read }}</span>
+        </div>
+        <h1 style="font-size:44px; line-height:1.1; letter-spacing:-0.035em; font-weight:600; margin:18px 0 0; text-wrap:balance; color:oklch(0.99 0.004 250)">{{ art.title }}</h1>
+        <p style="font-size:20px; line-height:1.55; color:oklch(0.97 0.008 250 / 0.6); margin:20px 0 0; text-wrap:pretty">{{ art.excerpt }}</p>
+        <div style="height:1px; background:oklch(0.26 0.012 250); margin:36px 0 34px"></div>
+        <sc-for list="{{ artBody }}" as="pa" hint-placeholder-count="4">
+          <p style="margin:0 0 26px; font-size:17.5px; line-height:1.8; color:oklch(0.97 0.008 250 / 0.74); text-wrap:pretty">{{ pa.v }}</p>
+        </sc-for>
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding-top:24px; border-top:1px solid oklch(0.26 0.012 250); font-family:var(--mono); font-size:12px; color:oklch(0.97 0.008 250 / 0.44)">
+          <span>{{ art.author }}</span>
+          <button onClick="{{ backToList }}" style="font-family:var(--mono); font-size:12px; color:oklch(0.82 0.12 195); background:none; border:none; padding:0; cursor:pointer">{{ ui.back }} →</button>
+        </div>
+      </div>
+    </section>
+    </sc-if>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isDocs }}">
+  <div style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250)">
+    <div style="display:grid; grid-template-columns:266px minmax(0,1fr) 216px; align-items:start">
+
+      <aside style="position:sticky; top:84px; display:flex; flex-direction:column; border-right:1px solid oklch(0.26 0.012 250); padding:26px 0 32px; max-height:calc(100vh - 84px); overflow:auto">
+        <div style="display:flex; align-items:center; gap:9px; padding:0 20px 14px">
+          <span style="font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.46)">{{ ui.docs }}</span>
+          <span style="font-family:var(--mono); font-size:10.5px; color:oklch(0.8 0.12 195); border:1px solid oklch(0.36 0.05 210); border-radius:4px; padding:1px 5px">v0.1.9</span>
+        </div>
+        <div style="padding:0 16px 18px">
+          <input value="{{ docQ }}" onChange="{{ setDocQ }}" placeholder="{{ ui.filterPh }}" style="width:100%; font-family:var(--mono); font-size:12px; color:oklch(0.92 0.008 250); background:#0b0c0f; border:1px solid oklch(0.28 0.012 250); border-radius:6px; padding:9px 11px; outline:none" style-focus="border-color:oklch(0.5 0.08 195)" />
+        </div>
+        <sc-for list="{{ docGroups }}" as="g" hint-placeholder-count="3">
+          <div style="display:flex; flex-direction:column; gap:2px; padding:0 12px 20px">
+            <span style="font-family:var(--mono); font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.36); padding:0 10px 9px">{{ g.name }}</span>
+            <sc-for list="{{ g.items }}" as="d" hint-placeholder-count="2">
+              <button onClick="{{ d.pick }}" style="display:flex; align-items:stretch; gap:10px; width:100%; text-align:left; font-family:inherit; font-size:13.5px; line-height:1.35; border:none; border-radius:6px; padding:9px 10px; cursor:pointer; color:{{ d.fg }}; background:{{ d.bg }}" style-hover="background:oklch(0.24 0.01 260)">
+                <span style="width:2px; flex:none; border-radius:2px; background:{{ d.bar }}"></span>{{ d.title }}
+              </button>
+            </sc-for>
+          </div>
+        </sc-for>
+      </aside>
+
+      <main style="padding:42px 46px 64px; min-width:0">
+        <div style="display:flex; align-items:center; gap:9px; font-family:var(--mono); font-size:11.5px; color:oklch(0.97 0.008 250 / 0.42)">
+          <span>{{ ui.docs }}</span><span style="opacity:0.45">/</span><span>{{ doc.g }}</span><span style="opacity:0.45">/</span><span style="color:oklch(0.8 0.12 195)">{{ doc.title }}</span>
+        </div>
+        <h1 style="font-size:44px; line-height:1.1; letter-spacing:-0.035em; font-weight:600; margin:18px 0 0; color:oklch(0.99 0.004 250); text-wrap:balance">{{ doc.title }}</h1>
+        <p style="font-size:18.5px; line-height:1.6; color:oklch(0.97 0.008 250 / 0.66); margin:18px 0 24px; max-width:64ch; text-wrap:pretty">{{ doc.lead }}</p>
+        <div style="font-family:var(--mono); font-size:11px; color:oklch(0.97 0.008 250 / 0.34); padding-bottom:26px; border-bottom:1px solid oklch(0.24 0.012 250)">{{ ui.updated }} {{ doc.updated }}</div>
+
+        <sc-for list="{{ docSections }}" as="s" hint-placeholder-count="3">
+          <div id="{{ s.id }}" style="display:flex; flex-direction:column; gap:16px; padding:38px 0 0; scroll-margin-top:96px">
+            <h2 style="font-size:24px; letter-spacing:-0.022em; font-weight:600; margin:0; color:oklch(0.98 0.006 250)">{{ s.h }}</h2>
+            <sc-for list="{{ s.paras }}" as="pa" hint-placeholder-count="2">
+              <p style="margin:0; font-size:16px; line-height:1.72; color:oklch(0.97 0.008 250 / 0.66); max-width:68ch; text-wrap:pretty">{{ pa.v }}</p>
+            </sc-for>
+            <sc-if value="{{ s.hasCode }}">
+              <div style="display:flex; flex-direction:column; padding:16px 18px; border:1px solid oklch(0.26 0.012 250); border-radius:4px; background:#0b0c0f; font-family:var(--mono); font-size:12.5px; line-height:1.8; color:oklch(0.86 0.008 250); overflow-x:auto">
+                <sc-for list="{{ s.code }}" as="c" hint-placeholder-count="3">
+                  <span style="white-space:pre">{{ c.v }}</span>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ s.hasRows }}">
+              <div style="display:flex; flex-direction:column; border:1px solid oklch(0.26 0.012 250); border-top:none; border-radius:4px; overflow:hidden; background:#0f1014">
+                <sc-for list="{{ s.rows }}" as="r" hint-placeholder-count="4">
+                  <div style="display:grid; grid-template-columns:minmax(150px,auto) minmax(0,1fr); gap:18px; padding:12px 16px; border-top:1px solid oklch(0.26 0.012 250)">
+                    <span style="font-family:var(--mono); font-size:12px; color:oklch(0.82 0.1 195 / 0.92)">{{ r.k }}</span>
+                    <span style="font-size:14px; line-height:1.5; color:oklch(0.97 0.008 250 / 0.7)">{{ r.v }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ s.hasNote }}">
+              <div style="display:flex; gap:14px; padding:16px 18px; border:1px solid oklch(0.34 0.045 210); border-radius:4px; background:oklch(0.225 0.026 210)">
+                <span style="font-family:var(--mono); font-size:11px; color:oklch(0.82 0.12 195); flex:none; padding-top:3px">note</span>
+                <p style="margin:0; font-size:14.5px; line-height:1.65; color:oklch(0.9 0.02 205); text-wrap:pretty">{{ s.note }}</p>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+
+        <div style="display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:1px; background:oklch(0.26 0.012 250); border:1px solid oklch(0.26 0.012 250); margin-top:60px">
+          <sc-for list="{{ docNav }}" as="n" hint-placeholder-count="2">
+            <button onClick="{{ n.pick }}" style="display:flex; flex-direction:column; gap:8px; padding:22px 24px; background:#101116; border:none; cursor:pointer; font-family:inherit; color:inherit; grid-column:{{ n.col }}; align-items:{{ n.align }}; text-align:{{ n.ta }}" style-hover="background:#15161c">
+              <span style="font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.4)">{{ n.dir }}</span>
+              <span style="font-size:16.5px; font-weight:600; letter-spacing:-0.015em; color:oklch(0.9 0.05 200)">{{ n.title }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </main>
+
+      <aside style="position:sticky; top:84px; display:flex; flex-direction:column; gap:11px; padding:46px 22px 40px; border-left:1px solid oklch(0.26 0.012 250); max-height:calc(100vh - 84px); overflow:auto">
+        <span style="font-family:var(--mono); font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.36)">{{ ui.onThisPage }}</span>
+        <sc-for list="{{ docToc }}" as="h" hint-placeholder-count="3">
+          <a href="{{ h.href }}" style="font-size:13px; line-height:1.45; color:oklch(0.97 0.008 250 / 0.6)" style-hover="color:oklch(0.88 0.11 195)">{{ h.h }}</a>
+        </sc-for>
+      </aside>
+    </div>
+  </div>
+  </sc-if>
+
+  <footer style="border-top:1px solid oklch(0.24 0.012 250); padding:28px 32px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); font-family:var(--mono); font-size:12px; color:oklch(0.97 0.008 250 / 0.42)">
+    <span style="display:flex; gap:18px">
+      <a href="https://github.com/Vibisual/vibisual">github</a>
+      <a href="https://github.com/Vibisual/vibisual/releases/latest">releases</a>
+      <a href="https://youtu.be/asJ_Z-75uqc">walkthrough</a>
+      <a href="https://github.com/Vibisual/vibisual/blob/main/CHANGELOG.md">changelog</a>
+    </span>
+    <span style="max-width:660px; line-height:1.6">v0.1.9 · Apache 2.0 · {{ t.footNote }}</span>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;fontPair&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Geist&quot;,&quot;Instrument Sans + IBM Plex Mono&quot;,&quot;Inter Tight + JetBrains Mono&quot;,&quot;Sora + Geist Mono&quot;],&quot;default&quot;:&quot;Geist&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Typography&quot;},&quot;backdrop&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Deep space&quot;,&quot;Sparse&quot;,&quot;Flat&quot;],&quot;default&quot;:&quot;Deep space&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Backdrop&quot;},&quot;bgLight&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:100,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:1,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Backdrop&quot;},&quot;columnVeil&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:92,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:1,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Backdrop&quot;},&quot;veilColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#0b1113&quot;,&quot;options&quot;:[&quot;#090b0e&quot;,&quot;#0b1113&quot;,&quot;#0d0b11&quot;,&quot;#0b0d0a&quot;,&quot;#000000&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Backdrop&quot;}}">
+const LANGS = [
+  ['en', 'English'], ['fr', 'Français'], ['de', 'Deutsch'], ['hi', 'हिन्दी'], ['id', 'Indonesia'],
+  ['it', 'Italiano'], ['ja', '日本語'], ['ko', '한국어'], ['pt', 'Português'],
+  ['es-419', 'Español (LatAm)'], ['es', 'Español'], ['zh', '中文'],
+];
+
+const T = {
+  en: {
+    navMap: 'The map', navWhat: 'What it does', navInstall: 'Install', navDl: 'Download',
+    eyebrow: 'the visual development environment',
+    h1a: 'See your AI agents', h1em: 'think.',
+    sub: "Coding agents don't type. They act — reading files, running commands, spawning other agents. Vibisual draws that run as a live bubble map, turns the same canvas into the design surface for your harness, and opens the editor in place when something needs a human hand.",
+    ctaDl: 'Download for Windows', ctaWatch: '2-minute walkthrough', ctaStar: 'Star on GitHub',
+    heroMeta: 'Vibisual-0.1.9-setup.exe · needs the Claude CLI on your PATH',
+    st1: 'stars on GitHub', st2: 'downloads to date',
+    st3: 'weekly active users', st4: 'monthly site visitors',
+    canvasHint: 'a live session, drawn as space — click an agent',
+    canvasCaption: 'The whole harness in one window. Five agents, two mid-task, one waiting on an answer — and nobody is reading a terminal to find out which.',
+    vdeLead: 'The tools we watch agents with are still text: a terminal, a chat log, a list of tasks. A Visual Development Environment draws agent work as space instead — and keeps design, execution, observation and editing on one surface.',
+    vde1: 'You type it', vde2: 'You read the terminal', vde3: 'You watch the map',
+    whatTitle: 'What it does',
+    f1t: 'Draws the run as a live map',
+    f1b: 'Claude Code hook events become nodes on a live canvas. Sub-agent spawns become edges, tool calls become child bubbles, files light up as they are touched. Vibisual draws the tree as it grows instead of printing it as text.',
+    f2t: 'Designs the agent team as a graph',
+    f2b: 'Drop a bubble to define a sub-agent — model, permission mode, tools, isolation, max turns, skills, per-agent rules — and wire task edges for handoffs. Vibisual reads the graph and launches the matching Claude Code workflow.',
+    f3t: 'Lets you fix things without leaving the map',
+    f3b: "Double-click a bubble and the workspace opens in place: the agent's live stream, a file tree, an editor with syntax highlighting, diffs and a terminal — in the same window as the canvas.",
+    videoTitle: 'Hooks streaming into the bubble map, sub-agents configured visually', videoSub: 'Two minutes, one real session, no slides.',
+    instTitle: 'Quick start', instLead: 'Vibisual runs on top of the Claude CLI, which must already be installed and on your PATH.',
+    instWin: 'Install on Windows', instWinBody: 'Download the installer from the releases page, run it, and launch Vibisual. macOS and Linux builds exist but are not extensively tested.',
+    instSrc: 'Build from source', instSrcBody: 'Node 20+. On first launch Vibisual writes a managed hook block into ~/.claude/settings.json and keeps a timestamped backup. Set VIBISUAL_SKIP_HOOK_INSTALL=1 to wire hooks yourself.',
+    statusLabel: 'status · early preview',
+    statusBody: 'This 0.1.x preview is for experimentation, demos and feedback. Expect bugs, incomplete features and occasional breaking changes. Not recommended for critical production workflows or repositories with highly sensitive data.',
+    secLabel: 'security & privacy',
+    secBody: 'Hook payloads may include prompts, tool calls, file paths, shell commands and session metadata. Command hooks run with your local user permissions. Review the generated hook configuration before use, especially in repositories holding secrets or customer data.',
+    ctaTitle: 'Stop reading your agents. Start watching them.',
+    ctaSub: 'One installer. Your existing Claude Code setup keeps working exactly as it did — except now you can see it.',
+    footNote: 'Vibisual is an independent open-source project, not affiliated with, endorsed by or sponsored by Anthropic. Claude, Claude Code and Anthropic are trademarks of Anthropic, PBC.',
+  },
+  ko: {
+    navMap: '라이브 맵', navWhat: '주요 기능', navInstall: '설치', navDl: '다운로드',
+    eyebrow: '비주얼 개발 환경',
+    h1a: 'AI 에이전트의 생각을', h1em: '눈으로.',
+    sub: '코딩 에이전트는 타이핑하지 않습니다. 파일을 읽고, 명령을 실행하고, 다른 에이전트를 띄우며 행동합니다. Vibisual은 그 실행을 라이브 버블 맵으로 그리고, 같은 캔버스를 하네스 설계 화면으로 쓰고, 사람 손이 필요한 순간 그 자리에서 에디터를 엽니다.',
+    ctaDl: 'Windows용 다운로드', ctaWatch: '2분 워크스루', ctaStar: 'GitHub에서 스타',
+    heroMeta: 'Vibisual-0.1.9-setup.exe · PATH에 Claude CLI가 필요합니다',
+    st1: 'GitHub 스타', st2: '누적 다운로드',
+    st3: '주간 활성 사용자', st4: '월간 사이트 방문자',
+    canvasHint: '실제 세션을 공간으로 — 에이전트를 클릭해 보세요',
+    canvasCaption: '하네스 전체가 한 창에. 에이전트 다섯, 둘은 작업 중, 하나는 답을 기다립니다. 누가 멈췄는지 터미널을 뒤질 필요가 없습니다.',
+    vdeLead: '에이전트를 관찰하는 도구는 아직 텍스트입니다. 터미널, 채팅 로그, 작업 목록. 비주얼 개발 환경은 에이전트의 작업을 공간으로 그리고, 설계·실행·관찰·편집을 하나의 화면에 둡니다.',
+    vde1: '내가 타이핑한다', vde2: '터미널을 읽는다', vde3: '맵을 본다',
+    whatTitle: '주요 기능',
+    f1t: '실행을 라이브 맵으로 그립니다',
+    f1b: 'Claude Code 훅 이벤트가 캔버스의 노드가 됩니다. 서브에이전트 생성은 엣지로, 툴 호출은 자식 버블로, 건드린 파일은 그 자리에서 켜집니다. 텍스트로 출력되던 트리를 자라는 그대로 그립니다.',
+    f2t: '에이전트 팀을 그래프로 설계합니다',
+    f2b: '버블을 놓아 서브에이전트를 정의합니다. 모델, 권한 모드, 툴, 격리 범위, 최대 턴, 스킬, 개별 규칙까지. 태스크 엣지로 핸드오프를 연결하면 Vibisual이 그 그래프를 읽어 해당 Claude Code 워크플로를 실행합니다.',
+    f3t: '맵을 떠나지 않고 고칩니다',
+    f3b: '버블을 더블클릭하면 작업 공간이 그 자리에서 열립니다. 에이전트의 라이브 스트림, 파일 트리, 문법 강조 에디터, diff, 터미널이 캔버스와 같은 창에 있습니다.',
+    videoTitle: '훅이 버블 맵으로 흘러들고, 서브에이전트를 시각적으로 구성합니다', videoSub: '2분, 실제 세션 하나, 슬라이드 없음.',
+    instTitle: '빠른 시작', instLead: 'Vibisual은 Claude CLI 위에서 동작합니다. CLI가 먼저 설치되어 PATH에 있어야 합니다.',
+    instWin: 'Windows 설치', instWinBody: '릴리스 페이지에서 설치 파일을 받아 실행한 뒤 Vibisual을 띄우면 됩니다. macOS와 Linux 빌드도 있지만 충분히 검증되지 않았습니다.',
+    instSrc: '소스에서 빌드', instSrcBody: 'Node 20 이상. 첫 실행 시 Vibisual이 ~/.claude/settings.json에 관리형 훅 블록을 쓰고 타임스탬프 백업을 남깁니다. 직접 훅을 구성하려면 VIBISUAL_SKIP_HOOK_INSTALL=1을 설정하세요.',
+    statusLabel: '상태 · 얼리 프리뷰',
+    statusBody: '0.1.x 프리뷰는 실험, 데모, 피드백을 위한 버전입니다. 버그와 미완성 기능, 간헐적인 호환성 변경이 있을 수 있습니다. 중요한 프로덕션 워크플로나 민감한 데이터가 있는 저장소에는 권장하지 않습니다.',
+    secLabel: '보안과 프라이버시',
+    secBody: '훅 페이로드에는 프롬프트, 툴 호출, 파일 경로, 셸 명령, 세션 메타데이터가 포함될 수 있습니다. 커맨드 훅은 로컬 사용자 권한으로 실행됩니다. 비밀값이나 고객 데이터가 있는 저장소라면 생성된 훅 설정을 먼저 확인하세요.',
+    ctaTitle: '에이전트를 읽지 말고, 보세요.',
+    ctaSub: '설치 파일 하나. 기존 Claude Code 설정은 그대로 동작합니다. 이제 그것이 보인다는 점만 다릅니다.',
+    footNote: 'Vibisual은 독립 오픈소스 프로젝트이며 Anthropic과 제휴·보증·후원 관계가 없습니다. Claude, Claude Code, Anthropic은 Anthropic, PBC의 상표입니다.',
+  },
+  ja: {
+    navMap: 'ライブマップ', navWhat: '主な機能', navInstall: 'インストール', navDl: 'ダウンロード',
+    eyebrow: 'ビジュアル開発環境',
+    h1a: 'AIエージェントの思考を', h1em: '見る。',
+    sub: 'コーディングエージェントはタイプしません。ファイルを読み、コマンドを実行し、別のエージェントを起動して行動します。Vibisualはその実行をライブなバブルマップとして描き、同じキャンバスをハーネスの設計面にし、人の手が必要な瞬間にはその場でエディタを開きます。',
+    ctaDl: 'Windows版をダウンロード', ctaWatch: '2分のウォークスルー', ctaStar: 'GitHubでスター',
+    heroMeta: 'Vibisual-0.1.9-setup.exe · PATH に Claude CLI が必要です',
+    st1: 'GitHub スター', st2: '累計ダウンロード',
+    st3: '週間アクティブユーザー', st4: '月間サイト訪問者',
+    canvasHint: '実際のセッションを空間として — エージェントをクリック',
+    canvasCaption: 'ハーネス全体が一つのウィンドウに。5体のうち2体が作業中、1体は返答待ち。誰が止まっているかをターミナルで探す必要はありません。',
+    vdeLead: 'エージェントを観察する道具はいまだにテキストです。ターミナル、チャットログ、タスク一覧。ビジュアル開発環境はエージェントの仕事を空間として描き、設計・実行・観察・編集を一つの面にまとめます。',
+    vde1: '自分がタイプする', vde2: 'ターミナルを読む', vde3: 'マップを見る',
+    whatTitle: '主な機能',
+    f1t: '実行をライブマップとして描く',
+    f1b: 'Claude Code のフックイベントがキャンバス上のノードになります。サブエージェントの起動はエッジ、ツール呼び出しは子バブル、触れたファイルはその場で点灯します。テキストで出力されていた木構造を、育つそのままに描きます。',
+    f2t: 'エージェントチームをグラフで設計する',
+    f2b: 'バブルを置いてサブエージェントを定義します。モデル、権限モード、ツール、隔離範囲、最大ターン、スキル、個別ルール。タスクエッジで受け渡しをつなぐと、Vibisual がそのグラフを読んで対応する Claude Code ワークフローを起動します。',
+    f3t: 'マップを離れずに直せる',
+    f3b: 'バブルをダブルクリックすると作業領域がその場で開きます。ライブストリーム、ファイルツリー、シンタックスハイライト付きエディタ、diff、ターミナルがキャンバスと同じウィンドウにあります。',
+    videoTitle: 'フックがバブルマップへ流れ込み、サブエージェントを視覚的に構成', videoSub: '2分、実際のセッション一つ、スライドなし。',
+    instTitle: 'クイックスタート', instLead: 'Vibisual は Claude CLI の上で動作します。CLI が先にインストールされ、PATH にある必要があります。',
+    instWin: 'Windows にインストール', instWinBody: 'リリースページからインストーラを取得して実行し、Vibisual を起動します。macOS と Linux のビルドもありますが十分に検証されていません。',
+    instSrc: 'ソースからビルド', instSrcBody: 'Node 20 以上。初回起動時に ~/.claude/settings.json へ管理対象のフックブロックを書き、タイムスタンプ付きバックアップを残します。自分でフックを設定する場合は VIBISUAL_SKIP_HOOK_INSTALL=1 を設定してください。',
+    statusLabel: 'ステータス · アーリープレビュー',
+    statusBody: 'この 0.1.x プレビューは実験・デモ・フィードバック向けです。バグ、未完成の機能、時折の破壊的変更を想定してください。重要な本番ワークフローや機密性の高いリポジトリには推奨しません。',
+    secLabel: 'セキュリティとプライバシー',
+    secBody: 'フックのペイロードにはプロンプト、ツール呼び出し、ファイルパス、シェルコマンド、セッションメタデータが含まれる場合があります。コマンドフックはローカルユーザー権限で実行されます。秘密情報や顧客データを含むリポジトリでは、生成されたフック設定を必ず確認してください。',
+    ctaTitle: 'エージェントを読むのをやめて、見はじめる。',
+    ctaSub: 'インストーラ一つ。既存の Claude Code 構成はそのまま動きます。違うのは、それが見えることだけです。',
+    footNote: 'Vibisual は独立したオープンソースプロジェクトであり、Anthropic と提携・承認・後援関係はありません。Claude、Claude Code、Anthropic は Anthropic, PBC の商標です。',
+  },
+  zh: {
+    navMap: '实时图谱', navWhat: '核心功能', navInstall: '安装', navDl: '下载',
+    eyebrow: '可视化开发环境',
+    h1a: '看见 AI 智能体的', h1em: '思考。',
+    sub: '编码智能体不打字，它们在行动：读文件、跑命令、启动其他智能体。Vibisual 把这次运行画成实时气泡图，把同一块画布变成编排设计面，需要人接手时就地打开编辑器。',
+    ctaDl: '下载 Windows 版', ctaWatch: '2 分钟演示', ctaStar: '在 GitHub 加星',
+    heroMeta: 'Vibisual-0.1.9-setup.exe · 需要 PATH 中已有 Claude CLI',
+    st1: 'GitHub 星标', st2: '累计下载量',
+    st3: '周活跃用户', st4: '月度网站访客',
+    canvasHint: '把真实会话画成空间 — 点击一个智能体',
+    canvasCaption: '整套编排在一个窗口里。五个智能体，两个在跑，一个在等你回答，不用翻终端去找是哪一个。',
+    vdeLead: '我们观察智能体的工具仍然是文本：终端、聊天记录、任务列表。可视化开发环境把智能体的工作画成空间，并把设计、执行、观察和编辑放在同一个界面上。',
+    vde1: '你来敲代码', vde2: '你读终端', vde3: '你看图谱',
+    whatTitle: '核心功能',
+    f1t: '把运行画成实时图谱',
+    f1b: 'Claude Code 的钩子事件成为画布上的节点，子智能体的派生成为连线，工具调用成为子气泡，被触及的文件当场亮起。原本以文本打印的树，现在边生长边被画出来。',
+    f2t: '用图谱设计智能体团队',
+    f2b: '放下一个气泡即定义一个子智能体：模型、权限模式、工具、隔离范围、最大轮次、技能与专属规则。用任务连线定义交接，Vibisual 读取图谱并启动对应的 Claude Code 工作流。',
+    f3t: '不离开图谱就能修',
+    f3b: '双击气泡，工作区就地展开：实时输出流、文件树、带语法高亮的编辑器、diff 和终端，都在与画布相同的窗口里。',
+    videoTitle: '钩子事件流入气泡图，子智能体可视化配置', videoSub: '两分钟，一次真实会话，没有幻灯片。',
+    instTitle: '快速开始', instLead: 'Vibisual 运行在 Claude CLI 之上，需先安装 CLI 并加入 PATH。',
+    instWin: '在 Windows 安装', instWinBody: '从发布页下载安装程序，运行后启动 Vibisual。macOS 与 Linux 版本存在，但尚未充分测试。',
+    instSrc: '从源码构建', instSrcBody: 'Node 20 以上。首次启动时 Vibisual 会向 ~/.claude/settings.json 写入受管钩子块，并保留带时间戳的备份。若想自行接线，请设置 VIBISUAL_SKIP_HOOK_INSTALL=1。',
+    statusLabel: '状态 · 早期预览',
+    statusBody: '0.1.x 预览版用于实验、演示与反馈。会有缺陷、未完成的功能与偶发的破坏性变更。不建议用于关键生产流程或含高敏感数据的仓库。',
+    secLabel: '安全与隐私',
+    secBody: '钩子载荷可能包含提示词、工具调用、文件路径、shell 命令与会话元数据。命令钩子以你的本地用户权限运行。在含密钥或客户数据的仓库中，请先审阅生成的钩子配置。',
+    ctaTitle: '别再读你的智能体，开始看它们。',
+    ctaSub: '一个安装包。你现有的 Claude Code 配置照旧工作，区别只是现在你能看见。',
+    footNote: 'Vibisual 是独立开源项目，与 Anthropic 无关联、未获其背书或赞助。Claude、Claude Code 与 Anthropic 是 Anthropic, PBC 的商标。',
+  },
+  fr: {
+    navMap: 'La carte', navWhat: 'Ce qu\'il fait', navInstall: 'Installation', navDl: 'Télécharger',
+    eyebrow: "l'environnement de développement visuel",
+    h1a: 'Voyez vos agents IA', h1em: 'penser.',
+    sub: "Les agents de code ne tapent pas. Ils agissent — lire des fichiers, lancer des commandes, démarrer d'autres agents. Vibisual dessine cette exécution comme une carte de bulles vivante, fait de ce même canevas la surface de conception de votre harnais, et ouvre l'éditeur sur place quand une main humaine est nécessaire.",
+    ctaDl: 'Télécharger pour Windows', ctaWatch: 'Démo de 2 minutes', ctaStar: 'Star sur GitHub',
+    heroMeta: 'Vibisual-0.1.9-setup.exe · nécessite le CLI Claude dans votre PATH',
+    st1: 'étoiles sur GitHub', st2: 'téléchargements à ce jour',
+    st3: 'utilisateurs actifs par semaine', st4: 'visiteurs du site par mois',
+    canvasHint: 'une session réelle, dessinée dans l\'espace — cliquez sur un agent',
+    canvasCaption: "Tout le harnais dans une fenêtre. Cinq agents, deux en cours, un qui attend une réponse — sans fouiller un terminal pour savoir lequel.",
+    vdeLead: "Les outils avec lesquels nous observons les agents sont encore du texte : un terminal, un journal de chat, une liste de tâches. Un environnement de développement visuel dessine leur travail comme un espace, et garde conception, exécution, observation et édition sur une seule surface.",
+    vde1: 'Vous le tapez', vde2: 'Vous lisez le terminal', vde3: 'Vous regardez la carte',
+    whatTitle: 'Ce qu\'il fait',
+    f1t: "Dessine l'exécution comme une carte vivante",
+    f1b: "Les événements de hooks de Claude Code deviennent des nœuds. Les sous-agents deviennent des arêtes, les appels d'outils des bulles enfants, et les fichiers touchés s'allument. L'arbre imprimé en texte est dessiné à mesure qu'il grandit.",
+    f2t: "Conçoit l'équipe d'agents comme un graphe",
+    f2b: "Posez une bulle pour définir un sous-agent — modèle, mode de permission, outils, isolation, tours max, compétences, règles propres — et reliez les arêtes de tâches pour les transferts. Vibisual lit le graphe et lance le workflow Claude Code correspondant.",
+    f3t: 'Corrigez sans quitter la carte',
+    f3b: "Double-cliquez une bulle et l'espace de travail s'ouvre sur place : flux en direct, arborescence des fichiers, éditeur avec coloration syntaxique, diffs et terminal, dans la même fenêtre que le canevas.",
+    videoTitle: 'Les hooks affluent dans la carte, les sous-agents configurés visuellement', videoSub: 'Deux minutes, une vraie session, aucune slide.',
+    instTitle: 'Démarrage rapide', instLead: 'Vibisual fonctionne au-dessus du CLI Claude, qui doit déjà être installé et présent dans votre PATH.',
+    instWin: 'Installer sur Windows', instWinBody: "Téléchargez l'installeur depuis la page des releases, exécutez-le puis lancez Vibisual. Des builds macOS et Linux existent mais sont peu testés.",
+    instSrc: 'Construire depuis les sources', instSrcBody: "Node 20+. Au premier lancement, Vibisual écrit un bloc de hooks géré dans ~/.claude/settings.json et conserve une sauvegarde horodatée. Définissez VIBISUAL_SKIP_HOOK_INSTALL=1 pour câbler vous-même.",
+    statusLabel: 'statut · aperçu précoce',
+    statusBody: "Cet aperçu 0.1.x sert à l'expérimentation, aux démos et aux retours. Attendez-vous à des bugs, des fonctions incomplètes et des ruptures occasionnelles. Non recommandé pour des workflows de production critiques ou des dépôts très sensibles.",
+    secLabel: 'sécurité et confidentialité',
+    secBody: "Les charges utiles des hooks peuvent contenir prompts, appels d'outils, chemins de fichiers, commandes shell et métadonnées de session. Les hooks s'exécutent avec vos permissions locales. Revoyez la configuration générée, surtout dans des dépôts contenant des secrets ou des données clients.",
+    ctaTitle: 'Arrêtez de lire vos agents. Commencez à les voir.',
+    ctaSub: "Un installeur. Votre configuration Claude Code continue de fonctionner exactement comme avant — sauf que maintenant vous la voyez.",
+    footNote: "Vibisual est un projet open source indépendant, non affilié à Anthropic, ni approuvé ni sponsorisé par elle. Claude, Claude Code et Anthropic sont des marques d'Anthropic, PBC.",
+  },
+  de: {
+    navMap: 'Die Karte', navWhat: 'Funktionen', navInstall: 'Installation', navDl: 'Herunterladen',
+    eyebrow: 'die visuelle entwicklungsumgebung',
+    h1a: 'Sieh deine KI-Agenten', h1em: 'denken.',
+    sub: 'Coding-Agenten tippen nicht. Sie handeln — Dateien lesen, Befehle ausführen, andere Agenten starten. Vibisual zeichnet diesen Lauf als lebende Bubble-Map, macht dieselbe Fläche zur Entwurfsfläche für dein Harness und öffnet den Editor an Ort und Stelle, wenn eine menschliche Hand nötig ist.',
+    ctaDl: 'Für Windows herunterladen', ctaWatch: '2-Minuten-Walkthrough', ctaStar: 'Auf GitHub sternen',
+    heroMeta: 'Vibisual-0.1.9-setup.exe · Claude CLI muss im PATH liegen',
+    st1: 'Sterne auf GitHub', st2: 'Downloads bisher',
+    st3: 'wöchentlich aktive Nutzer', st4: 'Website-Besucher pro Monat',
+    canvasHint: 'eine echte Session, als Raum gezeichnet — klick einen Agenten',
+    canvasCaption: 'Das ganze Harness in einem Fenster. Fünf Agenten, zwei mitten in der Arbeit, einer wartet auf eine Antwort — ohne dass jemand ein Terminal durchsucht.',
+    vdeLead: 'Die Werkzeuge, mit denen wir Agenten beobachten, sind noch Text: ein Terminal, ein Chatlog, eine Aufgabenliste. Eine visuelle Entwicklungsumgebung zeichnet ihre Arbeit als Raum und hält Entwurf, Ausführung, Beobachtung und Bearbeitung auf einer Fläche.',
+    vde1: 'Du tippst es', vde2: 'Du liest das Terminal', vde3: 'Du schaust auf die Karte',
+    whatTitle: 'Funktionen',
+    f1t: 'Zeichnet den Lauf als lebende Karte',
+    f1b: 'Claude-Code-Hook-Events werden zu Knoten auf einer lebenden Fläche. Sub-Agent-Starts werden Kanten, Tool-Aufrufe Kind-Bubbles, berührte Dateien leuchten auf. Der Baum, der sonst als Textwand erscheint, wird beim Wachsen gezeichnet.',
+    f2t: 'Entwirft das Agenten-Team als Graph',
+    f2b: 'Setz eine Bubble, um einen Sub-Agenten zu definieren — Modell, Berechtigungsmodus, Tools, Isolation, max. Turns, Skills, eigene Regeln — und verdrahte Task-Kanten für Übergaben. Vibisual liest den Graphen und startet den passenden Claude-Code-Workflow.',
+    f3t: 'Reparieren, ohne die Karte zu verlassen',
+    f3b: 'Doppelklick auf eine Bubble öffnet den Arbeitsbereich an Ort und Stelle: Live-Stream, Dateibaum, Editor mit Syntax-Highlighting, Diffs und Terminal — im selben Fenster wie die Fläche.',
+    videoTitle: 'Hooks strömen in die Bubble-Map, Sub-Agenten visuell konfiguriert', videoSub: 'Zwei Minuten, eine echte Session, keine Folien.',
+    instTitle: 'Schnellstart', instLead: 'Vibisual läuft auf dem Claude CLI, das bereits installiert und im PATH sein muss.',
+    instWin: 'Auf Windows installieren', instWinBody: 'Installer von der Releases-Seite laden, ausführen, Vibisual starten. macOS- und Linux-Builds existieren, sind aber kaum getestet.',
+    instSrc: 'Aus dem Quellcode bauen', instSrcBody: 'Node 20+. Beim ersten Start schreibt Vibisual einen verwalteten Hook-Block in ~/.claude/settings.json und legt ein Backup mit Zeitstempel daneben. Mit VIBISUAL_SKIP_HOOK_INSTALL=1 verdrahtest du selbst.',
+    statusLabel: 'status · early preview',
+    statusBody: 'Diese 0.1.x-Vorschau ist für Experimente, Demos und Feedback. Rechne mit Bugs, unfertigen Funktionen und gelegentlichen Breaking Changes. Nicht empfohlen für kritische Produktions-Workflows oder Repos mit hochsensiblen Daten.',
+    secLabel: 'sicherheit & datenschutz',
+    secBody: 'Hook-Payloads können Prompts, Tool-Aufrufe, Dateipfade, Shell-Befehle und Session-Metadaten enthalten. Command-Hooks laufen mit den Rechten deines lokalen Benutzers. Prüfe die generierte Hook-Konfiguration, besonders in Repos mit Secrets oder Kundendaten.',
+    ctaTitle: 'Hör auf, deine Agenten zu lesen. Fang an, sie zu sehen.',
+    ctaSub: 'Ein Installer. Dein bestehendes Claude-Code-Setup funktioniert genau wie vorher — nur siehst du es jetzt.',
+    footNote: 'Vibisual ist ein unabhängiges Open-Source-Projekt, nicht mit Anthropic verbunden, von Anthropic unterstützt oder gesponsert. Claude, Claude Code und Anthropic sind Marken von Anthropic, PBC.',
+  },
+  es: {
+    navMap: 'El mapa', navWhat: 'Qué hace', navInstall: 'Instalación', navDl: 'Descargar',
+    eyebrow: 'el entorno de desarrollo visual',
+    h1a: 'Mira pensar a tus agentes', h1em: 'de IA.',
+    sub: 'Los agentes de código no escriben: actúan — leen archivos, ejecutan comandos, lanzan otros agentes. Vibisual dibuja esa ejecución como un mapa de burbujas en vivo, convierte ese mismo lienzo en la superficie de diseño de tu arnés y abre el editor allí mismo cuando hace falta una mano humana.',
+    ctaDl: 'Descargar para Windows', ctaWatch: 'Recorrido de 2 minutos', ctaStar: 'Dar star en GitHub',
+    heroMeta: 'Vibisual-0.1.9-setup.exe · requiere el CLI de Claude en tu PATH',
+    st1: 'estrellas en GitHub', st2: 'descargas hasta hoy',
+    st3: 'usuarios activos semanales', st4: 'visitantes del sitio al mes',
+    canvasHint: 'una sesión real, dibujada como espacio — haz clic en un agente',
+    canvasCaption: 'Todo el arnés en una ventana. Cinco agentes, dos trabajando, uno esperando una respuesta, y nadie rebuscando en un terminal para saber cuál.',
+    vdeLead: 'Las herramientas con las que observamos a los agentes siguen siendo texto: un terminal, un registro de chat, una lista de tareas. Un entorno de desarrollo visual dibuja su trabajo como espacio y mantiene diseño, ejecución, observación y edición en una sola superficie.',
+    vde1: 'Tú lo escribes', vde2: 'Tú lees el terminal', vde3: 'Tú miras el mapa',
+    whatTitle: 'Qué hace',
+    f1t: 'Dibuja la ejecución como un mapa vivo',
+    f1b: 'Los eventos de hooks de Claude Code se vuelven nodos en un lienzo vivo. Los subagentes se vuelven aristas, las llamadas a herramientas burbujas hijas, y los archivos tocados se iluminan. El árbol que antes se imprimía como texto se dibuja mientras crece.',
+    f2t: 'Diseña el equipo de agentes como un grafo',
+    f2b: 'Coloca una burbuja para definir un subagente: modelo, modo de permisos, herramientas, aislamiento, turnos máximos, skills y reglas propias. Conecta aristas de tarea para los relevos y Vibisual leerá el grafo para lanzar el flujo de Claude Code correspondiente.',
+    f3t: 'Arregla cosas sin salir del mapa',
+    f3b: 'Haz doble clic en una burbuja y el espacio de trabajo se abre allí mismo: el flujo en vivo del agente, un árbol de archivos, un editor con resaltado, diffs y un terminal, en la misma ventana que el lienzo.',
+    videoTitle: 'Hooks fluyendo al mapa de burbujas, subagentes configurados visualmente', videoSub: 'Dos minutos, una sesión real, sin diapositivas.',
+    instTitle: 'Inicio rápido', instLead: 'Vibisual funciona sobre el CLI de Claude, que ya debe estar instalado y en tu PATH.',
+    instWin: 'Instalar en Windows', instWinBody: 'Descarga el instalador de la página de releases, ejecútalo y abre Vibisual. Hay builds de macOS y Linux, pero no están muy probadas.',
+    instSrc: 'Compilar desde el código', instSrcBody: 'Node 20+. En el primer arranque Vibisual escribe un bloque de hooks gestionado en ~/.claude/settings.json y deja una copia con marca de tiempo. Usa VIBISUAL_SKIP_HOOK_INSTALL=1 para configurarlos tú.',
+    statusLabel: 'estado · vista previa temprana',
+    statusBody: 'Esta vista previa 0.1.x es para experimentar, demostrar y dar feedback. Habrá errores, funciones incompletas y cambios incompatibles ocasionales. No se recomienda para flujos críticos de producción ni repositorios con datos muy sensibles.',
+    secLabel: 'seguridad y privacidad',
+    secBody: 'Los payloads de los hooks pueden incluir prompts, llamadas a herramientas, rutas de archivos, comandos de shell y metadatos de sesión. Los hooks de comando corren con los permisos de tu usuario local. Revisa la configuración generada, sobre todo en repos con secretos o datos de clientes.',
+    ctaTitle: 'Deja de leer a tus agentes. Empieza a verlos.',
+    ctaSub: 'Un instalador. Tu configuración actual de Claude Code sigue funcionando igual; la diferencia es que ahora la ves.',
+    footNote: 'Vibisual es un proyecto open source independiente, sin afiliación, respaldo ni patrocinio de Anthropic. Claude, Claude Code y Anthropic son marcas de Anthropic, PBC.',
+  },
+  it: {
+    navMap: 'La mappa', navWhat: 'Cosa fa', navInstall: 'Installazione', navDl: 'Scarica',
+    eyebrow: "l'ambiente di sviluppo visuale",
+    h1a: 'Guarda i tuoi agenti IA', h1em: 'pensare.',
+    sub: 'Gli agenti di codice non digitano: agiscono — leggono file, eseguono comandi, avviano altri agenti. Vibisual disegna quell\'esecuzione come una mappa di bolle dal vivo, trasforma la stessa tela nella superficie di progetto del tuo harness e apre l\'editor sul posto quando serve una mano umana.',
+    ctaDl: 'Scarica per Windows', ctaWatch: 'Panoramica di 2 minuti', ctaStar: 'Star su GitHub',
+    heroMeta: 'Vibisual-0.1.9-setup.exe · richiede il CLI Claude nel PATH',
+    st1: 'stelle su GitHub', st2: 'download finora',
+    st3: 'utenti attivi settimanali', st4: 'visitatori del sito al mese',
+    canvasHint: 'una sessione reale, disegnata come spazio — clicca un agente',
+    canvasCaption: "Tutto l'harness in una finestra. Cinque agenti, due al lavoro, uno in attesa di una risposta, e nessuno che frughi in un terminale per capire quale.",
+    vdeLead: 'Gli strumenti con cui osserviamo gli agenti sono ancora testo: un terminale, un log di chat, una lista di task. Un ambiente di sviluppo visuale disegna il loro lavoro come spazio e tiene progetto, esecuzione, osservazione e modifica su una sola superficie.',
+    vde1: 'Lo digiti tu', vde2: 'Leggi il terminale', vde3: 'Guardi la mappa',
+    whatTitle: 'Cosa fa',
+    f1t: "Disegna l'esecuzione come mappa viva",
+    f1b: 'Gli eventi hook di Claude Code diventano nodi su una tela viva. Gli avvii di sub-agenti diventano archi, le chiamate a tool bolle figlie, i file toccati si accendono. L\'albero che prima era un muro di testo viene disegnato mentre cresce.',
+    f2t: 'Progetta il team di agenti come grafo',
+    f2b: 'Posa una bolla per definire un sub-agente: modello, modalità permessi, tool, isolamento, turni massimi, skill e regole proprie. Collega archi di task per i passaggi e Vibisual leggerà il grafo, avviando il workflow Claude Code corrispondente.',
+    f3t: 'Sistema le cose senza lasciare la mappa',
+    f3b: "Doppio clic su una bolla e lo spazio di lavoro si apre sul posto: stream dal vivo, albero dei file, editor con evidenziazione, diff e terminale, nella stessa finestra della tela.",
+    videoTitle: 'Hook che confluiscono nella mappa, sub-agenti configurati visivamente', videoSub: 'Due minuti, una sessione reale, nessuna slide.',
+    instTitle: 'Avvio rapido', instLead: 'Vibisual gira sopra il CLI Claude, che deve essere già installato e nel PATH.',
+    instWin: 'Installa su Windows', instWinBody: "Scarica l'installer dalla pagina delle release, eseguilo e avvia Vibisual. Le build macOS e Linux esistono ma non sono molto testate.",
+    instSrc: 'Compila dai sorgenti', instSrcBody: 'Node 20+. Al primo avvio Vibisual scrive un blocco di hook gestito in ~/.claude/settings.json e tiene un backup con timestamp. Imposta VIBISUAL_SKIP_HOOK_INSTALL=1 per configurarli da te.',
+    statusLabel: 'stato · early preview',
+    statusBody: 'Questa preview 0.1.x serve a sperimentare, fare demo e raccogliere feedback. Aspettati bug, funzioni incomplete e occasionali breaking change. Non consigliata per workflow di produzione critici o repository con dati molto sensibili.',
+    secLabel: 'sicurezza e privacy',
+    secBody: 'I payload degli hook possono contenere prompt, chiamate a tool, percorsi di file, comandi shell e metadati di sessione. Gli hook di comando girano con i permessi del tuo utente locale. Rivedi la configurazione generata, soprattutto in repo con segreti o dati dei clienti.',
+    ctaTitle: 'Smetti di leggere i tuoi agenti. Inizia a guardarli.',
+    ctaSub: 'Un installer. La tua configurazione Claude Code continua a funzionare come prima: la differenza è che ora la vedi.',
+    footNote: 'Vibisual è un progetto open source indipendente, non affiliato, approvato o sponsorizzato da Anthropic. Claude, Claude Code e Anthropic sono marchi di Anthropic, PBC.',
+  },
+  pt: {
+    navMap: 'O mapa', navWhat: 'O que faz', navInstall: 'Instalação', navDl: 'Baixar',
+    eyebrow: 'o ambiente de desenvolvimento visual',
+    h1a: 'Veja seus agentes de IA', h1em: 'pensarem.',
+    sub: 'Agentes de código não digitam: eles agem — leem arquivos, rodam comandos, iniciam outros agentes. O Vibisual desenha essa execução como um mapa de bolhas ao vivo, transforma a mesma tela na superfície de design do seu harness e abre o editor ali mesmo quando é preciso uma mão humana.',
+    ctaDl: 'Baixar para Windows', ctaWatch: 'Demonstração de 2 minutos', ctaStar: 'Dar star no GitHub',
+    heroMeta: 'Vibisual-0.1.9-setup.exe · exige o CLI do Claude no seu PATH',
+    st1: 'estrelas no GitHub', st2: 'downloads até hoje',
+    st3: 'usuários ativos semanais', st4: 'visitantes do site por mês',
+    canvasHint: 'uma sessão real, desenhada como espaço — clique num agente',
+    canvasCaption: 'Todo o harness em uma janela. Cinco agentes, dois trabalhando, um esperando resposta, e ninguém garimpando terminal para descobrir qual.',
+    vdeLead: 'As ferramentas com que observamos agentes ainda são texto: um terminal, um log de chat, uma lista de tarefas. Um ambiente de desenvolvimento visual desenha o trabalho deles como espaço e mantém design, execução, observação e edição em uma única superfície.',
+    vde1: 'Você digita', vde2: 'Você lê o terminal', vde3: 'Você olha o mapa',
+    whatTitle: 'O que faz',
+    f1t: 'Desenha a execução como mapa vivo',
+    f1b: 'Eventos de hook do Claude Code viram nós numa tela viva. Spawns de subagentes viram arestas, chamadas de ferramenta viram bolhas filhas, e arquivos tocados se acendem. A árvore antes impressa como texto é desenhada enquanto cresce.',
+    f2t: 'Projeta o time de agentes como grafo',
+    f2b: 'Solte uma bolha para definir um subagente: modelo, modo de permissão, ferramentas, isolamento, turnos máximos, skills e regras próprias. Ligue arestas de tarefa para as passagens e o Vibisual lê o grafo e dispara o fluxo Claude Code correspondente.',
+    f3t: 'Corrija sem sair do mapa',
+    f3b: 'Clique duas vezes numa bolha e o workspace abre ali: stream ao vivo do agente, árvore de arquivos, editor com destaque de sintaxe, diffs e terminal, na mesma janela da tela.',
+    videoTitle: 'Hooks fluindo para o mapa de bolhas, subagentes configurados visualmente', videoSub: 'Dois minutos, uma sessão real, sem slides.',
+    instTitle: 'Início rápido', instLead: 'O Vibisual roda sobre o CLI do Claude, que já precisa estar instalado e no seu PATH.',
+    instWin: 'Instalar no Windows', instWinBody: 'Baixe o instalador na página de releases, execute e abra o Vibisual. Há builds de macOS e Linux, mas pouco testadas.',
+    instSrc: 'Compilar do código', instSrcBody: 'Node 20+. No primeiro início o Vibisual escreve um bloco de hooks gerenciado em ~/.claude/settings.json e guarda um backup com timestamp. Use VIBISUAL_SKIP_HOOK_INSTALL=1 para configurar você mesmo.',
+    statusLabel: 'status · prévia inicial',
+    statusBody: 'Esta prévia 0.1.x serve para experimentação, demos e feedback. Espere bugs, recursos incompletos e mudanças incompatíveis ocasionais. Não recomendada para fluxos críticos de produção ou repositórios com dados muito sensíveis.',
+    secLabel: 'segurança e privacidade',
+    secBody: 'Payloads de hook podem incluir prompts, chamadas de ferramenta, caminhos de arquivo, comandos de shell e metadados de sessão. Hooks de comando rodam com as permissões do seu usuário local. Revise a configuração gerada, sobretudo em repos com segredos ou dados de clientes.',
+    ctaTitle: 'Pare de ler seus agentes. Comece a vê-los.',
+    ctaSub: 'Um instalador. Sua configuração atual do Claude Code continua funcionando igual — só que agora você vê.',
+    footNote: 'O Vibisual é um projeto open source independente, sem afiliação, endosso ou patrocínio da Anthropic. Claude, Claude Code e Anthropic são marcas da Anthropic, PBC.',
+  },
+  id: {
+    navMap: 'Peta langsung', navWhat: 'Apa fungsinya', navInstall: 'Pasang', navDl: 'Unduh',
+    eyebrow: 'lingkungan pengembangan visual',
+    h1a: 'Lihat agen AI Anda', h1em: 'berpikir.',
+    sub: 'Agen coding tidak mengetik. Mereka bertindak — membaca berkas, menjalankan perintah, menyalakan agen lain. Vibisual menggambar proses itu sebagai peta gelembung langsung, menjadikan kanvas yang sama sebagai bidang desain harness Anda, dan membuka editor di tempat saat tangan manusia dibutuhkan.',
+    ctaDl: 'Unduh untuk Windows', ctaWatch: 'Panduan 2 menit', ctaStar: 'Beri star di GitHub',
+    heroMeta: 'Vibisual-0.1.9-setup.exe · butuh Claude CLI di PATH Anda',
+    st1: 'bintang di GitHub', st2: 'total unduhan',
+    st3: 'pengguna aktif mingguan', st4: 'pengunjung situs per bulan',
+    canvasHint: 'sesi nyata, digambar sebagai ruang — klik salah satu agen',
+    canvasCaption: 'Seluruh harness dalam satu jendela. Lima agen, dua sedang bekerja, satu menunggu jawaban, dan tak ada yang perlu mengorek terminal untuk tahu yang mana.',
+    vdeLead: 'Alat untuk mengamati agen masih berupa teks: terminal, log obrolan, daftar tugas. Lingkungan pengembangan visual menggambar pekerjaan mereka sebagai ruang, dan menyatukan desain, eksekusi, pengamatan, serta penyuntingan dalam satu bidang.',
+    vde1: 'Anda yang mengetik', vde2: 'Anda membaca terminal', vde3: 'Anda melihat peta',
+    whatTitle: 'Apa fungsinya',
+    f1t: 'Menggambar eksekusi sebagai peta langsung',
+    f1b: 'Event hook Claude Code menjadi node di kanvas hidup. Kemunculan sub-agen menjadi sisi, panggilan alat menjadi gelembung anak, berkas yang tersentuh menyala. Pohon yang biasanya dicetak sebagai teks digambar sembari tumbuh.',
+    f2t: 'Merancang tim agen sebagai graf',
+    f2b: 'Letakkan gelembung untuk mendefinisikan sub-agen: model, mode izin, alat, isolasi, maksimum turn, skill, dan aturan khusus. Sambungkan sisi tugas untuk serah terima, lalu Vibisual membaca graf dan menjalankan alur Claude Code yang sesuai.',
+    f3t: 'Perbaiki tanpa meninggalkan peta',
+    f3b: 'Klik ganda sebuah gelembung dan ruang kerja terbuka di tempat: stream langsung agen, pohon berkas, editor dengan penyorotan sintaks, diff, dan terminal, di jendela yang sama dengan kanvas.',
+    videoTitle: 'Hook mengalir ke peta gelembung, sub-agen dikonfigurasi secara visual', videoSub: 'Dua menit, satu sesi nyata, tanpa slide.',
+    instTitle: 'Mulai cepat', instLead: 'Vibisual berjalan di atas Claude CLI, yang harus sudah terpasang dan ada di PATH Anda.',
+    instWin: 'Pasang di Windows', instWinBody: 'Unduh pemasang dari halaman releases, jalankan, lalu buka Vibisual. Build macOS dan Linux tersedia namun belum banyak diuji.',
+    instSrc: 'Bangun dari sumber', instSrcBody: 'Node 20+. Saat pertama dijalankan, Vibisual menulis blok hook terkelola ke ~/.claude/settings.json dan menyimpan cadangan bertanda waktu. Setel VIBISUAL_SKIP_HOOK_INSTALL=1 untuk memasang hook sendiri.',
+    statusLabel: 'status · pratinjau awal',
+    statusBody: 'Pratinjau 0.1.x ini untuk eksperimen, demo, dan umpan balik. Harapkan bug, fitur belum lengkap, dan perubahan yang memutus kompatibilitas. Tidak disarankan untuk alur produksi kritis atau repositori dengan data sangat sensitif.',
+    secLabel: 'keamanan & privasi',
+    secBody: 'Payload hook dapat memuat prompt, panggilan alat, jalur berkas, perintah shell, dan metadata sesi. Hook perintah berjalan dengan izin pengguna lokal Anda. Tinjau konfigurasi hook yang dihasilkan, terutama pada repositori dengan rahasia atau data pelanggan.',
+    ctaTitle: 'Berhenti membaca agen Anda. Mulai melihatnya.',
+    ctaSub: 'Satu pemasang. Konfigurasi Claude Code Anda tetap bekerja seperti biasa — bedanya, sekarang Anda bisa melihatnya.',
+    footNote: 'Vibisual adalah proyek sumber terbuka independen, tidak berafiliasi, didukung, atau disponsori oleh Anthropic. Claude, Claude Code, dan Anthropic adalah merek dagang Anthropic, PBC.',
+  },
+  hi: {
+    navMap: 'लाइव मैप', navWhat: 'यह क्या करता है', navInstall: 'इंस्टॉल', navDl: 'डाउनलोड',
+    eyebrow: 'विज़ुअल डेवलपमेंट एनवायरनमेंट',
+    h1a: 'अपने AI एजेंट्स को', h1em: 'सोचते देखें।',
+    sub: 'कोडिंग एजेंट टाइप नहीं करते, वे काम करते हैं — फ़ाइलें पढ़ते हैं, कमांड चलाते हैं, दूसरे एजेंट शुरू करते हैं। Vibisual उस रन को एक लाइव बबल मैप की तरह बनाता है, उसी कैनवस को आपके हार्नेस का डिज़ाइन सरफ़ेस बनाता है, और जब इंसानी हाथ चाहिए हो तो वहीं एडिटर खोल देता है।',
+    ctaDl: 'Windows के लिए डाउनलोड', ctaWatch: '2 मिनट का वॉकथ्रू', ctaStar: 'GitHub पर स्टार दें',
+    heroMeta: 'Vibisual-0.1.9-setup.exe · आपके PATH में Claude CLI चाहिए',
+    st1: 'GitHub पर स्टार', st2: 'अब तक डाउनलोड',
+    st3: 'साप्ताहिक सक्रिय उपयोगकर्ता', st4: 'मासिक साइट विज़िटर',
+    canvasHint: 'एक वास्तविक सेशन, जगह की तरह बना — किसी एजेंट पर क्लिक करें',
+    canvasCaption: 'पूरा हार्नेस एक ही विंडो में। पाँच एजेंट, दो काम पर, एक जवाब का इंतज़ार करता — और कौन रुका है यह जानने के लिए टर्मिनल खोजना नहीं पड़ता।',
+    vdeLead: 'एजेंट देखने के हमारे औज़ार अब भी टेक्स्ट हैं: टर्मिनल, चैट लॉग, टास्क लिस्ट। विज़ुअल डेवलपमेंट एनवायरनमेंट उनके काम को जगह की तरह बनाता है और डिज़ाइन, एग्ज़ीक्यूशन, ऑब्ज़र्वेशन तथा एडिटिंग को एक ही सतह पर रखता है।',
+    vde1: 'आप टाइप करते हैं', vde2: 'आप टर्मिनल पढ़ते हैं', vde3: 'आप मैप देखते हैं',
+    whatTitle: 'यह क्या करता है',
+    f1t: 'रन को लाइव मैप की तरह बनाता है',
+    f1b: 'Claude Code के हुक इवेंट कैनवस पर नोड बन जाते हैं। सब-एजेंट स्पॉन एज बनते हैं, टूल कॉल चाइल्ड बबल, और छुई गई फ़ाइलें जल उठती हैं। जो ट्री टेक्स्ट की दीवार बनकर छपता था, वह बढ़ते हुए ही खींचा जाता है।',
+    f2t: 'एजेंट टीम को ग्राफ़ की तरह डिज़ाइन करता है',
+    f2b: 'एक बबल रखकर सब-एजेंट तय करें — मॉडल, परमिशन मोड, टूल्स, आइसोलेशन, अधिकतम टर्न, स्किल्स और अपने नियम। हैंडऑफ़ के लिए टास्क एज जोड़ें; Vibisual उस ग्राफ़ को पढ़कर संबंधित Claude Code वर्कफ़्लो चलाता है।',
+    f3t: 'मैप छोड़े बिना ठीक करें',
+    f3b: 'बबल पर डबल-क्लिक करें और वर्कस्पेस वहीं खुल जाता है: एजेंट की लाइव स्ट्रीम, फ़ाइल ट्री, सिंटैक्स हाइलाइटिंग वाला एडिटर, diff और टर्मिनल — कैनवस की उसी विंडो में।',
+    videoTitle: 'हुक बबल मैप में बहते हुए, सब-एजेंट विज़ुअली कॉन्फ़िगर', videoSub: 'दो मिनट, एक असली सेशन, कोई स्लाइड नहीं।',
+    instTitle: 'क्विक स्टार्ट', instLead: 'Vibisual, Claude CLI के ऊपर चलता है, जो पहले से इंस्टॉल और PATH में होना चाहिए।',
+    instWin: 'Windows पर इंस्टॉल', instWinBody: 'रिलीज़ पेज से इंस्टॉलर डाउनलोड करें, चलाएँ और Vibisual खोलें। macOS और Linux बिल्ड मौजूद हैं पर उनका परीक्षण सीमित है।',
+    instSrc: 'सोर्स से बिल्ड', instSrcBody: 'Node 20+। पहली बार चलने पर Vibisual ~/.claude/settings.json में मैनेज्ड हुक ब्लॉक लिखता है और टाइमस्टैम्प बैकअप रखता है। खुद हुक जोड़ने के लिए VIBISUAL_SKIP_HOOK_INSTALL=1 सेट करें।',
+    statusLabel: 'स्थिति · अर्ली प्रीव्यू',
+    statusBody: 'यह 0.1.x प्रीव्यू प्रयोग, डेमो और फ़ीडबैक के लिए है। बग, अधूरे फ़ीचर और कभी-कभी ब्रेकिंग बदलाव मिलेंगे। ज़रूरी प्रोडक्शन वर्कफ़्लो या अति संवेदनशील डेटा वाले रिपॉज़िटरी के लिए सुझाया नहीं जाता।',
+    secLabel: 'सुरक्षा और निजता',
+    secBody: 'हुक पेलोड में प्रॉम्प्ट, टूल कॉल, फ़ाइल पाथ, शेल कमांड और सेशन मेटाडेटा हो सकते हैं। कमांड हुक आपके लोकल यूज़र की अनुमतियों से चलते हैं। सीक्रेट या ग्राहक डेटा वाले रिपॉज़िटरी में जनरेट हुई हुक कॉन्फ़िगरेशन पहले जाँच लें।',
+    ctaTitle: 'एजेंट्स को पढ़ना छोड़िए। उन्हें देखना शुरू कीजिए।',
+    ctaSub: 'एक इंस्टॉलर। आपका मौजूदा Claude Code सेटअप वैसे ही चलता रहेगा — फ़र्क़ सिर्फ़ यह कि अब वह दिखता है।',
+    footNote: 'Vibisual एक स्वतंत्र ओपन-सोर्स प्रोजेक्ट है, Anthropic से संबद्ध, समर्थित या प्रायोजित नहीं। Claude, Claude Code और Anthropic, Anthropic, PBC के ट्रेडमार्क हैं।',
+  },
+};
+T['es-419'] = { ...T.es, ctaDl: 'Descargar para Windows', ctaStar: 'Marcar con star en GitHub', navDl: 'Descargar' };
+
+const UI = {
+  en: { home:'Home', blog:'Blog', docs:'Docs', latest:'latest', more:'Read', back:'All posts',
+    blogTitle:'Notes from the canvas', blogLead:'Release notes, design decisions, and what we keep learning from watching agent runs.',
+    onThisPage:'On this page', prev:'Previous', next:'Next', filterPh:'Filter pages', updated:'Updated' },
+  ko: { home:'홈', blog:'블로그', docs:'문서', latest:'최신', more:'읽기', back:'전체 글',
+    blogTitle:'캔버스에서 쓰는 노트', blogLead:'릴리스 노트, 설계 결정, 그리고 에이전트 실행을 지켜보며 배운 것들.',
+    onThisPage:'이 페이지의 목차', prev:'이전', next:'다음', filterPh:'페이지 검색', updated:'업데이트' },
+  ja: { home:'ホーム', blog:'ブログ', docs:'ドキュメント', latest:'最新', more:'読む', back:'記事一覧',
+    blogTitle:'キャンバスからのノート', blogLead:'リリースノート、設計の判断、そしてエージェントの実行を見て学んだこと。',
+    onThisPage:'このページの目次', prev:'前へ', next:'次へ', filterPh:'ページを絞り込む', updated:'更新' },
+  zh: { home:'首页', blog:'博客', docs:'文档', latest:'最新', more:'阅读', back:'全部文章',
+    blogTitle:'来自画布的笔记', blogLead:'发布说明、设计决定，以及我们从观察智能体运行中不断学到的东西。',
+    onThisPage:'本页目录', prev:'上一页', next:'下一页', filterPh:'筛选页面', updated:'更新' },
+  fr: { home:'Accueil', docs:'Docs', back:'Tous les articles', onThisPage:'Sur cette page', prev:'Précédent', next:'Suivant', filterPh:'Filtrer les pages', updated:'Mis à jour', more:'Lire' },
+  de: { home:'Start', docs:'Doku', back:'Alle Beiträge', onThisPage:'Auf dieser Seite', prev:'Zurück', next:'Weiter', filterPh:'Seiten filtern', updated:'Aktualisiert', more:'Lesen' },
+  es: { home:'Inicio', docs:'Docs', back:'Todas las entradas', onThisPage:'En esta página', prev:'Anterior', next:'Siguiente', filterPh:'Filtrar páginas', updated:'Actualizado', more:'Leer' },
+  it: { home:'Home', docs:'Doc', back:'Tutti gli articoli', onThisPage:'In questa pagina', prev:'Precedente', next:'Successivo', filterPh:'Filtra pagine', updated:'Aggiornato', more:'Leggi' },
+  pt: { home:'Início', docs:'Docs', back:'Todos os posts', onThisPage:'Nesta página', prev:'Anterior', next:'Próximo', filterPh:'Filtrar páginas', updated:'Atualizado', more:'Ler' },
+  id: { home:'Beranda', docs:'Dokumen', back:'Semua artikel', onThisPage:'Di halaman ini', prev:'Sebelumnya', next:'Berikutnya', filterPh:'Saring halaman', updated:'Diperbarui', more:'Baca' },
+  hi: { home:'होम', blog:'ब्लॉग', docs:'दस्तावेज़', back:'सभी पोस्ट', onThisPage:'इस पेज पर', prev:'पिछला', next:'अगला', filterPh:'पेज खोजें', updated:'अपडेट', more:'पढ़ें' },
+};
+UI['es-419'] = UI.es;
+
+const BLOG = {
+  en: [
+    { id:'space', date:'2026-08-18', tag:'essay', read:'6 min', author:'Vibisual team',
+      title:'Why we drew the terminal as space',
+      excerpt:'A log tells you what happened, in order. A map tells you where everything is, right now. Agent runs need the second one.',
+      body:[
+        'A terminal is a good instrument for one worker. One cursor, one column of output, time running downward. When you were the one typing, that shape matched the work exactly.',
+        'Five agents break it. Output from unrelated tasks interleaves, the thing you care about scrolls away while you read something else, and the question you actually have — which one is stuck? — gets answered only by paging back through text that has already moved.',
+        'So we stopped printing the run and started drawing it. A node per agent, an edge per handoff, a child bubble per tool call. Position carries meaning, and state is a colour instead of a sentence you have to find.',
+        'The surprising part was not the map. It was that the same canvas turned out to be the right place to design the team: if a graph is how you read a run, a graph is also how you write one. Configuration and observation ended up being the same picture, seen at two different times.',
+      ] },
+    { id:'r019', date:'2026-08-04', tag:'release', read:'4 min', author:'Vibisual team',
+      title:'0.1.9: hook streaming, a faster canvas, per-agent rules',
+      excerpt:'Events now arrive as they happen instead of on a poll, and the canvas holds sixty frames with forty nodes on screen.',
+      body:[
+        'Until 0.1.8 the app read hook events in batches. It worked, but a fast Bash call could finish before its bubble appeared, and the map trailed the run by a second or two. Events now stream over a local socket and land as they arrive.',
+        'The canvas renderer was rewritten to draw edges and bubbles in one pass. Forty nodes on screen holds sixty frames on integrated graphics, which was the number we wanted to reach before adding anything else.',
+        'Per-agent rules moved out of the global prompt and into the bubble panel. Each agent now carries its own free-text rules, so "never edit src/**" belongs to the test-runner instead of to the whole session.',
+        'Breaking change: graphs saved by 0.1.7 and earlier need re-saving. The app migrates them on open and leaves a .bak next to the original.',
+      ] },
+    { id:'five', date:'2026-07-21', tag:'guide', read:'8 min', author:'Vibisual team',
+      title:'Designing a five-agent checkout refactor',
+      excerpt:'One orchestrator, a schema migration, an API rewrite, a test runner that may not write, and a doc writer that waits for green.',
+      body:[
+        'The task was a checkout refactor touching a migration, two route files and a price helper. Done by one agent it is a long single session, and one mistake anywhere costs the whole run.',
+        'Split five ways it becomes a graph. The orchestrator owns the plan. schema-migrator writes the migration in its own worktree and hands the new column names forward. api-builder rewrites the route against them.',
+        'test-runner gets read-only access to src/** — it can run the suite and read anything, but it cannot fix what it finds. That constraint is the point: a runner that edits code stops being a measurement.',
+        'doc-writer sits behind an edge from test-runner and starts only when the suite is green, so the changelog never describes a build that got rolled back. The whole design is five bubbles and five edges, and it reads faster than the paragraph describing it.',
+      ] },
+    { id:'stall', date:'2026-07-02', tag:'research', read:'5 min', author:'Vibisual team',
+      title:'What we learned watching 400 sessions stall',
+      excerpt:'Most stalled runs were not model failures. They were a question nobody saw, in a pane nobody was looking at.',
+      body:[
+        'We instrumented 400 multi-agent sessions and looked at every run that went quiet for more than two minutes. We expected loops and context exhaustion. Neither was the top cause.',
+        'The most common stall was a permission prompt waiting in a pane the operator had scrolled away from. Median time to answer once noticed: eleven seconds. Median time to notice: over four minutes.',
+        'Second was a handoff that never happened, because the upstream agent ended its turn without signalling anything. Nothing was broken; the downstream agent simply had no reason to start.',
+        'Both are visibility problems rather than intelligence problems. Colouring a blocked node amber removed most of the first category, and drawing unresolved edges as dashed lines removed most of the second.',
+      ] },
+  ],
+  ko: [
+    { id:'space', date:'2026-08-18', tag:'에세이', read:'6분', author:'Vibisual 팀',
+      title:'터미널을 공간으로 그린 이유',
+      excerpt:'로그는 무슨 일이 있었는지 순서대로 알려줍니다. 맵은 지금 무엇이 어디에 있는지 알려줍니다. 에이전트 실행에 필요한 건 두 번째입니다.',
+      body:[
+        '터미널은 한 명의 작업자를 위한 좋은 도구입니다. 커서 하나, 출력 한 줄기, 아래로 흐르는 시간. 타이핑하는 사람이 나 자신이었을 때 그 형태는 작업과 정확히 맞았습니다.',
+        '에이전트가 다섯이 되면 그 형태가 무너집니다. 관계없는 작업의 출력이 뒤섞이고, 다른 걸 읽는 동안 정작 중요한 줄은 위로 사라지고, 실제로 궁금한 질문 — 지금 누가 멈췄나 — 은 이미 흘러간 텍스트를 되짚어야만 답이 나옵니다.',
+        '그래서 실행을 출력하는 대신 그리기 시작했습니다. 에이전트마다 노드, 핸드오프마다 엣지, 툴 호출마다 자식 버블. 위치가 의미를 갖고, 상태는 찾아 읽어야 하는 문장이 아니라 색이 됩니다.',
+        '의외였던 건 맵이 아니었습니다. 같은 캔버스가 팀을 설계하기에도 알맞은 자리였다는 점입니다. 그래프로 실행을 읽는다면, 그래프로 실행을 쓸 수도 있습니다. 설정과 관찰은 결국 같은 그림을 서로 다른 시점에 보는 일이었습니다.',
+      ] },
+    { id:'r019', date:'2026-08-04', tag:'릴리스', read:'4분', author:'Vibisual 팀',
+      title:'0.1.9: 훅 스트리밍, 더 빠른 캔버스, 에이전트별 규칙',
+      excerpt:'이벤트가 폴링이 아니라 발생하는 즉시 도착하고, 화면에 노드 마흔 개가 있어도 60프레임을 유지합니다.',
+      body:[
+        '0.1.8까지는 훅 이벤트를 묶음으로 읽었습니다. 동작은 했지만 빠른 Bash 호출이 자기 버블보다 먼저 끝나는 일이 있었고, 맵이 실행보다 1~2초 뒤처졌습니다. 이제 이벤트는 로컬 소켓으로 스트리밍되어 도착하는 대로 그려집니다.',
+        '캔버스 렌더러를 다시 써서 엣지와 버블을 한 번에 그립니다. 내장 그래픽에서 노드 마흔 개로 60프레임을 유지합니다. 다른 기능을 얹기 전에 도달하고 싶었던 숫자였습니다.',
+        '에이전트별 규칙이 전역 프롬프트에서 버블 패널로 옮겨졌습니다. 이제 각 에이전트가 자기 규칙 텍스트를 갖습니다. "src/** 는 절대 수정하지 않는다"는 세션 전체가 아니라 test-runner의 규칙입니다.',
+        '호환성 변경: 0.1.7 이전에 저장된 그래프는 다시 저장해야 합니다. 앱이 열 때 자동 변환하고 원본 옆에 .bak을 남깁니다.',
+      ] },
+    { id:'five', date:'2026-07-21', tag:'가이드', read:'8분', author:'Vibisual 팀',
+      title:'체크아웃 리팩터를 다섯 에이전트로 설계하기',
+      excerpt:'오케스트레이터 하나, 스키마 마이그레이션, API 재작성, 쓰기 권한이 없는 테스트 러너, 그리고 초록불을 기다리는 문서 작성자.',
+      body:[
+        '작업은 마이그레이션 하나, 라우트 파일 둘, 가격 헬퍼 하나를 건드리는 체크아웃 리팩터였습니다. 에이전트 하나로 하면 긴 단일 세션이 되고, 어디서든 한 번 실수하면 실행 전체를 잃습니다.',
+        '다섯으로 나누면 그래프가 됩니다. 오케스트레이터가 계획을 소유합니다. schema-migrator는 자기 워크트리에서 마이그레이션을 작성하고 새 컬럼 이름을 넘깁니다. api-builder가 그것에 맞춰 라우트를 다시 씁니다.',
+        'test-runner에는 src/** 읽기 권한만 줍니다. 스위트를 돌리고 무엇이든 읽을 수 있지만, 찾아낸 문제를 직접 고칠 수는 없습니다. 그 제약이 핵심입니다. 코드를 고치는 러너는 더 이상 측정이 아닙니다.',
+        'doc-writer는 test-runner에서 오는 엣지 뒤에 앉아 스위트가 초록불이 될 때만 시작합니다. 그래서 체인지로그가 롤백된 빌드를 설명하는 일이 없습니다. 설계 전체는 버블 다섯과 엣지 다섯이고, 그것을 설명하는 이 문단보다 빨리 읽힙니다.',
+      ] },
+    { id:'stall', date:'2026-07-02', tag:'리서치', read:'5분', author:'Vibisual 팀',
+      title:'멈춘 세션 400개를 지켜보고 배운 것',
+      excerpt:'멈춘 실행의 대부분은 모델의 실패가 아니었습니다. 아무도 보지 않는 창에서 아무도 못 본 질문이었습니다.',
+      body:[
+        '멀티 에이전트 세션 400개를 계측하고, 2분 이상 조용해진 실행을 모두 살펴봤습니다. 루프와 컨텍스트 소진을 예상했지만 둘 다 1위가 아니었습니다.',
+        '가장 흔한 정지는 운영자가 스크롤로 지나쳐 버린 창에서 기다리는 권한 프롬프트였습니다. 발견한 뒤 답하기까지의 중간값은 11초. 발견하기까지의 중간값은 4분이 넘었습니다.',
+        '두 번째는 일어나지 않은 핸드오프였습니다. 상위 에이전트가 아무 신호 없이 턴을 끝냈기 때문입니다. 고장난 것은 없었고, 하위 에이전트에게 시작할 이유가 없었을 뿐입니다.',
+        '둘 다 지능의 문제가 아니라 가시성의 문제입니다. 막힌 노드를 앰버색으로 칠하자 첫 번째 유형이 대부분 사라졌고, 해소되지 않은 엣지를 점선으로 그리자 두 번째가 대부분 사라졌습니다.',
+      ] },
+  ],
+};
+
+const DOCS = {
+  en: [
+    { g:'Getting started', id:'overview', title:'What Vibisual is', updated:'2026-08-18',
+      lead:'Vibisual reads Claude Code hook events and draws the running session as a live map. The same canvas is where you design the agent team, and where you open an editor when something needs a human hand.',
+      sections:[
+        { h:'How it works',
+          paras:['Claude Code emits a hook event at every meaningful point of a session: a prompt is submitted, a tool is about to run, a tool returned, a sub-agent was spawned, the session ended. On first launch Vibisual writes a managed hook block that forwards those events to the app over a local socket.',
+                 'Every event lands on the canvas as a node, an edge, or a state change on a bubble that is already there. Nothing is polled and nothing is scraped out of terminal output — the map is a direct rendering of the event stream.'],
+          code:['SessionStart        → node created','PreToolUse Task     → edge + child node','PreToolUse Edit     → file bubble lights up','PostToolUse Bash    → exit code lands on the node','Stop / SessionEnd   → node closed'] },
+        { h:'Three surfaces, one window',
+          paras:['Design: drop bubbles to define sub-agents and draw task edges for handoffs. Observe: watch the same graph fill in as the run proceeds. Edit: double-click a bubble to open a workspace over the canvas.'],
+          note:'Vibisual does not replace the CLI. Every session it shows is an ordinary Claude Code session, and it keeps running if you close the window.' },
+        { h:'Requirements',
+          rows:[['os','Windows 10 / 11 · macOS and Linux builds are untested'],['dependency','Claude CLI installed and on PATH'],['runtime','Node 20+ (source builds only)'],['config','~/.claude/settings.json must be writable']] },
+      ] },
+    { g:'Getting started', id:'install', title:'Install and first run', updated:'2026-08-04',
+      lead:'Install the Claude CLI first and confirm that claude resolves on your PATH. Vibisual launches every session through it.',
+      sections:[
+        { h:'Windows installer',
+          paras:['Download the installer from the releases page, run it, and launch Vibisual. The 0.1.x preview builds are unsigned, so SmartScreen asks for confirmation the first time.'],
+          code:['Vibisual-0.1.9-setup.exe'] },
+        { h:'From source',
+          paras:['Node 20 or newer, pnpm for the workspace.'],
+          code:['$ git clone https://github.com/Vibisual/vibisual.git','$ cd vibisual && pnpm install','$ node scripts/runapp.mjs','','# pnpm build:win → dist/Vibisual-0.1.9-setup.exe'] },
+        { h:'First run',
+          paras:['Vibisual writes a managed hook block into ~/.claude/settings.json and keeps a timestamped backup of the previous file beside it. Hooks outside the managed block are left untouched.'],
+          note:'Set VIBISUAL_SKIP_HOOK_INSTALL=1 to wire the hooks yourself. The app then only receives events from sessions you have configured.' },
+      ] },
+    { g:'Guides', id:'graph', title:'Designing an agent graph', updated:'2026-08-18',
+      lead:'A bubble is a sub-agent. An edge is a handoff. Vibisual reads the graph you draw and launches the matching Claude Code workflow.',
+      sections:[
+        { h:'Bubbles are sub-agents',
+          paras:['Double-click empty canvas to place a bubble, then fill in its panel. Every field maps to something the CLI already understands, so a graph is a visual spelling of a configuration you could have written by hand.'],
+          rows:[['model','opus / sonnet / haiku, per agent'],['permission mode','plan · default · acceptEdits'],['tools','allow-list, e.g. Read, Bash, Grep'],['isolation','shared worktree · own worktree · read-only paths'],['max turns','hard stop for runaway loops'],['rules','free text appended to that agent\u2019s prompt']] },
+        { h:'Task edges',
+          paras:['Draw an edge from A to B to say that B starts when A hands off. An agent with no inbound edge starts with the run; an agent with an unresolved inbound edge stays idle and is drawn with a dashed line.',
+                 'Edges are not documentation. Vibisual holds the downstream agent until the upstream one closes, which is what keeps a doc-writer from documenting a build that failed.'] },
+        { h:'Isolation',
+          paras:['Give each writing agent its own worktree when their file sets overlap. Read-only agents can share the main tree safely — a test-runner restricted to read-only src/** cannot undo the work it is checking.'],
+          note:'Isolation is enforced by the harness, not by the model. It holds even if an agent decides it would rather edit something else.' },
+      ] },
+    { g:'Guides', id:'workspace', title:'The in-map workspace', updated:'2026-07-21',
+      lead:'When a bubble needs a human you do not leave the map. The workspace opens in the same window, over the canvas.',
+      sections:[
+        { h:'Opening it',
+          paras:['Double-click a bubble, or press Enter with it selected. The canvas stays live behind the panel: other agents keep running and their bubbles keep updating.'] },
+        { h:'Panes',
+          rows:[['stream','the agent\u2019s hook events and output as they arrive'],['files','the tree it is allowed to touch, scoped by isolation'],['editor','syntax highlighting, unsaved-state marker'],['diff','staged against the agent\u2019s branch'],['terminal','the same shell the agent runs in']] },
+        { h:'Answering a prompt',
+          paras:['A permission prompt turns the bubble amber and puts the question at the top of the stream. Answer it in the workspace and the agent continues from where it stopped — no re-run, no lost context.'] },
+      ] },
+    { g:'Reference', id:'hooks', title:'Hook events', updated:'2026-08-04',
+      lead:'The events Vibisual consumes, and what each one draws on the canvas.',
+      sections:[
+        { h:'Events',
+          rows:[['SessionStart','creates a node; records model and permission mode'],['UserPromptSubmit','pins the prompt to the node'],['PreToolUse','child bubble — Task also spawns an edge and a new node'],['PostToolUse','result, exit code and diff size on the bubble'],['Notification','permission prompts; marks the node blocked'],['Stop','turn ended, node goes idle'],['SubagentStop','resolves the inbound edge of downstream agents'],['SessionEnd','closes the node']] },
+        { h:'Payload fields',
+          rows:[['session_id','groups events into one node'],['parent_session_id','draws the edge'],['tool_name / tool_input','labels the child bubble'],['cwd','maps the node to a worktree'],['transcript_path','used only to backfill after a restart']] },
+        { h:'Ordering',
+          paras:['Events render in arrival order, not timestamp order. On a busy run a PostToolUse can land before the PreToolUse of a faster sibling; the canvas reconciles by session id rather than waiting.'] },
+      ] },
+    { g:'Reference', id:'settings', title:'Settings and environment', updated:'2026-08-04',
+      lead:'Where Vibisual writes, what it reads, and how to override both.',
+      sections:[
+        { h:'Managed hook block',
+          paras:['The block is delimited by markers and rewritten on version upgrades. Anything outside the markers is preserved verbatim.'],
+          code:['~/.claude/settings.json','','// vibisual:begin  (managed — edits are overwritten)','"hooks": { "PreToolUse": [ … ] }','// vibisual:end'] },
+        { h:'Environment variables',
+          rows:[['VIBISUAL_SKIP_HOOK_INSTALL','1 = never touch settings.json'],['VIBISUAL_PORT','local socket port, default 47823'],['VIBISUAL_LOG','debug · info · silent'],['VIBISUAL_DATA_DIR','override the session store location']] },
+        { h:'Data location',
+          rows:[['sessions','%APPDATA%/Vibisual/sessions'],['graphs','saved agent graphs, one JSON per project'],['logs','%APPDATA%/Vibisual/logs, rotated at 20 MB']],
+          note:'Session records contain prompts, tool calls, file paths and shell commands. They stay on the machine — Vibisual has no server component — but treat the directory as sensitive.' },
+      ] },
+  ],
+  ko: [
+    { g:'시작하기', id:'overview', title:'Vibisual이란', updated:'2026-08-18',
+      lead:'Vibisual은 Claude Code 훅 이벤트를 읽어 실행 중인 세션을 라이브 맵으로 그립니다. 같은 캔버스에서 에이전트 팀을 설계하고, 사람 손이 필요할 때 그 자리에서 에디터를 엽니다.',
+      sections:[
+        { h:'동작 방식',
+          paras:['Claude Code는 세션의 주요 지점마다 훅 이벤트를 냅니다. 프롬프트 제출, 툴 실행 직전, 툴 반환, 서브에이전트 생성, 세션 종료. Vibisual은 첫 실행에서 관리형 훅 블록을 써서 그 이벤트를 로컬 소켓으로 앱에 전달합니다.',
+                 '모든 이벤트는 캔버스에서 노드, 엣지, 또는 이미 있는 버블의 상태 변화로 나타납니다. 폴링도 없고 터미널 출력을 파싱하지도 않습니다. 맵은 이벤트 스트림을 그대로 렌더링한 것입니다.'],
+          code:['SessionStart        → 노드 생성','PreToolUse Task     → 엣지 + 자식 노드','PreToolUse Edit     → 파일 버블 점등','PostToolUse Bash    → 노드에 종료 코드 표시','Stop / SessionEnd   → 노드 닫힘'] },
+        { h:'세 가지 화면, 하나의 창',
+          paras:['설계: 버블을 놓아 서브에이전트를 정의하고 태스크 엣지로 핸드오프를 연결합니다. 관찰: 실행이 진행되며 같은 그래프가 채워지는 것을 봅니다. 편집: 버블을 더블클릭하면 캔버스 위로 작업 공간이 열립니다.'],
+          note:'Vibisual은 CLI를 대체하지 않습니다. 여기 보이는 모든 세션은 평범한 Claude Code 세션이며, 창을 닫아도 계속 실행됩니다.' },
+        { h:'요구 사항',
+          rows:[['os','Windows 10 / 11 · macOS와 Linux 빌드는 검증되지 않음'],['의존성','Claude CLI 설치 및 PATH 등록'],['런타임','Node 20 이상 (소스 빌드 시)'],['설정','~/.claude/settings.json 쓰기 가능'] ] },
+      ] },
+    { g:'시작하기', id:'install', title:'설치와 첫 실행', updated:'2026-08-04',
+      lead:'먼저 Claude CLI를 설치하고 claude 명령이 PATH에서 해석되는지 확인하세요. Vibisual은 모든 세션을 CLI를 통해 실행합니다.',
+      sections:[
+        { h:'Windows 설치 파일',
+          paras:['릴리스 페이지에서 설치 파일을 받아 실행한 뒤 Vibisual을 띄웁니다. 0.1.x 프리뷰 빌드는 서명되지 않아 처음 한 번 SmartScreen 확인이 표시됩니다.'],
+          code:['Vibisual-0.1.9-setup.exe'] },
+        { h:'소스에서 빌드',
+          paras:['Node 20 이상, 워크스페이스는 pnpm.'],
+          code:['$ git clone https://github.com/Vibisual/vibisual.git','$ cd vibisual && pnpm install','$ node scripts/runapp.mjs','','# pnpm build:win → dist/Vibisual-0.1.9-setup.exe'] },
+        { h:'첫 실행',
+          paras:['Vibisual은 ~/.claude/settings.json에 관리형 훅 블록을 쓰고, 이전 파일의 타임스탬프 백업을 옆에 남깁니다. 관리 블록 밖의 훅은 그대로 둡니다.'],
+          note:'직접 훅을 구성하려면 VIBISUAL_SKIP_HOOK_INSTALL=1을 설정하세요. 그러면 앱은 사용자가 설정한 세션의 이벤트만 받습니다.' },
+      ] },
+    { g:'가이드', id:'graph', title:'에이전트 그래프 설계', updated:'2026-08-18',
+      lead:'버블은 서브에이전트, 엣지는 핸드오프입니다. Vibisual은 그린 그래프를 읽어 대응하는 Claude Code 워크플로를 실행합니다.',
+      sections:[
+        { h:'버블은 서브에이전트',
+          paras:['빈 캔버스를 더블클릭해 버블을 놓고 패널을 채웁니다. 모든 항목은 CLI가 이미 이해하는 값에 대응합니다. 그래프는 직접 손으로 쓸 수도 있었을 설정을 시각적으로 표기한 것입니다.'],
+          rows:[['모델','에이전트별 opus / sonnet / haiku'],['권한 모드','plan · default · acceptEdits'],['툴','허용 목록, 예: Read, Bash, Grep'],['격리','공유 워크트리 · 개별 워크트리 · 읽기 전용 경로'],['최대 턴','폭주하는 루프의 강제 정지선'],['규칙','해당 에이전트 프롬프트에 덧붙는 자유 텍스트']] },
+        { h:'태스크 엣지',
+          paras:['A에서 B로 엣지를 그리면 A가 넘길 때 B가 시작합니다. 들어오는 엣지가 없는 에이전트는 실행과 함께 시작하고, 해소되지 않은 엣지를 가진 에이전트는 대기 상태로 점선으로 그려집니다.',
+                 '엣지는 문서가 아닙니다. Vibisual은 상위 에이전트가 닫힐 때까지 하위 에이전트를 붙잡습니다. 그래서 doc-writer가 실패한 빌드를 문서화하지 않습니다.'] },
+        { h:'격리',
+          paras:['파일 범위가 겹치는 쓰기 에이전트에는 각자의 워크트리를 주세요. 읽기 전용 에이전트는 메인 트리를 안전하게 공유할 수 있습니다. src/** 읽기 전용으로 묶인 test-runner는 자신이 검사하는 작업을 되돌릴 수 없습니다.'],
+          note:'격리는 모델이 아니라 하네스가 강제합니다. 에이전트가 다른 것을 고치고 싶어져도 유지됩니다.' },
+      ] },
+    { g:'가이드', id:'workspace', title:'맵 안의 작업 공간', updated:'2026-07-21',
+      lead:'버블에 사람이 필요할 때 맵을 떠나지 않습니다. 작업 공간이 같은 창, 캔버스 위에서 열립니다.',
+      sections:[
+        { h:'여는 방법',
+          paras:['버블을 더블클릭하거나 선택 후 Enter를 누릅니다. 패널 뒤에서 캔버스는 계속 살아 있습니다. 다른 에이전트는 계속 실행되고 버블도 계속 갱신됩니다.'] },
+        { h:'패널 구성',
+          rows:[['스트림','에이전트의 훅 이벤트와 출력이 도착하는 대로'],['파일','격리 범위로 제한된, 손댈 수 있는 트리'],['에디터','문법 강조, 미저장 표시'],['diff','에이전트 브랜치 기준 스테이징'],['터미널','에이전트가 쓰는 것과 같은 셸']] },
+        { h:'프롬프트에 답하기',
+          paras:['권한 프롬프트가 뜨면 버블이 앰버색으로 바뀌고 질문이 스트림 맨 위에 올라옵니다. 작업 공간에서 답하면 에이전트는 멈춘 지점부터 이어갑니다. 재실행도, 컨텍스트 손실도 없습니다.'] },
+      ] },
+    { g:'레퍼런스', id:'hooks', title:'훅 이벤트', updated:'2026-08-04',
+      lead:'Vibisual이 소비하는 이벤트와, 각 이벤트가 캔버스에 그리는 것.',
+      sections:[
+        { h:'이벤트',
+          rows:[['SessionStart','노드 생성, 모델과 권한 모드 기록'],['UserPromptSubmit','프롬프트를 노드에 고정'],['PreToolUse','자식 버블 — Task는 엣지와 새 노드까지 생성'],['PostToolUse','결과, 종료 코드, diff 크기를 버블에 표시'],['Notification','권한 프롬프트, 노드를 막힘으로 표시'],['Stop','턴 종료, 노드 대기 상태'],['SubagentStop','하위 에이전트의 들어오는 엣지 해소'],['SessionEnd','노드 닫힘']] },
+        { h:'페이로드 필드',
+          rows:[['session_id','이벤트를 하나의 노드로 묶음'],['parent_session_id','엣지를 그림'],['tool_name / tool_input','자식 버블의 레이블'],['cwd','노드를 워크트리에 매핑'],['transcript_path','재시작 후 보충에만 사용']] },
+        { h:'순서',
+          paras:['이벤트는 타임스탬프 순이 아니라 도착 순으로 그려집니다. 바쁜 실행에서는 더 빠른 형제의 PreToolUse보다 PostToolUse가 먼저 도착할 수 있습니다. 캔버스는 기다리지 않고 session id로 맞춥니다.'] },
+      ] },
+    { g:'레퍼런스', id:'settings', title:'설정과 환경 변수', updated:'2026-08-04',
+      lead:'Vibisual이 무엇을 어디에 쓰고 읽는지, 그리고 그것을 어떻게 덮어쓸지.',
+      sections:[
+        { h:'관리형 훅 블록',
+          paras:['블록은 마커로 구분되며 버전 업그레이드 때 다시 작성됩니다. 마커 밖의 내용은 그대로 보존됩니다.'],
+          code:['~/.claude/settings.json','','// vibisual:begin  (관리 영역 — 수정은 덮어써집니다)','"hooks": { "PreToolUse": [ … ] }','// vibisual:end'] },
+        { h:'환경 변수',
+          rows:[['VIBISUAL_SKIP_HOOK_INSTALL','1 = settings.json을 건드리지 않음'],['VIBISUAL_PORT','로컬 소켓 포트, 기본 47823'],['VIBISUAL_LOG','debug · info · silent'],['VIBISUAL_DATA_DIR','세션 저장 위치 변경']] },
+        { h:'데이터 위치',
+          rows:[['세션','%APPDATA%/Vibisual/sessions'],['그래프','저장된 에이전트 그래프, 프로젝트당 JSON 하나'],['로그','%APPDATA%/Vibisual/logs, 20MB 단위 순환']],
+          note:'세션 기록에는 프롬프트, 툴 호출, 파일 경로, 셸 명령이 담깁니다. Vibisual에는 서버 구성 요소가 없어 모두 로컬에 남지만, 해당 디렉터리는 민감한 정보로 다루세요.' },
+      ] },
+  ],
+};
+
+const TAG_FG = { essay:'oklch(0.7 0.15 300)', release:'oklch(0.78 0.13 195)', guide:'oklch(0.78 0.15 165)', research:'oklch(0.76 0.16 65)',
+  '에세이':'oklch(0.7 0.15 300)', '릴리스':'oklch(0.78 0.13 195)', '가이드':'oklch(0.78 0.15 165)', '리서치':'oklch(0.76 0.16 65)' };
+
+const STATUS = {
+  working: { color: 'oklch(0.78 0.15 165)', label: 'working' },
+  blocked: { color: 'oklch(0.76 0.16 65)', label: 'blocked · needs you' },
+  done: { color: 'oklch(0.7 0.1 195)', label: 'done' },
+  idle: { color: 'oklch(0.5 0.01 250)', label: 'idle' },
+};
+
+const AGENTS = [
+  { id: 'orchestrator', name: 'orchestrator', status: 'working', glyph: '◉', x: 18, y: 50, size: 78,
+    model: 'claude-opus-4.6', mode: 'plan → acceptEdits', tools: 'Read, Write, Bash, Task', isolation: 'shared worktree', turns: '12 / 40',
+    note: 'Owns the plan for the checkout refactor. Spawns the other four and waits on their task edges.',
+    stream: [['02:14:02','UserPromptSubmit "split the checkout refactor"','oklch(0.9 0.008 250)'],['02:14:04','PreToolUse Task → schema-migrator','oklch(0.74 0.01 250)'],['02:14:04','PreToolUse Task → api-builder','oklch(0.74 0.01 250)'],['02:14:09','PostToolUse Read src/routes/checkout.ts','oklch(0.74 0.01 250)'],['02:16:31','edge resolved · schema-migrator done','oklch(0.78 0.14 165)'],['02:19:50','PreToolUse Task → doc-writer (queued)','oklch(0.74 0.01 250)'],['02:21:12','waiting on test-runner','oklch(0.76 0.16 65)']] },
+  { id: 'schema', name: 'schema-migrator', status: 'done', glyph: '✓', x: 48, y: 20, size: 58,
+    model: 'claude-sonnet-4.6', mode: 'acceptEdits', tools: 'Read, Write, Bash', isolation: 'own worktree', turns: '7 / 20',
+    note: 'Wrote and applied the orders table migration, then handed the new column names to api-builder.',
+    stream: [['02:14:06','SessionStart · own worktree','oklch(0.74 0.01 250)'],['02:14:22','PreToolUse Write migrations/0042_tax.sql','oklch(0.74 0.01 250)'],['02:15:10','PostToolUse Bash pnpm db:migrate','oklch(0.74 0.01 250)'],['02:15:44','applied 1 migration · 0 warnings','oklch(0.78 0.14 165)'],['02:16:28','handoff → api-builder','oklch(0.7 0.1 195)'],['02:16:31','node closed · done','oklch(0.7 0.1 195)']] },
+  { id: 'api', name: 'api-builder', status: 'working', glyph: '●', x: 52, y: 56, size: 68,
+    model: 'claude-opus-4.6', mode: 'acceptEdits', tools: 'Read, Write, Edit, Bash', isolation: 'own worktree', turns: '18 / 40',
+    note: 'Rewriting the checkout route against the new schema. Two files open, third edit in flight.',
+    stream: [['02:16:33','received handoff from schema-migrator','oklch(0.74 0.01 250)'],['02:17:01','PreToolUse Edit routes/checkout.ts','oklch(0.74 0.01 250)'],['02:18:12','PostToolUse Edit +41 −18','oklch(0.78 0.14 165)'],['02:19:03','PreToolUse Edit lib/price.ts','oklch(0.74 0.01 250)'],['02:20:20','PreToolUse Task → test-runner','oklch(0.74 0.01 250)'],['02:21:40','PostToolUse Bash tsc --noEmit clean','oklch(0.78 0.14 165)'],['02:22:05','thinking · 8s','oklch(0.6 0.01 250)']] },
+  { id: 'tests', name: 'test-runner', status: 'blocked', glyph: '!', x: 82, y: 40, size: 62,
+    model: 'claude-sonnet-4.6', mode: 'default', tools: 'Bash, Read, Grep', isolation: 'read-only src/**', turns: '9 / 20',
+    note: 'Stopped on a permission prompt. The map marks it blocked so you do not go pane by pane looking for it.',
+    stream: [['02:20:22','SessionStart · read-only src/**','oklch(0.74 0.01 250)'],['02:20:48','PostToolUse Bash vitest run · 41 passed','oklch(0.78 0.14 165)'],['02:21:05','PostToolUse Bash vitest run · 2 failed','oklch(0.76 0.16 25)'],['02:21:30','PreToolUse Bash wrangler deploy staging','oklch(0.74 0.01 250)'],['02:21:31','permission prompt · awaiting answer','oklch(0.76 0.16 65)'],['02:21:31','› 1. Yes   2. No, tell it otherwise','oklch(0.9 0.008 250)'],['02:26:14','blocked for 4m 43s','oklch(0.76 0.16 65)']] },
+  { id: 'docs', name: 'doc-writer', status: 'idle', glyph: '○', x: 80, y: 78, size: 52,
+    model: 'claude-haiku-4.6', mode: 'plan', tools: 'Read, Write', isolation: 'docs/** only', turns: '0 / 10',
+    note: 'Queued behind the test edge. Starts only when the suite goes green, so it never documents a rollback.',
+    stream: [['02:19:50','node placed on canvas','oklch(0.74 0.01 250)'],['02:19:50','in-edge: test-runner → doc-writer','oklch(0.74 0.01 250)'],['—','idle · waiting for upstream','oklch(0.5 0.01 250)'],['—','no hook events yet','oklch(0.5 0.01 250)']] },
+];
+
+const EDGES = [['orchestrator','schema'],['orchestrator','api'],['schema','api'],['api','tests'],['tests','docs']];
+
+class Component extends DCLogic {
+  state = { selected: 'orchestrator', tick: 5, lang: 'en', langOpen: false, progress: 0,
+    view: 'home', post: null, docPage: 'overview', docQ: '' };
+
+  setView(v) {
+    this.setState({ view: v, post: null, langOpen: false });
+    window.scrollTo({ top: 0 });
+  }
+  openPost(id) {
+    this.setState({ view: 'blog', post: id, langOpen: false });
+    window.scrollTo({ top: 0 });
+  }
+  setDoc(id) {
+    this.setState({ docPage: id });
+    window.scrollTo({ top: 0 });
+  }
+
+  applyFont() {
+    const P = {
+      'Geist': ["'Geist', 'IBM Plex Sans KR', Helvetica, sans-serif", "'Geist Mono', ui-monospace, monospace"],
+      'Instrument Sans + IBM Plex Mono': ["'Instrument Sans', 'IBM Plex Sans KR', Helvetica, sans-serif", "'IBM Plex Mono', ui-monospace, monospace"],
+      'Inter Tight + JetBrains Mono': ["'Inter Tight', 'IBM Plex Sans KR', Helvetica, sans-serif", "'JetBrains Mono', ui-monospace, monospace"],
+      'Sora + Geist Mono': ["'Sora', 'IBM Plex Sans KR', Helvetica, sans-serif", "'Geist Mono', ui-monospace, monospace"],
+    };
+    const p = P[this.props.fontPair] || P['Geist'];
+    document.documentElement.style.setProperty('--sans', p[0]);
+    document.documentElement.style.setProperty('--mono', p[1]);
+  }
+  componentDidUpdate() { this.applyFont(); this.applyBg(); }
+
+  applyBg() {
+    const k = Math.max(0, (this.props.bgLight ?? 55) / 55);
+    const mode = this.props.backdrop || 'Deep space';
+    this.bgK = k;
+    this.bgDense = mode === 'Sparse';
+    const cv = document.getElementById('vbBgCanvas');
+    if (cv) cv.style.opacity = String(mode === 'Flat' ? 0 : Math.min(1, 0.95 * k));
+    const veil = document.getElementById('vbVeil');
+    if (veil) {
+      const hex = /^#[0-9a-f]{6}$/i.test((this.props.veilColor || '').trim()) ? this.props.veilColor.trim() : '#090b0e';
+      const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+      const a = (Math.max(0, Math.min(100, this.props.columnVeil ?? 90)) / 100).toFixed(2);
+      veil.style.background = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+    }
+    const fl = document.getElementById('vbBgFloor');
+    if (fl) fl.style.opacity = String(mode === 'Flat' ? 0 : Math.min(1, 0.8 * k));
+  }
+
+  initBgField() {
+    let cv = null, ctx = null, W = 0, H = 0, dpr = 1;
+    const fit = () => {
+      const el = document.getElementById('vbBgCanvas');
+      if (!el || !el.getContext) return false;
+      if (el !== cv) { cv = el; ctx = cv.getContext('2d'); }
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      W = window.innerWidth; H = window.innerHeight;
+      const cw = Math.round(W * dpr), ch = Math.round(H * dpr);
+      if (cv.width !== cw || cv.height !== ch) { cv.width = cw; cv.height = ch; }
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return true;
+    };
+    fit();
+
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    // the galactic band runs corner to corner; stars cluster along it
+    const BAND = { a: -0.42, b: 0.62 };
+    const bandY = x => BAND.a * x + BAND.b;
+    let stars = [], nebulae = [], streak = null, nextStreak = 4000;
+    const seed = () => {
+      const count = this.bgDense ? 320 : 680;
+      stars = [];
+      for (let i = 0; i < count; i++) {
+        const inBand = Math.random() < 0.55;
+        const x = Math.random();
+        let y = inBand ? bandY(x) + (Math.random() - 0.5) * 0.3 * (0.5 + Math.random()) : Math.random();
+        y = (y + 1.5) % 1;
+        const z = Math.pow(Math.random(), 2.1);
+        stars.push({ x: x, y: y, z: z,
+          r: 0.35 + z * 1.5, a: 0.1 + z * 0.62,
+          tw: rnd(0.0003, 0.0016), ph: rnd(0, 6.28) });
+      }
+      nebulae = [];
+      for (let i = 0; i < 5; i++) {
+        const x = rnd(0.05, 0.95);
+        nebulae.push({ x: x, y: bandY(x) + rnd(-0.12, 0.12), r: rnd(220, 520), sx: rnd(1.4, 2.6),
+          rot: rnd(-0.5, 0.5), a: rnd(0.012, 0.026), ph: rnd(0, 6.28), sp: rnd(0.3, 0.8) });
+      }
+    };
+    seed();
+
+    const P = { x: -9999, y: -9999, ex: 0, ey: 0, has: false, str: 0 };
+    this.onBgMove = e => {
+      P.x = e.clientX; P.y = e.clientY;
+      if (!P.has) { P.has = true; P.ex = P.x; P.ey = P.y; }
+    };
+    this.onBgLeave = () => { P.has = false; };
+    this.onBgResize = () => { fit(); };
+    window.addEventListener('mousemove', this.onBgMove, { passive: true });
+    window.addEventListener('mouseout', this.onBgLeave);
+    window.addEventListener('resize', this.onBgResize);
+
+    const t0 = performance.now();
+    let last = t0, lastCount = -1;
+    const frame = now => {
+      this.bgRaf = requestAnimationFrame(frame);
+      if (document.hidden) return;
+      if (!cv || !cv.isConnected || cv.width !== Math.round(W * dpr)) { if (!fit()) return; }
+      const T = now - t0, dt = Math.min(48, now - last); last = now;
+      const want = this.bgDense ? 320 : 680;
+      if (want !== lastCount) { if (lastCount !== -1) seed(); lastCount = want; }
+      P.ex += (P.x - P.ex) * 0.07; P.ey += (P.y - P.ey) * 0.07;
+      P.str += ((P.has ? 1 : 0) - P.str) * 0.05;
+      const drift = T * 0.0000075;
+
+      ctx.clearRect(0, 0, W, H);
+      const wash = ctx.createRadialGradient(W * 0.24, H * 0.1, 0, W * 0.24, H * 0.1, Math.max(W, H) * 0.85);
+      wash.addColorStop(0, 'rgba(255,255,255,0.035)');
+      wash.addColorStop(0.5, 'rgba(255,255,255,0.012)');
+      wash.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = wash;
+      ctx.fillRect(0, 0, W, H);
+
+      for (let i = 0; i < nebulae.length; i++) {
+        const n = nebulae[i];
+        const cx = (((n.x + drift * 0.35) % 1.3) - 0.15) * W, cy = (((n.y + drift * 0.2) % 1.3) - 0.15) * H;
+        const puls = 0.8 + 0.2 * Math.sin(T * 0.00009 * n.sp + n.ph);
+        const g = ctx.createRadialGradient(0, 0, 0, 0, 0, n.r);
+        g.addColorStop(0, 'rgba(255,255,255,' + (n.a * puls).toFixed(4) + ')');
+        g.addColorStop(0.5, 'rgba(255,255,255,' + (n.a * puls * 0.42).toFixed(4) + ')');
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.save();
+        ctx.translate(cx, cy); ctx.rotate(n.rot); ctx.scale(n.sx, 1);
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(0, 0, n.r, 0, 6.2832); ctx.fill();
+        ctx.restore();
+      }
+
+      const RAD = 210, RAD2 = RAD * RAD;
+      for (let i = 0; i < stars.length; i++) {
+        const s = stars[i];
+        const sp = 0.45 + s.z * 0.95;
+        const x = (((s.x + drift * sp) % 1.04) + 1.04) % 1.04 * W - 0.02 * W;
+        const y = (((s.y + drift * sp * 0.58) % 1.04) + 1.04) % 1.04 * H - 0.02 * H;
+        const dx = x - P.ex, dy = y - P.ey, d2 = dx * dx + dy * dy;
+        const near = (P.str > 0.01 && d2 < RAD2) ? (1 - Math.sqrt(d2) / RAD) * P.str : 0;
+        const rate = s.tw * (1 + near * 2.2);
+        const tw = 0.72 + (0.28 + near * 0.55) * Math.sin(T * rate + s.ph);
+        const a = Math.min(0.95, s.a * tw + near * 0.4);
+        const r = s.r * (1 + near * 0.6);
+        ctx.fillStyle = 'rgba(255,255,255,' + a.toFixed(3) + ')';
+        ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832); ctx.fill();
+        if (s.z > 0.86) {
+          ctx.fillStyle = 'rgba(255,255,255,' + (a * 0.1).toFixed(3) + ')';
+          ctx.beginPath(); ctx.arc(x, y, r * 3.4, 0, 6.2832); ctx.fill();
+        }
+      }
+
+      nextStreak -= dt;
+      if (!streak && nextStreak <= 0) {
+        const sx = rnd(0.05, 0.8), sy = rnd(0.05, 0.5);
+        streak = { x: sx * W, y: sy * H, vx: rnd(0.5, 1) * W * 0.0004, vy: rnd(0.15, 0.5) * H * 0.0004, life: 0, span: rnd(900, 1500) };
+        nextStreak = rnd(9000, 20000);
+      }
+      if (streak) {
+        streak.life += dt;
+        const p = streak.life / streak.span;
+        if (p >= 1) streak = null;
+        else {
+          const hx = streak.x + streak.vx * streak.life, hy = streak.y + streak.vy * streak.life;
+          const tailLen = 130;
+          const tx = hx - streak.vx * tailLen / 0.4 * 0.4, ty = hy - streak.vy * tailLen / 0.4 * 0.4;
+          const fade = Math.sin(p * Math.PI) * 0.5;
+          const g = ctx.createLinearGradient(tx, ty, hx, hy);
+          g.addColorStop(0, 'rgba(255,255,255,0)');
+          g.addColorStop(1, 'rgba(255,255,255,' + fade.toFixed(3) + ')');
+          ctx.strokeStyle = g; ctx.lineWidth = 1.1;
+          ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(hx, hy); ctx.stroke();
+        }
+      }
+    };
+    this.bgRaf = requestAnimationFrame(frame);
+  }
+
+  componentDidMount() {
+    this.applyFont();
+    this.applyBg();
+    this.initBgField();
+    this.timer = setInterval(() => this.setState(s => ({ tick: s.tick + 1 })), 1600);
+    this.onScroll = () => {
+      if (this.raf) return;
+      this.raf = requestAnimationFrame(() => {
+        this.raf = null;
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        this.setState({ progress: h > 0 ? Math.min(1, window.scrollY / h) : 0 });
+      });
+    };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    this.onDocClick = e => { if (this.state.langOpen && !e.target.closest('button')) this.setState({ langOpen: false }); };
+    document.addEventListener('click', this.onDocClick);
+    const saved = localStorage.getItem('vibisual-lang');
+    if (saved && T[saved]) this.setState({ lang: saved });
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    cancelAnimationFrame(this.bgRaf);
+    window.removeEventListener('mousemove', this.onBgMove);
+    window.removeEventListener('mouseout', this.onBgLeave);
+    window.removeEventListener('resize', this.onBgResize);
+    window.removeEventListener('scroll', this.onScroll);
+    document.removeEventListener('click', this.onDocClick);
+  }
+
+  pickLang(code) {
+    localStorage.setItem('vibisual-lang', code);
+    this.setState({ lang: code, langOpen: false });
+  }
+
+  renderVals() {
+    const sel = this.state.selected;
+    const agents = AGENTS.map(a => {
+      const st = STATUS[a.status];
+      const active = a.id === sel;
+      return { ...a, color: st.color, statusLine: st.label,
+        left: a.x + '%', top: a.y + '%', size: a.size + 'px',
+        opacity: active ? '1' : '0.82',
+        bubbleBg: active ? 'oklch(0.28 0.04 210)' : 'oklch(0.22 0.01 260)',
+        ring: active ? '0 0 0 5px ' + st.color.replace(')', ' / 0.18)') + ', 0 12px 30px -12px rgba(0,0,0,0.9)' : '0 8px 24px -14px rgba(0,0,0,0.8)',
+        rowBg: active ? 'oklch(0.29 0.03 210)' : 'transparent',
+        select: () => this.setState({ selected: a.id, tick: 5 }) };
+    });
+    const pos = {};
+    agents.forEach(a => { pos[a.id] = a; });
+    const edges = EDGES.map(([from, to]) => ({
+      x1: pos[from].x, y1: pos[from].y, x2: pos[to].x, y2: pos[to].y,
+      stroke: from === sel || to === sel ? 'oklch(0.68 0.12 195)' : 'oklch(0.36 0.012 250)',
+      dash: pos[to].status === 'idle' ? '2 2' : 'none',
+    }));
+    const current = AGENTS.find(a => a.id === sel);
+    const n = Math.min(current.stream.length, 4 + (this.state.tick % (current.stream.length - 3 || 1)));
+    const lang = this.state.lang;
+    const cjk = ['ko','ja','zh','hi'].indexOf(lang) >= 0;
+
+    const view = this.state.view;
+    const ui = { ...UI.en, ...(UI[lang] || {}) };
+    const allPosts = BLOG[lang] || BLOG.en;
+    const dress = p => ({ ...p, tagFg: TAG_FG[p.tag] || 'oklch(0.72 0.01 250)', open: () => this.openPost(p.id) });
+    const art = allPosts.find(p => p.id === this.state.post) || null;
+
+    const docList = DOCS[lang] || DOCS.en;
+    const q = this.state.docQ.trim().toLowerCase();
+    const shown = q ? docList.filter(d => (d.title + ' ' + d.lead + ' ' + d.g).toLowerCase().indexOf(q) >= 0) : docList;
+    const docGroups = [];
+    shown.forEach(d => {
+      let grp = docGroups.find(x => x.name === d.g);
+      if (!grp) { grp = { name: d.g, items: [] }; docGroups.push(grp); }
+      const on = d.id === this.state.docPage;
+      grp.items.push({ id: d.id, title: d.title,
+        fg: on ? 'oklch(0.93 0.05 200)' : 'oklch(0.86 0.008 250 / 0.76)',
+        bg: on ? 'oklch(0.26 0.028 210)' : 'transparent',
+        bar: on ? 'oklch(0.78 0.13 195)' : 'transparent',
+        pick: () => this.setDoc(d.id) });
+    });
+    const doc = docList.find(d => d.id === this.state.docPage) || docList[0];
+    const di = docList.indexOf(doc);
+    const docNav = [];
+    if (di > 0) docNav.push({ dir: ui.prev, title: docList[di - 1].title, col: '1', align: 'flex-start', ta: 'left', pick: () => this.setDoc(docList[di - 1].id) });
+    if (di < docList.length - 1) docNav.push({ dir: ui.next, title: docList[di + 1].title, col: '2', align: 'flex-end', ta: 'right', pick: () => this.setDoc(docList[di + 1].id) });
+    const docSections = doc.sections.map((s, i) => ({
+      id: 'doc-s' + i, h: s.h,
+      paras: (s.paras || []).map(v => ({ v })),
+      code: (s.code || []).map(v => ({ v })),
+      rows: (s.rows || []).map(r => ({ k: r[0], v: r[1] })),
+      note: s.note || '',
+      hasCode: !!(s.code && s.code.length),
+      hasRows: !!(s.rows && s.rows.length),
+      hasNote: !!s.note,
+    }));
+    return {
+      agents, edges,
+      lines: current.stream.slice(0, n).map(([time, text, color]) => ({ time, text, color })),
+      sel: { ...current, color: STATUS[current.status].color },
+      t: T[lang] || T.en,
+      eyeSpacing: cjk ? '0.01em' : '0.09em',
+      eyeCase: cjk ? 'none' : 'uppercase',
+      langs: LANGS.map(([code, label]) => ({
+        code, label,
+        fg: code === lang ? 'oklch(0.88 0.11 195)' : 'oklch(0.9 0.008 250)',
+        bg: code === lang ? 'oklch(0.27 0.03 210)' : 'transparent',
+        dot: code === lang ? 'oklch(0.78 0.13 195)' : 'transparent',
+        pick: () => this.pickLang(code),
+      })),
+      langLabel: (LANGS.find(l => l[0] === lang) || LANGS[0])[1],
+      langPanelH: this.state.langOpen ? '520px' : '0px',
+      langPanelO: this.state.langOpen ? '1' : '0',
+      toggleLang: () => this.setState(s => ({ langOpen: !s.langOpen })),
+      progress: Math.round(this.state.progress * 1000) / 10 + '%',
+      ui, view,
+      isHome: view === 'home', notHome: view !== 'home',
+      isBlog: view === 'blog', isDocs: view === 'docs',
+      noPost: view === 'blog' && !art, hasPost: !!art,
+      goHome: () => this.setView('home'),
+      goBlog: () => this.setView('blog'),
+      goDocs: () => this.setView('docs'),
+      homeFg: view === 'home' ? 'oklch(0.9 0.1 195)' : 'oklch(0.78 0.01 250)',
+      homeUl: view === 'home' ? 'oklch(0.78 0.13 195)' : 'transparent',
+      blogFg: view === 'blog' ? 'oklch(0.9 0.1 195)' : 'oklch(0.78 0.01 250)',
+      blogUl: view === 'blog' ? 'oklch(0.78 0.13 195)' : 'transparent',
+      docsFg: view === 'docs' ? 'oklch(0.9 0.1 195)' : 'oklch(0.78 0.01 250)',
+      docsUl: view === 'docs' ? 'oklch(0.78 0.13 195)' : 'transparent',
+      feat: dress(allPosts[0]),
+      posts: allPosts.slice(1).map(dress),
+      art: art ? { ...art, tagFg: TAG_FG[art.tag] || 'oklch(0.72 0.01 250)' } : {},
+      artBody: art ? art.body.map(v => ({ v })) : [],
+      backToList: () => { this.setState({ post: null }); window.scrollTo({ top: 0 }); },
+      doc, docGroups, docSections, docNav,
+      docToc: doc.sections.map((s, i) => ({ href: '#doc-s' + i, h: s.h })),
+      docQ: this.state.docQ,
+      setDocQ: e => this.setState({ docQ: e.target.value }),
+    };
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+# 편집 도구가 붙여넣기마다 쌓는 이미지 캐시. 페이지에서 참조되지 않는다.
+# git 히스토리는 나중에 지워도 되돌릴 수 없으므로 애초에 추적하지 않는다
+# (로컬 파일은 그대로 남아 편집 도구가 계속 쓸 수 있다).
+uploads/
+.thumbnail
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# 공개 전 정리용 로컬 메모(히스토리에 남기지 않는다)
+*.local.md
