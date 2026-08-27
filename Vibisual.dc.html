@@ -49,7 +49,7 @@
       <div style="display:flex; align-items:center; gap:12px">
         <div style="width:20px; height:20px; border-radius:50%; background:oklch(0.72 0.14 195); box-shadow:0 0 0 4px oklch(0.72 0.14 195 / 0.16), 11px 7px 0 -3px oklch(0.66 0.15 300)"></div>
         <span style="font-size:17px; font-weight:700; letter-spacing:-0.02em">vibisual</span>
-        <span style="font-family:var(--mono); font-size:11px; color:oklch(0.62 0.01 250); border:1px solid oklch(0.3 0.012 250); border-radius:4px; padding:2px 6px">v0.1.9 preview</span>
+        <span style="font-family:var(--mono); font-size:11px; color:oklch(0.62 0.01 250); border:1px solid oklch(0.3 0.012 250); border-radius:4px; padding:2px 6px">{{ verBadge }}</span>
       </div>
       <nav style="display:flex; align-items:center; gap:18px; font-size:14px; color:oklch(0.78 0.01 250)">
         <button onClick="{{ goHome }}" style="font-family:inherit; font-size:14px; background:none; border:none; padding:3px 0; cursor:pointer; border-bottom:1.5px solid transparent; color:{{ homeFg }}; border-bottom-color:{{ homeUl }}" style-hover="color:oklch(0.96 0.008 250)">{{ ui.home }}</button>
@@ -95,21 +95,21 @@
     </div>
 
     <div style="display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:1px; margin:52px -32px 0; background:oklch(0.26 0.012 250); border-top:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250)">
-      <a href="https://github.com/Vibisual/vibisual/stargazers" style="display:flex; flex-direction:column; gap:12px; padding:26px 32px 24px; background:#0f1013; color:inherit" style-hover="background:#131419">
-        <span style="font-size:34px; font-weight:700; letter-spacing:-0.03em; line-height:1; color:oklch(0.99 0.004 250)">1,284</span>
-        <span style="display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.52)"><span style="color:oklch(0.7 0.15 300)">★</span>{{ t.st1 }}</span>
+      <a href="https://github.com/Vibisual/vibisual/releases/latest" style="display:flex; flex-direction:column; gap:12px; padding:26px 32px 24px; background:#0f1013; color:inherit" style-hover="background:#131419">
+        <span style="font-size:34px; font-weight:700; letter-spacing:-0.03em; line-height:1; color:oklch(0.99 0.004 250)">{{ stat1 }}</span>
+        <span style="display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.52)"><span style="color:oklch(0.7 0.15 300)">⤓</span>{{ t.st1 }}</span>
       </a>
-      <a href="https://github.com/Vibisual/vibisual/releases" style="display:flex; flex-direction:column; gap:12px; padding:26px 32px 24px; background:#0f1013; color:inherit" style-hover="background:#131419">
-        <span style="font-size:34px; font-weight:700; letter-spacing:-0.03em; line-height:1; color:oklch(0.99 0.004 250)">9,730</span>
-        <span style="display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.52)"><span style="color:oklch(0.78 0.13 195)">⤓</span>{{ t.st2 }}</span>
+      <a href="https://github.com/Vibisual/vibisual/blob/main/LICENSE" style="display:flex; flex-direction:column; gap:12px; padding:26px 32px 24px; background:#0f1013; color:inherit" style-hover="background:#131419">
+        <span style="font-size:34px; font-weight:700; letter-spacing:-0.03em; line-height:1; color:oklch(0.99 0.004 250)">{{ stat2 }}</span>
+        <span style="display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.52)"><span style="color:oklch(0.78 0.13 195)">◇</span>{{ t.st2 }}</span>
       </a>
       <div style="display:flex; flex-direction:column; gap:12px; padding:26px 32px 24px; background:#0f1013">
-        <span style="font-size:34px; font-weight:700; letter-spacing:-0.03em; line-height:1; color:oklch(0.99 0.004 250)">2,140</span>
-        <span style="display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.52)"><span style="color:oklch(0.78 0.15 165)">◉</span>{{ t.st3 }}</span>
+        <span style="font-size:34px; font-weight:700; letter-spacing:-0.03em; line-height:1; color:oklch(0.99 0.004 250)">{{ stat3 }}</span>
+        <span style="display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.52)"><span style="color:oklch(0.78 0.15 165)">◧</span>{{ t.st3 }}</span>
       </div>
       <div style="display:flex; flex-direction:column; gap:12px; padding:26px 32px 24px; background:#0f1013">
-        <span style="font-size:34px; font-weight:700; letter-spacing:-0.03em; line-height:1; color:oklch(0.99 0.004 250)">46,800</span>
-        <span style="display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.52)"><span style="color:oklch(0.76 0.16 65)">◧</span>{{ t.st4 }}</span>
+        <span style="font-size:34px; font-weight:700; letter-spacing:-0.03em; line-height:1; color:oklch(0.99 0.004 250)">{{ stat4 }}</span>
+        <span style="display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.52)"><span style="color:oklch(0.76 0.16 65)">⊕</span>{{ t.st4 }}</span>
       </div>
     </div>
   </section>
@@ -291,7 +291,7 @@
     <div style="display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:1px; background:oklch(0.26 0.012 250); border:1px solid oklch(0.26 0.012 250)">
       <div style="display:flex; flex-direction:column; gap:16px; padding:32px; background:#101116">
         <span style="font-size:20px; font-weight:700">{{ t.instWin }}</span>
-        <div style="display:flex; align-items:center; gap:10px; padding:14px 16px; border-radius:8px; background:#0b0c0f; border:1px solid oklch(0.26 0.012 250); font-family:var(--mono); font-size:13px"><span style="color:oklch(0.6 0.1 195)">›</span> Vibisual-0.1.9-setup.exe</div>
+        <div style="display:flex; align-items:center; gap:10px; padding:14px 16px; border-radius:8px; background:#0b0c0f; border:1px solid oklch(0.26 0.012 250); font-family:var(--mono); font-size:13px"><span style="color:oklch(0.6 0.1 195)">›</span> {{ dlName }}</div>
         <p style="margin:0; font-size:14px; line-height:1.6; color:oklch(0.97 0.008 250 / 0.6)">{{ t.instWinBody }}</p>
         <a href="https://github.com/Vibisual/vibisual/releases/latest" style="margin-top:auto; font-family:var(--mono); font-size:13px">Releases →</a>
       </div>
@@ -404,7 +404,7 @@
       <aside style="position:sticky; top:84px; display:flex; flex-direction:column; border-right:1px solid oklch(0.26 0.012 250); padding:26px 0 32px; max-height:calc(100vh - 84px); overflow:auto">
         <div style="display:flex; align-items:center; gap:9px; padding:0 20px 14px">
           <span style="font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.46)">{{ ui.docs }}</span>
-          <span style="font-family:var(--mono); font-size:10.5px; color:oklch(0.8 0.12 195); border:1px solid oklch(0.36 0.05 210); border-radius:4px; padding:1px 5px">v0.1.9</span>
+          <span style="font-family:var(--mono); font-size:10.5px; color:oklch(0.8 0.12 195); border:1px solid oklch(0.36 0.05 210); border-radius:4px; padding:1px 5px">{{ verNum }}</span>
         </div>
         <div style="padding:0 16px 18px">
           <input value="{{ docQ }}" onChange="{{ setDocQ }}" placeholder="{{ ui.filterPh }}" style="width:100%; font-family:var(--mono); font-size:12px; color:oklch(0.92 0.008 250); background:#0b0c0f; border:1px solid oklch(0.28 0.012 250); border-radius:6px; padding:9px 11px; outline:none" style-focus="border-color:oklch(0.5 0.08 195)" />
@@ -488,7 +488,7 @@
       <a href="https://youtu.be/asJ_Z-75uqc">walkthrough</a>
       <a href="https://github.com/Vibisual/vibisual/blob/main/CHANGELOG.md">changelog</a>
     </span>
-    <span style="max-width:660px; line-height:1.6">v0.1.9 · Apache 2.0 · {{ t.footNote }}</span>
+    <span style="max-width:660px; line-height:1.6">{{ verNum }} · Apache-2.0 · {{ t.footNote }}</span>
   </footer>
 </div>
 
@@ -506,10 +506,10 @@ const T = {
     eyebrow: 'the visual development environment',
     h1a: 'See your AI agents', h1em: 'think.',
     sub: "Coding agents don't type. They act — reading files, running commands, spawning other agents. Vibisual draws that run as a live bubble map, turns the same canvas into the design surface for your harness, and opens the editor in place when something needs a human hand.",
-    ctaDl: 'Download for Windows', ctaWatch: '2-minute walkthrough', ctaStar: 'Star on GitHub',
-    heroMeta: 'Vibisual-0.1.9-setup.exe · needs the Claude CLI on your PATH',
-    st1: 'stars on GitHub', st2: 'downloads to date',
-    st3: 'weekly active users', st4: 'monthly site visitors',
+    ctaDl: 'Download', ctaWatch: '2-minute walkthrough', ctaStar: 'Star on GitHub',
+    heroMeta: 'Windows · macOS · Linux — needs the Claude CLI on your PATH',
+    st1: 'latest release', st2: 'open source licence',
+    st3: 'operating systems', st4: 'interface languages',
     canvasHint: 'a live session, drawn as space — click an agent',
     canvasCaption: 'The whole harness in one window. Five agents, two mid-task, one waiting on an answer — and nobody is reading a terminal to find out which.',
     vdeLead: 'The tools we watch agents with are still text: a terminal, a chat log, a list of tasks. A Visual Development Environment draws agent work as space instead — and keeps design, execution, observation and editing on one surface.',
@@ -523,7 +523,7 @@ const T = {
     f3b: "Double-click a bubble and the workspace opens in place: the agent's live stream, a file tree, an editor with syntax highlighting, diffs and a terminal — in the same window as the canvas.",
     videoTitle: 'Hooks streaming into the bubble map, sub-agents configured visually', videoSub: 'Two minutes, one real session, no slides.',
     instTitle: 'Quick start', instLead: 'Vibisual runs on top of the Claude CLI, which must already be installed and on your PATH.',
-    instWin: 'Install on Windows', instWinBody: 'Download the installer from the releases page, run it, and launch Vibisual. macOS and Linux builds exist but are not extensively tested.',
+    instWin: 'Install', instWinBody: 'Every release ships a Windows installer, macOS builds for Apple Silicon and Intel, and a Linux AppImage. Download the one for your system and run it. The builds are not code-signed yet, so Windows SmartScreen and macOS Gatekeeper ask for confirmation the first time.',
     instSrc: 'Build from source', instSrcBody: 'Node 20+. On first launch Vibisual writes a managed hook block into ~/.claude/settings.json and keeps a timestamped backup. Set VIBISUAL_SKIP_HOOK_INSTALL=1 to wire hooks yourself.',
     statusLabel: 'status · early preview',
     statusBody: 'This 0.1.x preview is for experimentation, demos and feedback. Expect bugs, incomplete features and occasional breaking changes. Not recommended for critical production workflows or repositories with highly sensitive data.',
@@ -538,10 +538,10 @@ const T = {
     eyebrow: '비주얼 개발 환경',
     h1a: 'AI 에이전트의 생각을', h1em: '눈으로.',
     sub: '코딩 에이전트는 타이핑하지 않습니다. 파일을 읽고, 명령을 실행하고, 다른 에이전트를 띄우며 행동합니다. Vibisual은 그 실행을 라이브 버블 맵으로 그리고, 같은 캔버스를 하네스 설계 화면으로 쓰고, 사람 손이 필요한 순간 그 자리에서 에디터를 엽니다.',
-    ctaDl: 'Windows용 다운로드', ctaWatch: '2분 워크스루', ctaStar: 'GitHub에서 스타',
-    heroMeta: 'Vibisual-0.1.9-setup.exe · PATH에 Claude CLI가 필요합니다',
-    st1: 'GitHub 스타', st2: '누적 다운로드',
-    st3: '주간 활성 사용자', st4: '월간 사이트 방문자',
+    ctaDl: '다운로드', ctaWatch: '2분 워크스루', ctaStar: 'GitHub에서 스타',
+    heroMeta: 'Windows · macOS · Linux — PATH에 Claude CLI가 필요합니다',
+    st1: '최신 릴리스', st2: '오픈소스 라이선스',
+    st3: '지원 운영체제', st4: '인터페이스 언어',
     canvasHint: '실제 세션을 공간으로 — 에이전트를 클릭해 보세요',
     canvasCaption: '하네스 전체가 한 창에. 에이전트 다섯, 둘은 작업 중, 하나는 답을 기다립니다. 누가 멈췄는지 터미널을 뒤질 필요가 없습니다.',
     vdeLead: '에이전트를 관찰하는 도구는 아직 텍스트입니다. 터미널, 채팅 로그, 작업 목록. 비주얼 개발 환경은 에이전트의 작업을 공간으로 그리고, 설계·실행·관찰·편집을 하나의 화면에 둡니다.',
@@ -555,7 +555,7 @@ const T = {
     f3b: '버블을 더블클릭하면 작업 공간이 그 자리에서 열립니다. 에이전트의 라이브 스트림, 파일 트리, 문법 강조 에디터, diff, 터미널이 캔버스와 같은 창에 있습니다.',
     videoTitle: '훅이 버블 맵으로 흘러들고, 서브에이전트를 시각적으로 구성합니다', videoSub: '2분, 실제 세션 하나, 슬라이드 없음.',
     instTitle: '빠른 시작', instLead: 'Vibisual은 Claude CLI 위에서 동작합니다. CLI가 먼저 설치되어 PATH에 있어야 합니다.',
-    instWin: 'Windows 설치', instWinBody: '릴리스 페이지에서 설치 파일을 받아 실행한 뒤 Vibisual을 띄우면 됩니다. macOS와 Linux 빌드도 있지만 충분히 검증되지 않았습니다.',
+    instWin: '설치', instWinBody: '릴리스마다 Windows 설치 파일, macOS 빌드(애플 실리콘·인텔), Linux AppImage가 함께 올라갑니다. 쓰시는 운영체제의 것을 받아 실행하시면 됩니다. 아직 코드 서명이 없어 처음 실행할 때 Windows SmartScreen과 macOS Gatekeeper가 확인을 요구합니다.',
     instSrc: '소스에서 빌드', instSrcBody: 'Node 20 이상. 첫 실행 시 Vibisual이 ~/.claude/settings.json에 관리형 훅 블록을 쓰고 타임스탬프 백업을 남깁니다. 직접 훅을 구성하려면 VIBISUAL_SKIP_HOOK_INSTALL=1을 설정하세요.',
     statusLabel: '상태 · 얼리 프리뷰',
     statusBody: '0.1.x 프리뷰는 실험, 데모, 피드백을 위한 버전입니다. 버그와 미완성 기능, 간헐적인 호환성 변경이 있을 수 있습니다. 중요한 프로덕션 워크플로나 민감한 데이터가 있는 저장소에는 권장하지 않습니다.',
@@ -570,10 +570,10 @@ const T = {
     eyebrow: 'ビジュアル開発環境',
     h1a: 'AIエージェントの思考を', h1em: '見る。',
     sub: 'コーディングエージェントはタイプしません。ファイルを読み、コマンドを実行し、別のエージェントを起動して行動します。Vibisualはその実行をライブなバブルマップとして描き、同じキャンバスをハーネスの設計面にし、人の手が必要な瞬間にはその場でエディタを開きます。',
-    ctaDl: 'Windows版をダウンロード', ctaWatch: '2分のウォークスルー', ctaStar: 'GitHubでスター',
-    heroMeta: 'Vibisual-0.1.9-setup.exe · PATH に Claude CLI が必要です',
-    st1: 'GitHub スター', st2: '累計ダウンロード',
-    st3: '週間アクティブユーザー', st4: '月間サイト訪問者',
+    ctaDl: 'ダウンロード', ctaWatch: '2分のウォークスルー', ctaStar: 'GitHubでスター',
+    heroMeta: 'Windows · macOS · Linux — PATH に Claude CLI が必要です',
+    st1: '最新リリース', st2: 'オープンソースライセンス',
+    st3: '対応OS', st4: 'インターフェース言語',
     canvasHint: '実際のセッションを空間として — エージェントをクリック',
     canvasCaption: 'ハーネス全体が一つのウィンドウに。5体のうち2体が作業中、1体は返答待ち。誰が止まっているかをターミナルで探す必要はありません。',
     vdeLead: 'エージェントを観察する道具はいまだにテキストです。ターミナル、チャットログ、タスク一覧。ビジュアル開発環境はエージェントの仕事を空間として描き、設計・実行・観察・編集を一つの面にまとめます。',
@@ -587,7 +587,7 @@ const T = {
     f3b: 'バブルをダブルクリックすると作業領域がその場で開きます。ライブストリーム、ファイルツリー、シンタックスハイライト付きエディタ、diff、ターミナルがキャンバスと同じウィンドウにあります。',
     videoTitle: 'フックがバブルマップへ流れ込み、サブエージェントを視覚的に構成', videoSub: '2分、実際のセッション一つ、スライドなし。',
     instTitle: 'クイックスタート', instLead: 'Vibisual は Claude CLI の上で動作します。CLI が先にインストールされ、PATH にある必要があります。',
-    instWin: 'Windows にインストール', instWinBody: 'リリースページからインストーラを取得して実行し、Vibisual を起動します。macOS と Linux のビルドもありますが十分に検証されていません。',
+    instWin: 'インストール', instWinBody: 'リリースごとに Windows インストーラ、macOS ビルド（Apple Silicon・Intel）、Linux AppImage が公開されます。お使いの OS のものを取得して実行してください。まだコード署名がないため、初回起動時に Windows SmartScreen と macOS Gatekeeper が確認を求めます。',
     instSrc: 'ソースからビルド', instSrcBody: 'Node 20 以上。初回起動時に ~/.claude/settings.json へ管理対象のフックブロックを書き、タイムスタンプ付きバックアップを残します。自分でフックを設定する場合は VIBISUAL_SKIP_HOOK_INSTALL=1 を設定してください。',
     statusLabel: 'ステータス · アーリープレビュー',
     statusBody: 'この 0.1.x プレビューは実験・デモ・フィードバック向けです。バグ、未完成の機能、時折の破壊的変更を想定してください。重要な本番ワークフローや機密性の高いリポジトリには推奨しません。',
@@ -602,10 +602,10 @@ const T = {
     eyebrow: '可视化开发环境',
     h1a: '看见 AI 智能体的', h1em: '思考。',
     sub: '编码智能体不打字，它们在行动：读文件、跑命令、启动其他智能体。Vibisual 把这次运行画成实时气泡图，把同一块画布变成编排设计面，需要人接手时就地打开编辑器。',
-    ctaDl: '下载 Windows 版', ctaWatch: '2 分钟演示', ctaStar: '在 GitHub 加星',
-    heroMeta: 'Vibisual-0.1.9-setup.exe · 需要 PATH 中已有 Claude CLI',
-    st1: 'GitHub 星标', st2: '累计下载量',
-    st3: '周活跃用户', st4: '月度网站访客',
+    ctaDl: '下载', ctaWatch: '2 分钟演示', ctaStar: '在 GitHub 加星',
+    heroMeta: 'Windows · macOS · Linux — 需要 PATH 中已有 Claude CLI',
+    st1: '最新版本', st2: '开源许可',
+    st3: '支持的操作系统', st4: '界面语言',
     canvasHint: '把真实会话画成空间 — 点击一个智能体',
     canvasCaption: '整套编排在一个窗口里。五个智能体，两个在跑，一个在等你回答，不用翻终端去找是哪一个。',
     vdeLead: '我们观察智能体的工具仍然是文本：终端、聊天记录、任务列表。可视化开发环境把智能体的工作画成空间，并把设计、执行、观察和编辑放在同一个界面上。',
@@ -619,7 +619,7 @@ const T = {
     f3b: '双击气泡，工作区就地展开：实时输出流、文件树、带语法高亮的编辑器、diff 和终端，都在与画布相同的窗口里。',
     videoTitle: '钩子事件流入气泡图，子智能体可视化配置', videoSub: '两分钟，一次真实会话，没有幻灯片。',
     instTitle: '快速开始', instLead: 'Vibisual 运行在 Claude CLI 之上，需先安装 CLI 并加入 PATH。',
-    instWin: '在 Windows 安装', instWinBody: '从发布页下载安装程序，运行后启动 Vibisual。macOS 与 Linux 版本存在，但尚未充分测试。',
+    instWin: '安装', instWinBody: '每个版本都会发布 Windows 安装程序、macOS 构建（Apple Silicon 与 Intel）以及 Linux AppImage。下载适合你系统的版本并运行即可。目前尚未代码签名，因此首次运行时 Windows SmartScreen 和 macOS Gatekeeper 会要求确认。',
     instSrc: '从源码构建', instSrcBody: 'Node 20 以上。首次启动时 Vibisual 会向 ~/.claude/settings.json 写入受管钩子块，并保留带时间戳的备份。若想自行接线，请设置 VIBISUAL_SKIP_HOOK_INSTALL=1。',
     statusLabel: '状态 · 早期预览',
     statusBody: '0.1.x 预览版用于实验、演示与反馈。会有缺陷、未完成的功能与偶发的破坏性变更。不建议用于关键生产流程或含高敏感数据的仓库。',
@@ -634,10 +634,10 @@ const T = {
     eyebrow: "l'environnement de développement visuel",
     h1a: 'Voyez vos agents IA', h1em: 'penser.',
     sub: "Les agents de code ne tapent pas. Ils agissent — lire des fichiers, lancer des commandes, démarrer d'autres agents. Vibisual dessine cette exécution comme une carte de bulles vivante, fait de ce même canevas la surface de conception de votre harnais, et ouvre l'éditeur sur place quand une main humaine est nécessaire.",
-    ctaDl: 'Télécharger pour Windows', ctaWatch: 'Démo de 2 minutes', ctaStar: 'Star sur GitHub',
-    heroMeta: 'Vibisual-0.1.9-setup.exe · nécessite le CLI Claude dans votre PATH',
-    st1: 'étoiles sur GitHub', st2: 'téléchargements à ce jour',
-    st3: 'utilisateurs actifs par semaine', st4: 'visiteurs du site par mois',
+    ctaDl: 'Télécharger', ctaWatch: 'Démo de 2 minutes', ctaStar: 'Star sur GitHub',
+    heroMeta: 'Windows · macOS · Linux — nécessite le CLI Claude dans votre PATH',
+    st1: 'dernière version', st2: 'licence open source',
+    st3: "systèmes d'exploitation", st4: "langues d'interface",
     canvasHint: 'une session réelle, dessinée dans l\'espace — cliquez sur un agent',
     canvasCaption: "Tout le harnais dans une fenêtre. Cinq agents, deux en cours, un qui attend une réponse — sans fouiller un terminal pour savoir lequel.",
     vdeLead: "Les outils avec lesquels nous observons les agents sont encore du texte : un terminal, un journal de chat, une liste de tâches. Un environnement de développement visuel dessine leur travail comme un espace, et garde conception, exécution, observation et édition sur une seule surface.",
@@ -651,7 +651,7 @@ const T = {
     f3b: "Double-cliquez une bulle et l'espace de travail s'ouvre sur place : flux en direct, arborescence des fichiers, éditeur avec coloration syntaxique, diffs et terminal, dans la même fenêtre que le canevas.",
     videoTitle: 'Les hooks affluent dans la carte, les sous-agents configurés visuellement', videoSub: 'Deux minutes, une vraie session, aucune slide.',
     instTitle: 'Démarrage rapide', instLead: 'Vibisual fonctionne au-dessus du CLI Claude, qui doit déjà être installé et présent dans votre PATH.',
-    instWin: 'Installer sur Windows', instWinBody: "Téléchargez l'installeur depuis la page des releases, exécutez-le puis lancez Vibisual. Des builds macOS et Linux existent mais sont peu testés.",
+    instWin: 'Installer', instWinBody: "Chaque release publie un installeur Windows, des builds macOS (Apple Silicon et Intel) et un AppImage Linux. Téléchargez celui de votre système et exécutez-le. Les builds ne sont pas encore signées : SmartScreen sur Windows et Gatekeeper sur macOS demandent une confirmation au premier lancement.",
     instSrc: 'Construire depuis les sources', instSrcBody: "Node 20+. Au premier lancement, Vibisual écrit un bloc de hooks géré dans ~/.claude/settings.json et conserve une sauvegarde horodatée. Définissez VIBISUAL_SKIP_HOOK_INSTALL=1 pour câbler vous-même.",
     statusLabel: 'statut · aperçu précoce',
     statusBody: "Cet aperçu 0.1.x sert à l'expérimentation, aux démos et aux retours. Attendez-vous à des bugs, des fonctions incomplètes et des ruptures occasionnelles. Non recommandé pour des workflows de production critiques ou des dépôts très sensibles.",
@@ -666,10 +666,10 @@ const T = {
     eyebrow: 'die visuelle entwicklungsumgebung',
     h1a: 'Sieh deine KI-Agenten', h1em: 'denken.',
     sub: 'Coding-Agenten tippen nicht. Sie handeln — Dateien lesen, Befehle ausführen, andere Agenten starten. Vibisual zeichnet diesen Lauf als lebende Bubble-Map, macht dieselbe Fläche zur Entwurfsfläche für dein Harness und öffnet den Editor an Ort und Stelle, wenn eine menschliche Hand nötig ist.',
-    ctaDl: 'Für Windows herunterladen', ctaWatch: '2-Minuten-Walkthrough', ctaStar: 'Auf GitHub sternen',
-    heroMeta: 'Vibisual-0.1.9-setup.exe · Claude CLI muss im PATH liegen',
-    st1: 'Sterne auf GitHub', st2: 'Downloads bisher',
-    st3: 'wöchentlich aktive Nutzer', st4: 'Website-Besucher pro Monat',
+    ctaDl: 'Herunterladen', ctaWatch: '2-Minuten-Walkthrough', ctaStar: 'Auf GitHub sternen',
+    heroMeta: 'Windows · macOS · Linux — Claude CLI muss im PATH liegen',
+    st1: 'neueste Version', st2: 'Open-Source-Lizenz',
+    st3: 'Betriebssysteme', st4: 'Oberflächensprachen',
     canvasHint: 'eine echte Session, als Raum gezeichnet — klick einen Agenten',
     canvasCaption: 'Das ganze Harness in einem Fenster. Fünf Agenten, zwei mitten in der Arbeit, einer wartet auf eine Antwort — ohne dass jemand ein Terminal durchsucht.',
     vdeLead: 'Die Werkzeuge, mit denen wir Agenten beobachten, sind noch Text: ein Terminal, ein Chatlog, eine Aufgabenliste. Eine visuelle Entwicklungsumgebung zeichnet ihre Arbeit als Raum und hält Entwurf, Ausführung, Beobachtung und Bearbeitung auf einer Fläche.',
@@ -683,7 +683,7 @@ const T = {
     f3b: 'Doppelklick auf eine Bubble öffnet den Arbeitsbereich an Ort und Stelle: Live-Stream, Dateibaum, Editor mit Syntax-Highlighting, Diffs und Terminal — im selben Fenster wie die Fläche.',
     videoTitle: 'Hooks strömen in die Bubble-Map, Sub-Agenten visuell konfiguriert', videoSub: 'Zwei Minuten, eine echte Session, keine Folien.',
     instTitle: 'Schnellstart', instLead: 'Vibisual läuft auf dem Claude CLI, das bereits installiert und im PATH sein muss.',
-    instWin: 'Auf Windows installieren', instWinBody: 'Installer von der Releases-Seite laden, ausführen, Vibisual starten. macOS- und Linux-Builds existieren, sind aber kaum getestet.',
+    instWin: 'Installieren', instWinBody: 'Jedes Release enthält einen Windows-Installer, macOS-Builds für Apple Silicon und Intel sowie ein Linux-AppImage. Laden Sie den passenden herunter und führen Sie ihn aus. Die Builds sind noch nicht signiert, daher fragen Windows SmartScreen und macOS Gatekeeper beim ersten Start nach.',
     instSrc: 'Aus dem Quellcode bauen', instSrcBody: 'Node 20+. Beim ersten Start schreibt Vibisual einen verwalteten Hook-Block in ~/.claude/settings.json und legt ein Backup mit Zeitstempel daneben. Mit VIBISUAL_SKIP_HOOK_INSTALL=1 verdrahtest du selbst.',
     statusLabel: 'status · early preview',
     statusBody: 'Diese 0.1.x-Vorschau ist für Experimente, Demos und Feedback. Rechne mit Bugs, unfertigen Funktionen und gelegentlichen Breaking Changes. Nicht empfohlen für kritische Produktions-Workflows oder Repos mit hochsensiblen Daten.',
@@ -698,10 +698,10 @@ const T = {
     eyebrow: 'el entorno de desarrollo visual',
     h1a: 'Mira pensar a tus agentes', h1em: 'de IA.',
     sub: 'Los agentes de código no escriben: actúan — leen archivos, ejecutan comandos, lanzan otros agentes. Vibisual dibuja esa ejecución como un mapa de burbujas en vivo, convierte ese mismo lienzo en la superficie de diseño de tu arnés y abre el editor allí mismo cuando hace falta una mano humana.',
-    ctaDl: 'Descargar para Windows', ctaWatch: 'Recorrido de 2 minutos', ctaStar: 'Dar star en GitHub',
-    heroMeta: 'Vibisual-0.1.9-setup.exe · requiere el CLI de Claude en tu PATH',
-    st1: 'estrellas en GitHub', st2: 'descargas hasta hoy',
-    st3: 'usuarios activos semanales', st4: 'visitantes del sitio al mes',
+    ctaDl: 'Descargar', ctaWatch: 'Recorrido de 2 minutos', ctaStar: 'Dar star en GitHub',
+    heroMeta: 'Windows · macOS · Linux — requiere el CLI de Claude en tu PATH',
+    st1: 'última versión', st2: 'licencia de código abierto',
+    st3: 'sistemas operativos', st4: 'idiomas de la interfaz',
     canvasHint: 'una sesión real, dibujada como espacio — haz clic en un agente',
     canvasCaption: 'Todo el arnés en una ventana. Cinco agentes, dos trabajando, uno esperando una respuesta, y nadie rebuscando en un terminal para saber cuál.',
     vdeLead: 'Las herramientas con las que observamos a los agentes siguen siendo texto: un terminal, un registro de chat, una lista de tareas. Un entorno de desarrollo visual dibuja su trabajo como espacio y mantiene diseño, ejecución, observación y edición en una sola superficie.',
@@ -715,7 +715,7 @@ const T = {
     f3b: 'Haz doble clic en una burbuja y el espacio de trabajo se abre allí mismo: el flujo en vivo del agente, un árbol de archivos, un editor con resaltado, diffs y un terminal, en la misma ventana que el lienzo.',
     videoTitle: 'Hooks fluyendo al mapa de burbujas, subagentes configurados visualmente', videoSub: 'Dos minutos, una sesión real, sin diapositivas.',
     instTitle: 'Inicio rápido', instLead: 'Vibisual funciona sobre el CLI de Claude, que ya debe estar instalado y en tu PATH.',
-    instWin: 'Instalar en Windows', instWinBody: 'Descarga el instalador de la página de releases, ejecútalo y abre Vibisual. Hay builds de macOS y Linux, pero no están muy probadas.',
+    instWin: 'Instalar', instWinBody: 'Cada release publica un instalador de Windows, builds de macOS (Apple Silicon e Intel) y un AppImage de Linux. Descarga el de tu sistema y ejecútalo. Todavía no están firmadas, así que SmartScreen en Windows y Gatekeeper en macOS piden confirmación la primera vez.',
     instSrc: 'Compilar desde el código', instSrcBody: 'Node 20+. En el primer arranque Vibisual escribe un bloque de hooks gestionado en ~/.claude/settings.json y deja una copia con marca de tiempo. Usa VIBISUAL_SKIP_HOOK_INSTALL=1 para configurarlos tú.',
     statusLabel: 'estado · vista previa temprana',
     statusBody: 'Esta vista previa 0.1.x es para experimentar, demostrar y dar feedback. Habrá errores, funciones incompletas y cambios incompatibles ocasionales. No se recomienda para flujos críticos de producción ni repositorios con datos muy sensibles.',
@@ -730,10 +730,10 @@ const T = {
     eyebrow: "l'ambiente di sviluppo visuale",
     h1a: 'Guarda i tuoi agenti IA', h1em: 'pensare.',
     sub: 'Gli agenti di codice non digitano: agiscono — leggono file, eseguono comandi, avviano altri agenti. Vibisual disegna quell\'esecuzione come una mappa di bolle dal vivo, trasforma la stessa tela nella superficie di progetto del tuo harness e apre l\'editor sul posto quando serve una mano umana.',
-    ctaDl: 'Scarica per Windows', ctaWatch: 'Panoramica di 2 minuti', ctaStar: 'Star su GitHub',
-    heroMeta: 'Vibisual-0.1.9-setup.exe · richiede il CLI Claude nel PATH',
-    st1: 'stelle su GitHub', st2: 'download finora',
-    st3: 'utenti attivi settimanali', st4: 'visitatori del sito al mese',
+    ctaDl: 'Scarica', ctaWatch: 'Panoramica di 2 minuti', ctaStar: 'Star su GitHub',
+    heroMeta: 'Windows · macOS · Linux — richiede il CLI Claude nel PATH',
+    st1: 'ultima versione', st2: 'licenza open source',
+    st3: 'sistemi operativi', st4: "lingue dell'interfaccia",
     canvasHint: 'una sessione reale, disegnata come spazio — clicca un agente',
     canvasCaption: "Tutto l'harness in una finestra. Cinque agenti, due al lavoro, uno in attesa di una risposta, e nessuno che frughi in un terminale per capire quale.",
     vdeLead: 'Gli strumenti con cui osserviamo gli agenti sono ancora testo: un terminale, un log di chat, una lista di task. Un ambiente di sviluppo visuale disegna il loro lavoro come spazio e tiene progetto, esecuzione, osservazione e modifica su una sola superficie.',
@@ -747,7 +747,7 @@ const T = {
     f3b: "Doppio clic su una bolla e lo spazio di lavoro si apre sul posto: stream dal vivo, albero dei file, editor con evidenziazione, diff e terminale, nella stessa finestra della tela.",
     videoTitle: 'Hook che confluiscono nella mappa, sub-agenti configurati visivamente', videoSub: 'Due minuti, una sessione reale, nessuna slide.',
     instTitle: 'Avvio rapido', instLead: 'Vibisual gira sopra il CLI Claude, che deve essere già installato e nel PATH.',
-    instWin: 'Installa su Windows', instWinBody: "Scarica l'installer dalla pagina delle release, eseguilo e avvia Vibisual. Le build macOS e Linux esistono ma non sono molto testate.",
+    instWin: 'Installa', instWinBody: "Ogni release pubblica un installer Windows, build macOS (Apple Silicon e Intel) e un AppImage Linux. Scarica quello del tuo sistema ed eseguilo. Le build non sono ancora firmate, quindi SmartScreen su Windows e Gatekeeper su macOS chiedono conferma al primo avvio.",
     instSrc: 'Compila dai sorgenti', instSrcBody: 'Node 20+. Al primo avvio Vibisual scrive un blocco di hook gestito in ~/.claude/settings.json e tiene un backup con timestamp. Imposta VIBISUAL_SKIP_HOOK_INSTALL=1 per configurarli da te.',
     statusLabel: 'stato · early preview',
     statusBody: 'Questa preview 0.1.x serve a sperimentare, fare demo e raccogliere feedback. Aspettati bug, funzioni incomplete e occasionali breaking change. Non consigliata per workflow di produzione critici o repository con dati molto sensibili.',
@@ -762,10 +762,10 @@ const T = {
     eyebrow: 'o ambiente de desenvolvimento visual',
     h1a: 'Veja seus agentes de IA', h1em: 'pensarem.',
     sub: 'Agentes de código não digitam: eles agem — leem arquivos, rodam comandos, iniciam outros agentes. O Vibisual desenha essa execução como um mapa de bolhas ao vivo, transforma a mesma tela na superfície de design do seu harness e abre o editor ali mesmo quando é preciso uma mão humana.',
-    ctaDl: 'Baixar para Windows', ctaWatch: 'Demonstração de 2 minutos', ctaStar: 'Dar star no GitHub',
-    heroMeta: 'Vibisual-0.1.9-setup.exe · exige o CLI do Claude no seu PATH',
-    st1: 'estrelas no GitHub', st2: 'downloads até hoje',
-    st3: 'usuários ativos semanais', st4: 'visitantes do site por mês',
+    ctaDl: 'Baixar', ctaWatch: 'Demonstração de 2 minutos', ctaStar: 'Dar star no GitHub',
+    heroMeta: 'Windows · macOS · Linux — exige o CLI do Claude no seu PATH',
+    st1: 'versão mais recente', st2: 'licença de código aberto',
+    st3: 'sistemas operacionais', st4: 'idiomas da interface',
     canvasHint: 'uma sessão real, desenhada como espaço — clique num agente',
     canvasCaption: 'Todo o harness em uma janela. Cinco agentes, dois trabalhando, um esperando resposta, e ninguém garimpando terminal para descobrir qual.',
     vdeLead: 'As ferramentas com que observamos agentes ainda são texto: um terminal, um log de chat, uma lista de tarefas. Um ambiente de desenvolvimento visual desenha o trabalho deles como espaço e mantém design, execução, observação e edição em uma única superfície.',
@@ -779,7 +779,7 @@ const T = {
     f3b: 'Clique duas vezes numa bolha e o workspace abre ali: stream ao vivo do agente, árvore de arquivos, editor com destaque de sintaxe, diffs e terminal, na mesma janela da tela.',
     videoTitle: 'Hooks fluindo para o mapa de bolhas, subagentes configurados visualmente', videoSub: 'Dois minutos, uma sessão real, sem slides.',
     instTitle: 'Início rápido', instLead: 'O Vibisual roda sobre o CLI do Claude, que já precisa estar instalado e no seu PATH.',
-    instWin: 'Instalar no Windows', instWinBody: 'Baixe o instalador na página de releases, execute e abra o Vibisual. Há builds de macOS e Linux, mas pouco testadas.',
+    instWin: 'Instalar', instWinBody: 'Cada release publica um instalador do Windows, builds de macOS (Apple Silicon e Intel) e um AppImage de Linux. Baixe o do seu sistema e execute. As builds ainda não são assinadas, então o SmartScreen no Windows e o Gatekeeper no macOS pedem confirmação na primeira vez.',
     instSrc: 'Compilar do código', instSrcBody: 'Node 20+. No primeiro início o Vibisual escreve um bloco de hooks gerenciado em ~/.claude/settings.json e guarda um backup com timestamp. Use VIBISUAL_SKIP_HOOK_INSTALL=1 para configurar você mesmo.',
     statusLabel: 'status · prévia inicial',
     statusBody: 'Esta prévia 0.1.x serve para experimentação, demos e feedback. Espere bugs, recursos incompletos e mudanças incompatíveis ocasionais. Não recomendada para fluxos críticos de produção ou repositórios com dados muito sensíveis.',
@@ -794,10 +794,10 @@ const T = {
     eyebrow: 'lingkungan pengembangan visual',
     h1a: 'Lihat agen AI Anda', h1em: 'berpikir.',
     sub: 'Agen coding tidak mengetik. Mereka bertindak — membaca berkas, menjalankan perintah, menyalakan agen lain. Vibisual menggambar proses itu sebagai peta gelembung langsung, menjadikan kanvas yang sama sebagai bidang desain harness Anda, dan membuka editor di tempat saat tangan manusia dibutuhkan.',
-    ctaDl: 'Unduh untuk Windows', ctaWatch: 'Panduan 2 menit', ctaStar: 'Beri star di GitHub',
-    heroMeta: 'Vibisual-0.1.9-setup.exe · butuh Claude CLI di PATH Anda',
-    st1: 'bintang di GitHub', st2: 'total unduhan',
-    st3: 'pengguna aktif mingguan', st4: 'pengunjung situs per bulan',
+    ctaDl: 'Unduh', ctaWatch: 'Panduan 2 menit', ctaStar: 'Beri star di GitHub',
+    heroMeta: 'Windows · macOS · Linux — butuh Claude CLI di PATH Anda',
+    st1: 'rilis terbaru', st2: 'lisensi sumber terbuka',
+    st3: 'sistem operasi', st4: 'bahasa antarmuka',
     canvasHint: 'sesi nyata, digambar sebagai ruang — klik salah satu agen',
     canvasCaption: 'Seluruh harness dalam satu jendela. Lima agen, dua sedang bekerja, satu menunggu jawaban, dan tak ada yang perlu mengorek terminal untuk tahu yang mana.',
     vdeLead: 'Alat untuk mengamati agen masih berupa teks: terminal, log obrolan, daftar tugas. Lingkungan pengembangan visual menggambar pekerjaan mereka sebagai ruang, dan menyatukan desain, eksekusi, pengamatan, serta penyuntingan dalam satu bidang.',
@@ -811,7 +811,7 @@ const T = {
     f3b: 'Klik ganda sebuah gelembung dan ruang kerja terbuka di tempat: stream langsung agen, pohon berkas, editor dengan penyorotan sintaks, diff, dan terminal, di jendela yang sama dengan kanvas.',
     videoTitle: 'Hook mengalir ke peta gelembung, sub-agen dikonfigurasi secara visual', videoSub: 'Dua menit, satu sesi nyata, tanpa slide.',
     instTitle: 'Mulai cepat', instLead: 'Vibisual berjalan di atas Claude CLI, yang harus sudah terpasang dan ada di PATH Anda.',
-    instWin: 'Pasang di Windows', instWinBody: 'Unduh pemasang dari halaman releases, jalankan, lalu buka Vibisual. Build macOS dan Linux tersedia namun belum banyak diuji.',
+    instWin: 'Pasang', instWinBody: 'Setiap rilis menyertakan pemasang Windows, build macOS (Apple Silicon dan Intel), serta AppImage Linux. Unduh yang sesuai sistem Anda lalu jalankan. Build belum ditandatangani, jadi SmartScreen di Windows dan Gatekeeper di macOS meminta konfirmasi saat pertama kali dijalankan.',
     instSrc: 'Bangun dari sumber', instSrcBody: 'Node 20+. Saat pertama dijalankan, Vibisual menulis blok hook terkelola ke ~/.claude/settings.json dan menyimpan cadangan bertanda waktu. Setel VIBISUAL_SKIP_HOOK_INSTALL=1 untuk memasang hook sendiri.',
     statusLabel: 'status · pratinjau awal',
     statusBody: 'Pratinjau 0.1.x ini untuk eksperimen, demo, dan umpan balik. Harapkan bug, fitur belum lengkap, dan perubahan yang memutus kompatibilitas. Tidak disarankan untuk alur produksi kritis atau repositori dengan data sangat sensitif.',
@@ -826,10 +826,10 @@ const T = {
     eyebrow: 'विज़ुअल डेवलपमेंट एनवायरनमेंट',
     h1a: 'अपने AI एजेंट्स को', h1em: 'सोचते देखें।',
     sub: 'कोडिंग एजेंट टाइप नहीं करते, वे काम करते हैं — फ़ाइलें पढ़ते हैं, कमांड चलाते हैं, दूसरे एजेंट शुरू करते हैं। Vibisual उस रन को एक लाइव बबल मैप की तरह बनाता है, उसी कैनवस को आपके हार्नेस का डिज़ाइन सरफ़ेस बनाता है, और जब इंसानी हाथ चाहिए हो तो वहीं एडिटर खोल देता है।',
-    ctaDl: 'Windows के लिए डाउनलोड', ctaWatch: '2 मिनट का वॉकथ्रू', ctaStar: 'GitHub पर स्टार दें',
-    heroMeta: 'Vibisual-0.1.9-setup.exe · आपके PATH में Claude CLI चाहिए',
-    st1: 'GitHub पर स्टार', st2: 'अब तक डाउनलोड',
-    st3: 'साप्ताहिक सक्रिय उपयोगकर्ता', st4: 'मासिक साइट विज़िटर',
+    ctaDl: 'डाउनलोड', ctaWatch: '2 मिनट का वॉकथ्रू', ctaStar: 'GitHub पर स्टार दें',
+    heroMeta: 'Windows · macOS · Linux — आपके PATH में Claude CLI चाहिए',
+    st1: 'नवीनतम रिलीज़', st2: 'ओपन सोर्स लाइसेंस',
+    st3: 'समर्थित ऑपरेटिंग सिस्टम', st4: 'इंटरफ़ेस भाषाएँ',
     canvasHint: 'एक वास्तविक सेशन, जगह की तरह बना — किसी एजेंट पर क्लिक करें',
     canvasCaption: 'पूरा हार्नेस एक ही विंडो में। पाँच एजेंट, दो काम पर, एक जवाब का इंतज़ार करता — और कौन रुका है यह जानने के लिए टर्मिनल खोजना नहीं पड़ता।',
     vdeLead: 'एजेंट देखने के हमारे औज़ार अब भी टेक्स्ट हैं: टर्मिनल, चैट लॉग, टास्क लिस्ट। विज़ुअल डेवलपमेंट एनवायरनमेंट उनके काम को जगह की तरह बनाता है और डिज़ाइन, एग्ज़ीक्यूशन, ऑब्ज़र्वेशन तथा एडिटिंग को एक ही सतह पर रखता है।',
@@ -843,7 +843,7 @@ const T = {
     f3b: 'बबल पर डबल-क्लिक करें और वर्कस्पेस वहीं खुल जाता है: एजेंट की लाइव स्ट्रीम, फ़ाइल ट्री, सिंटैक्स हाइलाइटिंग वाला एडिटर, diff और टर्मिनल — कैनवस की उसी विंडो में।',
     videoTitle: 'हुक बबल मैप में बहते हुए, सब-एजेंट विज़ुअली कॉन्फ़िगर', videoSub: 'दो मिनट, एक असली सेशन, कोई स्लाइड नहीं।',
     instTitle: 'क्विक स्टार्ट', instLead: 'Vibisual, Claude CLI के ऊपर चलता है, जो पहले से इंस्टॉल और PATH में होना चाहिए।',
-    instWin: 'Windows पर इंस्टॉल', instWinBody: 'रिलीज़ पेज से इंस्टॉलर डाउनलोड करें, चलाएँ और Vibisual खोलें। macOS और Linux बिल्ड मौजूद हैं पर उनका परीक्षण सीमित है।',
+    instWin: 'इंस्टॉल', instWinBody: 'हर रिलीज़ में Windows इंस्टॉलर, macOS बिल्ड (Apple Silicon और Intel), और Linux AppImage होते हैं। अपने सिस्टम वाला डाउनलोड करें और चलाएँ। बिल्ड अभी कोड-साइन नहीं हैं, इसलिए पहली बार चलाने पर Windows SmartScreen और macOS Gatekeeper पुष्टि माँगते हैं।',
     instSrc: 'सोर्स से बिल्ड', instSrcBody: 'Node 20+। पहली बार चलने पर Vibisual ~/.claude/settings.json में मैनेज्ड हुक ब्लॉक लिखता है और टाइमस्टैम्प बैकअप रखता है। खुद हुक जोड़ने के लिए VIBISUAL_SKIP_HOOK_INSTALL=1 सेट करें।',
     statusLabel: 'स्थिति · अर्ली प्रीव्यू',
     statusBody: 'यह 0.1.x प्रीव्यू प्रयोग, डेमो और फ़ीडबैक के लिए है। बग, अधूरे फ़ीचर और कभी-कभी ब्रेकिंग बदलाव मिलेंगे। ज़रूरी प्रोडक्शन वर्कफ़्लो या अति संवेदनशील डेटा वाले रिपॉज़िटरी के लिए सुझाया नहीं जाता।',
@@ -854,7 +854,7 @@ const T = {
     footNote: 'Vibisual एक स्वतंत्र ओपन-सोर्स प्रोजेक्ट है, Anthropic से संबद्ध, समर्थित या प्रायोजित नहीं। Claude, Claude Code और Anthropic, Anthropic, PBC के ट्रेडमार्क हैं।',
   },
 };
-T['es-419'] = { ...T.es, ctaDl: 'Descargar para Windows', ctaStar: 'Marcar con star en GitHub', navDl: 'Descargar' };
+T['es-419'] = { ...T.es, ctaDl: 'Descargar', ctaStar: 'Marcar con star en GitHub', navDl: 'Descargar' };
 
 const UI = {
   en: { home:'Home', blog:'Blog', docs:'Docs', latest:'latest', more:'Read', back:'All posts',
@@ -881,7 +881,7 @@ UI['es-419'] = UI.es;
 
 const BLOG = {
   en: [
-    { id:'space', date:'2026-08-18', tag:'essay', read:'6 min', author:'Vibisual team',
+    { id:'space', date:'2026-08-18', tag:'essay', read:'6 min', author:'Vibisual',
       title:'Why we drew the terminal as space',
       excerpt:'A log tells you what happened, in order. A map tells you where everything is, right now. Agent runs need the second one.',
       body:[
@@ -890,36 +890,26 @@ const BLOG = {
         'So we stopped printing the run and started drawing it. A node per agent, an edge per handoff, a child bubble per tool call. Position carries meaning, and state is a colour instead of a sentence you have to find.',
         'The surprising part was not the map. It was that the same canvas turned out to be the right place to design the team: if a graph is how you read a run, a graph is also how you write one. Configuration and observation ended up being the same picture, seen at two different times.',
       ] },
-    { id:'r019', date:'2026-08-04', tag:'release', read:'4 min', author:'Vibisual team',
-      title:'0.1.9: hook streaming, a faster canvas, per-agent rules',
-      excerpt:'Events now arrive as they happen instead of on a poll, and the canvas holds sixty frames with forty nodes on screen.',
+    { id:'r0114', date:'2026-08-27', tag:'release', read:'3 min', author:'Vibisual',
+      title:'0.1.14: the update button actually updates',
+      excerpt:'Pressing Update closed the app and brought it back on the same version. Three fixes, all about the moments around shutdown.',
       body:[
-        'Until 0.1.8 the app read hook events in batches. It worked, but a fast Bash call could finish before its bubble appeared, and the map trailed the run by a second or two. Events now stream over a local socket and land as they arrive.',
-        'The canvas renderer was rewritten to draw edges and bubbles in one pass. Forty nodes on screen holds sixty frames on integrated graphics, which was the number we wanted to reach before adding anything else.',
-        'Per-agent rules moved out of the global prompt and into the bubble panel. Each agent now carries its own free-text rules, so "never edit src/**" belongs to the test-runner instead of to the whole session.',
-        'Breaking change: graphs saved by 0.1.7 and earlier need re-saving. The app migrates them on open and leaves a .bak next to the original.',
+        'The installer was launched before the app had finished shutting down. It replaces the installed files by renaming them one at a time, and that fails outright while Vibisual.exe is still running — after five one-second retries it gave up and installed nothing. From your side the app simply closed and came back on the old version. The installer is now launched at the very last moment, once cleanup is done and the process is about to disappear.',
+        'Shutdown itself was the other half of the problem. It waited for every open network connection to finish on its own, so a phone still connected over LAN access, or an idle keep-alive socket, could hold the app open for over a minute — 68 seconds, measured. Sockets are now cut once we have decided to close, and cleanup has a hard four-second ceiling after which the app exits regardless. Everything written to disk is flushed before that point.',
+        'The update button no longer asks twice, either. It already warns you and asks for confirmation; the ordinary close-confirmation was then asking again about the same thing — and the time spent answering it was enough for the installer to give up.',
       ] },
-    { id:'five', date:'2026-07-21', tag:'guide', read:'8 min', author:'Vibisual team',
+    { id:'five', date:'2026-07-21', tag:'guide', read:'8 min', author:'Vibisual',
       title:'Designing a five-agent checkout refactor',
       excerpt:'One orchestrator, a schema migration, an API rewrite, a test runner that may not write, and a doc writer that waits for green.',
       body:[
-        'The task was a checkout refactor touching a migration, two route files and a price helper. Done by one agent it is a long single session, and one mistake anywhere costs the whole run.',
+        'Take a checkout refactor touching a migration, two route files and a price helper. Done by one agent it is a long single session, and one mistake anywhere costs the whole run.',
         'Split five ways it becomes a graph. The orchestrator owns the plan. schema-migrator writes the migration in its own worktree and hands the new column names forward. api-builder rewrites the route against them.',
         'test-runner gets read-only access to src/** — it can run the suite and read anything, but it cannot fix what it finds. That constraint is the point: a runner that edits code stops being a measurement.',
         'doc-writer sits behind an edge from test-runner and starts only when the suite is green, so the changelog never describes a build that got rolled back. The whole design is five bubbles and five edges, and it reads faster than the paragraph describing it.',
       ] },
-    { id:'stall', date:'2026-07-02', tag:'research', read:'5 min', author:'Vibisual team',
-      title:'What we learned watching 400 sessions stall',
-      excerpt:'Most stalled runs were not model failures. They were a question nobody saw, in a pane nobody was looking at.',
-      body:[
-        'We instrumented 400 multi-agent sessions and looked at every run that went quiet for more than two minutes. We expected loops and context exhaustion. Neither was the top cause.',
-        'The most common stall was a permission prompt waiting in a pane the operator had scrolled away from. Median time to answer once noticed: eleven seconds. Median time to notice: over four minutes.',
-        'Second was a handoff that never happened, because the upstream agent ended its turn without signalling anything. Nothing was broken; the downstream agent simply had no reason to start.',
-        'Both are visibility problems rather than intelligence problems. Colouring a blocked node amber removed most of the first category, and drawing unresolved edges as dashed lines removed most of the second.',
-      ] },
   ],
   ko: [
-    { id:'space', date:'2026-08-18', tag:'에세이', read:'6분', author:'Vibisual 팀',
+    { id:'space', date:'2026-08-18', tag:'에세이', read:'6분', author:'Vibisual',
       title:'터미널을 공간으로 그린 이유',
       excerpt:'로그는 무슨 일이 있었는지 순서대로 알려줍니다. 맵은 지금 무엇이 어디에 있는지 알려줍니다. 에이전트 실행에 필요한 건 두 번째입니다.',
       body:[
@@ -928,32 +918,22 @@ const BLOG = {
         '그래서 실행을 출력하는 대신 그리기 시작했습니다. 에이전트마다 노드, 핸드오프마다 엣지, 툴 호출마다 자식 버블. 위치가 의미를 갖고, 상태는 찾아 읽어야 하는 문장이 아니라 색이 됩니다.',
         '의외였던 건 맵이 아니었습니다. 같은 캔버스가 팀을 설계하기에도 알맞은 자리였다는 점입니다. 그래프로 실행을 읽는다면, 그래프로 실행을 쓸 수도 있습니다. 설정과 관찰은 결국 같은 그림을 서로 다른 시점에 보는 일이었습니다.',
       ] },
-    { id:'r019', date:'2026-08-04', tag:'릴리스', read:'4분', author:'Vibisual 팀',
-      title:'0.1.9: 훅 스트리밍, 더 빠른 캔버스, 에이전트별 규칙',
-      excerpt:'이벤트가 폴링이 아니라 발생하는 즉시 도착하고, 화면에 노드 마흔 개가 있어도 60프레임을 유지합니다.',
+    { id:'r0114', date:'2026-08-27', tag:'릴리스', read:'3분', author:'Vibisual',
+      title:'0.1.14: 업데이트 버튼이 실제로 업데이트합니다',
+      excerpt:'업데이트를 눌러도 앱이 닫혔다가 같은 버전으로 돌아왔습니다. 종료 직전의 순간을 다룬 수정 세 가지.',
       body:[
-        '0.1.8까지는 훅 이벤트를 묶음으로 읽었습니다. 동작은 했지만 빠른 Bash 호출이 자기 버블보다 먼저 끝나는 일이 있었고, 맵이 실행보다 1~2초 뒤처졌습니다. 이제 이벤트는 로컬 소켓으로 스트리밍되어 도착하는 대로 그려집니다.',
-        '캔버스 렌더러를 다시 써서 엣지와 버블을 한 번에 그립니다. 내장 그래픽에서 노드 마흔 개로 60프레임을 유지합니다. 다른 기능을 얹기 전에 도달하고 싶었던 숫자였습니다.',
-        '에이전트별 규칙이 전역 프롬프트에서 버블 패널로 옮겨졌습니다. 이제 각 에이전트가 자기 규칙 텍스트를 갖습니다. "src/** 는 절대 수정하지 않는다"는 세션 전체가 아니라 test-runner의 규칙입니다.',
-        '호환성 변경: 0.1.7 이전에 저장된 그래프는 다시 저장해야 합니다. 앱이 열 때 자동 변환하고 원본 옆에 .bak을 남깁니다.',
+        '설치 프로그램이 앱의 종료가 끝나기 전에 실행되고 있었습니다. 설치된 파일을 하나씩 이름을 바꿔 교체하는 방식이라 Vibisual.exe 가 아직 살아 있으면 그대로 실패합니다. 1초 간격으로 다섯 번 재시도한 뒤 포기하고 아무것도 설치하지 않았고, 쓰는 쪽에서는 앱이 닫혔다가 예전 버전으로 돌아온 것으로만 보였습니다. 이제 정리가 모두 끝나고 프로세스가 사라지기 직전에 설치 프로그램을 띄웁니다.',
+        '종료 자체가 나머지 절반이었습니다. 열려 있는 네트워크 연결이 스스로 끝나기를 기다렸기 때문에, LAN 으로 접속해 둔 휴대폰 하나나 유휴 keep-alive 소켓 하나가 앱을 1분 넘게 붙잡을 수 있었습니다(실측 68초). 이제 닫기로 결정한 시점에 소켓을 끊고, 정리에는 4초의 상한을 두어 그 뒤에는 무조건 종료합니다. 디스크에 쓸 것은 그 전에 모두 내려씁니다.',
+        '업데이트 버튼이 두 번 묻지도 않습니다. 이미 경고하고 확인을 받는데 일반 종료 확인이 같은 것을 또 물었고, 그 답을 하는 사이에 설치 프로그램이 포기하기에 충분한 시간이 지나갔습니다.',
       ] },
-    { id:'five', date:'2026-07-21', tag:'가이드', read:'8분', author:'Vibisual 팀',
+    { id:'five', date:'2026-07-21', tag:'가이드', read:'8분', author:'Vibisual',
       title:'체크아웃 리팩터를 다섯 에이전트로 설계하기',
       excerpt:'오케스트레이터 하나, 스키마 마이그레이션, API 재작성, 쓰기 권한이 없는 테스트 러너, 그리고 초록불을 기다리는 문서 작성자.',
       body:[
-        '작업은 마이그레이션 하나, 라우트 파일 둘, 가격 헬퍼 하나를 건드리는 체크아웃 리팩터였습니다. 에이전트 하나로 하면 긴 단일 세션이 되고, 어디서든 한 번 실수하면 실행 전체를 잃습니다.',
+        '마이그레이션 하나, 라우트 파일 둘, 가격 헬퍼 하나를 건드리는 체크아웃 리팩터를 예로 들어 보겠습니다. 에이전트 하나로 하면 긴 단일 세션이 되고, 어디서든 한 번 실수하면 실행 전체를 잃습니다.',
         '다섯으로 나누면 그래프가 됩니다. 오케스트레이터가 계획을 소유합니다. schema-migrator는 자기 워크트리에서 마이그레이션을 작성하고 새 컬럼 이름을 넘깁니다. api-builder가 그것에 맞춰 라우트를 다시 씁니다.',
         'test-runner에는 src/** 읽기 권한만 줍니다. 스위트를 돌리고 무엇이든 읽을 수 있지만, 찾아낸 문제를 직접 고칠 수는 없습니다. 그 제약이 핵심입니다. 코드를 고치는 러너는 더 이상 측정이 아닙니다.',
         'doc-writer는 test-runner에서 오는 엣지 뒤에 앉아 스위트가 초록불이 될 때만 시작합니다. 그래서 체인지로그가 롤백된 빌드를 설명하는 일이 없습니다. 설계 전체는 버블 다섯과 엣지 다섯이고, 그것을 설명하는 이 문단보다 빨리 읽힙니다.',
-      ] },
-    { id:'stall', date:'2026-07-02', tag:'리서치', read:'5분', author:'Vibisual 팀',
-      title:'멈춘 세션 400개를 지켜보고 배운 것',
-      excerpt:'멈춘 실행의 대부분은 모델의 실패가 아니었습니다. 아무도 보지 않는 창에서 아무도 못 본 질문이었습니다.',
-      body:[
-        '멀티 에이전트 세션 400개를 계측하고, 2분 이상 조용해진 실행을 모두 살펴봤습니다. 루프와 컨텍스트 소진을 예상했지만 둘 다 1위가 아니었습니다.',
-        '가장 흔한 정지는 운영자가 스크롤로 지나쳐 버린 창에서 기다리는 권한 프롬프트였습니다. 발견한 뒤 답하기까지의 중간값은 11초. 발견하기까지의 중간값은 4분이 넘었습니다.',
-        '두 번째는 일어나지 않은 핸드오프였습니다. 상위 에이전트가 아무 신호 없이 턴을 끝냈기 때문입니다. 고장난 것은 없었고, 하위 에이전트에게 시작할 이유가 없었을 뿐입니다.',
-        '둘 다 지능의 문제가 아니라 가시성의 문제입니다. 막힌 노드를 앰버색으로 칠하자 첫 번째 유형이 대부분 사라졌고, 해소되지 않은 엣지를 점선으로 그리자 두 번째가 대부분 사라졌습니다.',
       ] },
   ],
 };
@@ -971,17 +951,17 @@ const DOCS = {
           paras:['Design: drop bubbles to define sub-agents and draw task edges for handoffs. Observe: watch the same graph fill in as the run proceeds. Edit: double-click a bubble to open a workspace over the canvas.'],
           note:'Vibisual does not replace the CLI. Every session it shows is an ordinary Claude Code session, and it keeps running if you close the window.' },
         { h:'Requirements',
-          rows:[['os','Windows 10 / 11 · macOS and Linux builds are untested'],['dependency','Claude CLI installed and on PATH'],['runtime','Node 20+ (source builds only)'],['config','~/.claude/settings.json must be writable']] },
+          rows:[['os','Windows 10/11 · macOS (Apple Silicon and Intel) · Linux (AppImage)'],['dependency','Claude CLI installed and on PATH'],['runtime','Node 20+ (source builds only)'],['config','~/.claude/settings.json must be writable']] },
       ] },
     { g:'Getting started', id:'install', title:'Install and first run', updated:'2026-08-04',
       lead:'Install the Claude CLI first and confirm that claude resolves on your PATH. Vibisual launches every session through it.',
       sections:[
-        { h:'Windows installer',
-          paras:['Download the installer from the releases page, run it, and launch Vibisual. The 0.1.x preview builds are unsigned, so SmartScreen asks for confirmation the first time.'],
-          code:['Vibisual-0.1.9-setup.exe'] },
+        { h:'Installers',
+          paras:['Every release ships a Windows installer, macOS builds for Apple Silicon and Intel, and a Linux AppImage. Download the one for your system and run it. The 0.1.x preview builds are unsigned, so Windows SmartScreen and macOS Gatekeeper ask for confirmation the first time.'],
+          code:['Vibisual-<version>-setup.exe','Vibisual-<version>-arm64.dmg','Vibisual-<version>.dmg','Vibisual-<version>.AppImage'] },
         { h:'From source',
           paras:['Node 20 or newer, pnpm for the workspace.'],
-          code:['$ git clone https://github.com/Vibisual/vibisual.git','$ cd vibisual && pnpm install','$ node scripts/runapp.mjs','','# pnpm build:win → dist/Vibisual-0.1.9-setup.exe'] },
+          code:['$ git clone https://github.com/Vibisual/vibisual.git','$ cd vibisual && pnpm install','$ node scripts/runapp.mjs','','# pnpm build:win → dist/Vibisual-<version>-setup.exe'] },
         { h:'First run',
           paras:['Vibisual writes a managed hook block into ~/.claude/settings.json and keeps a timestamped backup of the previous file beside it. Hooks outside the managed block are left untouched.'],
           note:'Set VIBISUAL_SKIP_HOOK_INSTALL=1 to wire the hooks yourself. The app then only receives events from sessions you have configured.' },
@@ -991,7 +971,7 @@ const DOCS = {
       sections:[
         { h:'Bubbles are sub-agents',
           paras:['Double-click empty canvas to place a bubble, then fill in its panel. Every field maps to something the CLI already understands, so a graph is a visual spelling of a configuration you could have written by hand.'],
-          rows:[['model','opus / sonnet / haiku, per agent'],['permission mode','plan · default · acceptEdits'],['tools','allow-list, e.g. Read, Bash, Grep'],['isolation','shared worktree · own worktree · read-only paths'],['max turns','hard stop for runaway loops'],['rules','free text appended to that agent\u2019s prompt']] },
+          rows:[['model','opus / sonnet / haiku, per agent'],['permission mode','default · acceptEdits · auto · dontAsk · plan · bypassPermissions'],['tools','allow-list, e.g. Read, Bash, Grep'],['isolation','shared tree · own git worktree'],['max turns','hard stop for runaway loops'],['rules','free text appended to that agent\u2019s prompt']] },
         { h:'Task edges',
           paras:['Draw an edge from A to B to say that B starts when A hands off. An agent with no inbound edge starts with the run; an agent with an unresolved inbound edge stays idle and is drawn with a dashed line.',
                  'Edges are not documentation. Vibisual holds the downstream agent until the upstream one closes, which is what keeps a doc-writer from documenting a build that failed.'] },
@@ -1024,12 +1004,12 @@ const DOCS = {
       sections:[
         { h:'Managed hook block',
           paras:['The block is delimited by markers and rewritten on version upgrades. Anything outside the markers is preserved verbatim.'],
-          code:['~/.claude/settings.json','','// vibisual:begin  (managed — edits are overwritten)','"hooks": { "PreToolUse": [ … ] }','// vibisual:end'] },
+          code:['~/.claude/settings.json','','"hooks": {','  "PreToolUse": [','    // only blocks carrying this marker are rewritten','    { "_vibisualManaged": true, "hooks": [ … ] }','  ]','}'] },
         { h:'Environment variables',
-          rows:[['VIBISUAL_SKIP_HOOK_INSTALL','1 = never touch settings.json'],['VIBISUAL_PORT','local socket port, default 47823'],['VIBISUAL_LOG','debug · info · silent'],['VIBISUAL_DATA_DIR','override the session store location']] },
+          rows:[['VIBISUAL_SKIP_HOOK_INSTALL','1 = never touch settings.json'],['VIBISUAL_HOME','override where ~/.vibisual lives'],['VIBISUAL_PERF','1 = write performance snapshots to the log']] },
         { h:'Data location',
-          rows:[['sessions','%APPDATA%/Vibisual/sessions'],['graphs','saved agent graphs, one JSON per project'],['logs','%APPDATA%/Vibisual/logs, rotated at 20 MB']],
-          note:'Session records contain prompts, tool calls, file paths and shell commands. They stay on the machine — Vibisual has no server component — but treat the directory as sensitive.' },
+          rows:[['per project','<project>/.vibisual/save/checkpoint.json — the graph, its agents and session state'],['machine-wide','~/.vibisual/app-state.json — open projects and preferences'],['logs','the app data folder: %APPDATA%/Vibisual on Windows, ~/Library/Application Support/Vibisual on macOS, ~/.config/Vibisual on Linux']],
+          note:'Session records contain prompts, tool calls, file paths and shell commands. Nothing leaves the machine: the server runs inside the app itself and is bound to loopback. Still, treat these directories as sensitive.' },
       ] },
   ],
   ko: [
@@ -1044,17 +1024,17 @@ const DOCS = {
           paras:['설계: 버블을 놓아 서브에이전트를 정의하고 태스크 엣지로 핸드오프를 연결합니다. 관찰: 실행이 진행되며 같은 그래프가 채워지는 것을 봅니다. 편집: 버블을 더블클릭하면 캔버스 위로 작업 공간이 열립니다.'],
           note:'Vibisual은 CLI를 대체하지 않습니다. 여기 보이는 모든 세션은 평범한 Claude Code 세션이며, 창을 닫아도 계속 실행됩니다.' },
         { h:'요구 사항',
-          rows:[['os','Windows 10 / 11 · macOS와 Linux 빌드는 검증되지 않음'],['의존성','Claude CLI 설치 및 PATH 등록'],['런타임','Node 20 이상 (소스 빌드 시)'],['설정','~/.claude/settings.json 쓰기 가능'] ] },
+          rows:[['os','Windows 10/11 · macOS(애플 실리콘·인텔) · Linux(AppImage)'],['의존성','Claude CLI 설치 및 PATH 등록'],['런타임','Node 20 이상 (소스 빌드 시)'],['설정','~/.claude/settings.json 쓰기 가능'] ] },
       ] },
     { g:'시작하기', id:'install', title:'설치와 첫 실행', updated:'2026-08-04',
       lead:'먼저 Claude CLI를 설치하고 claude 명령이 PATH에서 해석되는지 확인하세요. Vibisual은 모든 세션을 CLI를 통해 실행합니다.',
       sections:[
-        { h:'Windows 설치 파일',
-          paras:['릴리스 페이지에서 설치 파일을 받아 실행한 뒤 Vibisual을 띄웁니다. 0.1.x 프리뷰 빌드는 서명되지 않아 처음 한 번 SmartScreen 확인이 표시됩니다.'],
-          code:['Vibisual-0.1.9-setup.exe'] },
+        { h:'설치 파일',
+          paras:['릴리스마다 Windows 설치 파일, macOS 빌드(애플 실리콘·인텔), Linux AppImage가 함께 올라갑니다. 쓰시는 운영체제의 것을 받아 실행하시면 됩니다. 0.1.x 프리뷰 빌드는 서명되지 않아 처음 한 번 Windows SmartScreen과 macOS Gatekeeper 확인이 표시됩니다.'],
+          code:['Vibisual-<version>-setup.exe','Vibisual-<version>-arm64.dmg','Vibisual-<version>.dmg','Vibisual-<version>.AppImage'] },
         { h:'소스에서 빌드',
           paras:['Node 20 이상, 워크스페이스는 pnpm.'],
-          code:['$ git clone https://github.com/Vibisual/vibisual.git','$ cd vibisual && pnpm install','$ node scripts/runapp.mjs','','# pnpm build:win → dist/Vibisual-0.1.9-setup.exe'] },
+          code:['$ git clone https://github.com/Vibisual/vibisual.git','$ cd vibisual && pnpm install','$ node scripts/runapp.mjs','','# pnpm build:win → dist/Vibisual-<version>-setup.exe'] },
         { h:'첫 실행',
           paras:['Vibisual은 ~/.claude/settings.json에 관리형 훅 블록을 쓰고, 이전 파일의 타임스탬프 백업을 옆에 남깁니다. 관리 블록 밖의 훅은 그대로 둡니다.'],
           note:'직접 훅을 구성하려면 VIBISUAL_SKIP_HOOK_INSTALL=1을 설정하세요. 그러면 앱은 사용자가 설정한 세션의 이벤트만 받습니다.' },
@@ -1064,7 +1044,7 @@ const DOCS = {
       sections:[
         { h:'버블은 서브에이전트',
           paras:['빈 캔버스를 더블클릭해 버블을 놓고 패널을 채웁니다. 모든 항목은 CLI가 이미 이해하는 값에 대응합니다. 그래프는 직접 손으로 쓸 수도 있었을 설정을 시각적으로 표기한 것입니다.'],
-          rows:[['모델','에이전트별 opus / sonnet / haiku'],['권한 모드','plan · default · acceptEdits'],['툴','허용 목록, 예: Read, Bash, Grep'],['격리','공유 워크트리 · 개별 워크트리 · 읽기 전용 경로'],['최대 턴','폭주하는 루프의 강제 정지선'],['규칙','해당 에이전트 프롬프트에 덧붙는 자유 텍스트']] },
+          rows:[['모델','에이전트별 opus / sonnet / haiku'],['권한 모드','default · acceptEdits · auto · dontAsk · plan · bypassPermissions'],['툴','허용 목록, 예: Read, Bash, Grep'],['격리','공유 트리 · 개별 git 워크트리'],['최대 턴','폭주하는 루프의 강제 정지선'],['규칙','해당 에이전트 프롬프트에 덧붙는 자유 텍스트']] },
         { h:'태스크 엣지',
           paras:['A에서 B로 엣지를 그리면 A가 넘길 때 B가 시작합니다. 들어오는 엣지가 없는 에이전트는 실행과 함께 시작하고, 해소되지 않은 엣지를 가진 에이전트는 대기 상태로 점선으로 그려집니다.',
                  '엣지는 문서가 아닙니다. Vibisual은 상위 에이전트가 닫힐 때까지 하위 에이전트를 붙잡습니다. 그래서 doc-writer가 실패한 빌드를 문서화하지 않습니다.'] },
@@ -1097,12 +1077,12 @@ const DOCS = {
       sections:[
         { h:'관리형 훅 블록',
           paras:['블록은 마커로 구분되며 버전 업그레이드 때 다시 작성됩니다. 마커 밖의 내용은 그대로 보존됩니다.'],
-          code:['~/.claude/settings.json','','// vibisual:begin  (관리 영역 — 수정은 덮어써집니다)','"hooks": { "PreToolUse": [ … ] }','// vibisual:end'] },
+          code:['~/.claude/settings.json','','"hooks": {','  "PreToolUse": [','    // 이 표식이 붙은 블록만 갱신됩니다','    { "_vibisualManaged": true, "hooks": [ … ] }','  ]','}'] },
         { h:'환경 변수',
-          rows:[['VIBISUAL_SKIP_HOOK_INSTALL','1 = settings.json을 건드리지 않음'],['VIBISUAL_PORT','로컬 소켓 포트, 기본 47823'],['VIBISUAL_LOG','debug · info · silent'],['VIBISUAL_DATA_DIR','세션 저장 위치 변경']] },
+          rows:[['VIBISUAL_SKIP_HOOK_INSTALL','1 = settings.json을 건드리지 않음'],['VIBISUAL_HOME','~/.vibisual 위치 변경'],['VIBISUAL_PERF','1 = 성능 스냅샷을 로그에 기록']] },
         { h:'데이터 위치',
-          rows:[['세션','%APPDATA%/Vibisual/sessions'],['그래프','저장된 에이전트 그래프, 프로젝트당 JSON 하나'],['로그','%APPDATA%/Vibisual/logs, 20MB 단위 순환']],
-          note:'세션 기록에는 프롬프트, 툴 호출, 파일 경로, 셸 명령이 담깁니다. Vibisual에는 서버 구성 요소가 없어 모두 로컬에 남지만, 해당 디렉터리는 민감한 정보로 다루세요.' },
+          rows:[['프로젝트별','<프로젝트>/.vibisual/save/checkpoint.json — 그래프·에이전트·세션 상태'],['머신 공통','~/.vibisual/app-state.json — 열린 프로젝트와 환경설정'],['로그','앱 데이터 폴더: Windows %APPDATA%/Vibisual, macOS ~/Library/Application Support/Vibisual, Linux ~/.config/Vibisual']],
+          note:'세션 기록에는 프롬프트, 툴 호출, 파일 경로, 셸 명령이 담깁니다. 서버는 앱 안에서 루프백에만 묶여 돌기 때문에 기록이 밖으로 나가지는 않지만, 해당 디렉터리는 민감한 정보로 다루세요.' },
       ] },
   ],
 };
@@ -1144,7 +1124,7 @@ const EDGES = [['orchestrator','schema'],['orchestrator','api'],['schema','api']
 
 class Component extends DCLogic {
   state = { selected: 'orchestrator', tick: 5, lang: 'en', langOpen: false, progress: 0,
-    view: 'home', post: null, docPage: 'overview', docQ: '' };
+    view: 'home', post: null, docPage: 'overview', docQ: '', relVer: null, relExe: null };
 
   setView(v) {
     this.setState({ view: v, post: null, langOpen: false });
@@ -1341,6 +1321,16 @@ class Component extends DCLogic {
     window.addEventListener('scroll', this.onScroll, { passive: true });
     this.onDocClick = e => { if (this.state.langOpen && !e.target.closest('button')) this.setState({ langOpen: false }); };
     document.addEventListener('click', this.onDocClick);
+    // 최신 릴리스는 GitHub 공개 API 에서 받아 온다 — 버전을 페이지에 박아 두면
+    // 릴리스할 때마다 사이트가 낡는다. 실패하면 아래 폴백 문자열이 그대로 쓰인다.
+    fetch('https://api.github.com/repos/Vibisual/vibisual/releases/latest')
+      .then(r => (r.ok ? r.json() : null))
+      .then(j => {
+        if (!j || !j.tag_name) return;
+        const exe = (j.assets || []).map(a => a.name).filter(n => n.indexOf('-setup.exe') >= 0)[0];
+        this.setState({ relVer: j.tag_name, relExe: exe || null });
+      })
+      .catch(() => {});
     const saved = localStorage.getItem('vibisual-lang');
     if (saved && T[saved]) this.setState({ lang: saved });
   }
@@ -1424,6 +1414,14 @@ class Component extends DCLogic {
       lines: current.stream.slice(0, n).map(([time, text, color]) => ({ time, text, color })),
       sel: { ...current, color: STATUS[current.status].color },
       t: T[lang] || T.en,
+      // 지표 4칸 — 확인 가능한 제품 사실만 싣는다.
+      stat1: this.state.relVer || 'v0.1.14',
+      stat2: 'Apache-2.0',
+      stat3: '3',
+      stat4: '12',
+      verBadge: (this.state.relVer || 'v0.1.14') + ' preview',
+      verNum: this.state.relVer || 'v0.1.14',
+      dlName: this.state.relExe || 'Vibisual-0.1.14-setup.exe',
       eyeSpacing: cjk ? '0.01em' : '0.09em',
       eyeCase: cjk ? 'none' : 'uppercase',
       langs: LANGS.map(([code, label]) => ({
