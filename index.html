@@ -47,6 +47,93 @@
   aside::-webkit-scrollbar-thumb, main div::-webkit-scrollbar-thumb { background: oklch(0.34 0.012 250); border-radius: 999px; }
   @keyframes vbPulse { 0%,100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 1; transform: scale(1.4); } }
   @keyframes vbSpin { to { transform: rotate(360deg); } }
+
+  /* ── 좁은 화면 대응 ───────────────────────────────────────────────────
+     본문은 dc 템플릿의 인라인 style 로 그려지므로, 여기서 덮으려면 !important 가 필요하다.
+     데스크톱 레이아웃은 손대지 않고 좁은 폭에서만 접는다. 바깥 래퍼가 overflow-x:clip 이라
+     넘친 것은 스크롤이 아니라 "잘려서 안 보이는" 상태가 되므로, 넘칠 수 있는 자리는
+     전부 접거나(1단) 자기 몫의 가로 스크롤 띠 안으로 넣는다. */
+
+  /* 태블릿 — 3단 구조를 1단으로 */
+  @media (max-width: 1000px) {
+    .vb-docs { grid-template-columns: minmax(0,1fr) !important; }
+    .vb-docsnav { position: static !important; max-height: none !important; border-right: none !important;
+                  border-bottom: 1px solid oklch(0.26 0.012 250) !important; padding: 20px 0 20px !important; }
+    .vb-docstoc { position: static !important; max-height: none !important; border-left: none !important;
+                  border-top: 1px solid oklch(0.26 0.012 250) !important; padding: 24px 22px 34px !important; }
+    .vb-docsmain { padding: 32px 22px 52px !important; }
+
+    .vb-canvas { grid-template-columns: minmax(0,1fr) !important; min-height: 0 !important; }
+    .vb-canvas > aside:first-of-type { border-right: none !important; border-bottom: 1px solid oklch(0.26 0.012 250) !important; }
+    .vb-canvas > aside:last-of-type  { border-left: none !important;  border-top: 1px solid oklch(0.26 0.012 250) !important; }
+    /* 버블은 % 좌표 + 고정 px 지름이라 폭을 줄이면 서로 겹친다. 지도만 제 몫의 가로 스크롤을 갖는다. */
+    .vb-canvasscroll { overflow-x: auto !important; }
+    .vb-canvasmap { min-width: 520px !important; height: 520px !important; }
+    .vb-canvasscroll { scrollbar-width: thin !important; scrollbar-color: oklch(0.42 0.03 210) transparent; }
+    .vb-canvasscroll::-webkit-scrollbar { height: 6px; }
+    .vb-canvasscroll::-webkit-scrollbar-track { background: transparent; }
+    .vb-canvasscroll::-webkit-scrollbar-thumb { background: oklch(0.42 0.03 210); border-radius: 999px; }
+    /* 같은 안내가 왼쪽 목록 바닥({{ t.bubListFoot }})에 이미 있다 — 여기서만 접는다. */
+    .vb-maphint { display: none !important; }
+
+    .vb-art { grid-template-columns: minmax(0,1fr) !important; gap: 22px !important; }
+
+    /* 창 목업은 앱 화면의 재현물이라 눌러 담으면 거짓이 된다 — 원래 치수 그대로 옆으로 민다. */
+    .vb-mockstrip { overflow-x: auto !important; overflow-y: hidden !important; }
+    .vb-mockwin { min-width: 940px !important; }
+    .vb-anno { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+    .vb-anno > * { grid-column: auto !important; }
+  }
+
+  /* 폰 */
+  @media (max-width: 780px) {
+    section[id] { scroll-margin-top: 118px; }
+
+    .vb-hdrbar { flex-wrap: wrap !important; gap: 10px 14px !important; padding: 12px 18px !important; }
+    .vb-nav { position: relative !important; flex: 1 0 100% !important; flex-wrap: wrap !important;
+              gap: 10px 14px !important; font-size: 13px !important; }
+    .vb-langwrap { position: static !important; }
+    .vb-langpanel { top: calc(100% + 8px) !important; right: 0 !important; left: auto !important;
+                    width: min(240px, calc(100vw - 36px)) !important; }
+
+    .vb-sec, .vb-foot { padding-left: 18px !important; padding-right: 18px !important; }
+    .vb-footlinks { flex-wrap: wrap !important; gap: 8px 14px !important; }
+
+    .vb-h1   { font-size: 38px !important; line-height: 1.06 !important; letter-spacing: -0.03em !important; }
+    .vb-h1md { font-size: 30px !important; line-height: 1.14 !important; }
+    .vb-h2   { font-size: 27px !important; }
+    .vb-h2xl { font-size: 32px !important; letter-spacing: -0.03em !important; }
+    .vb-lead { font-size: 17px !important; }
+
+    .vb-stats { grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+                margin: 36px -18px 0 !important; }
+    .vb-stats > * { padding: 20px 18px !important; }
+    .vb-stats > * > span:first-child { font-size: 27px !important; }
+
+    .vb-3col, .vb-2col { grid-template-columns: minmax(0,1fr) !important; }
+    .vb-3col > *, .vb-2col > * { padding: 22px 18px !important; }
+
+    .vb-video { flex-direction: column !important; align-items: flex-start !important;
+                gap: 18px !important; padding: 26px 20px !important; }
+
+    .vb-feat { padding: 32px 18px !important; }
+    .vb-feat > span:nth-child(2) { font-size: 27px !important; }
+    .vb-postrow { grid-template-columns: minmax(0,1fr) !important; gap: 10px !important; padding: 24px 18px !important; }
+    .vb-postrow > *:last-child { text-align: left !important; }
+
+    .vb-docrow { grid-template-columns: minmax(0,1fr) !important; gap: 5px !important; }
+    .vb-docsmain { padding: 26px 18px 44px !important; }
+
+    .vb-caphead { flex-direction: column !important; align-items: flex-start !important; gap: 4px !important; }
+    .vb-anno { grid-template-columns: minmax(0,1fr) !important; }
+    .vb-idenext { flex-direction: column !important; align-items: stretch !important; gap: 12px !important; }
+    .vb-idenext > div:last-child { flex-wrap: wrap !important; }
+    .vb-modaltitle { flex-wrap: wrap !important; gap: 6px 10px !important; }
+    .vb-modaltitle > span:nth-child(2) { flex: 1 1 auto !important; min-width: 0 !important; }
+    .vb-modaltitle > span:nth-child(3) { flex: 1 0 100% !important; }
+    .vb-modal { padding: 74px 12px 44px !important; }
+    .vb-mockstrip { padding-left: 22px !important; }
+  }
 </style>
 </helmet>
 
@@ -63,22 +150,22 @@
   <div id="vbVeil" aria-hidden="true" style="position:absolute; top:0; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:1280px; z-index:-1; pointer-events:none; background:rgba(9,11,14,0.9)"></div>
 
   <header style="position:sticky; top:0; z-index:60; background:rgba(13,14,17,0.86); backdrop-filter:blur(14px); border-bottom:1px solid oklch(0.28 0.012 250)">
-    <div style="display:flex; align-items:center; justify-content:space-between; gap:24px; max-width:1280px; margin:0 auto; padding:14px 32px">
+    <div class="vb-hdrbar" style="display:flex; align-items:center; justify-content:space-between; gap:24px; max-width:1280px; margin:0 auto; padding:14px 32px">
       <div style="display:flex; align-items:center; gap:12px">
         <div style="width:20px; height:20px; flex:none; border-radius:50%; background:linear-gradient(135deg, #60A5FA 0%, #8B5CF6 100%); box-shadow:0 0 0 4px rgba(118,128,248,0.16)"></div>
         <span style="font-size:17px; font-weight:700; letter-spacing:-0.02em">vibisual</span>
         <span style="font-family:var(--mono); font-size:11px; color:oklch(0.62 0.01 250); border:1px solid oklch(0.3 0.012 250); border-radius:4px; padding:2px 6px">{{ verBadge }}</span>
       </div>
-      <nav style="display:flex; align-items:center; gap:18px; font-size:14px; color:oklch(0.78 0.01 250)">
+      <nav class="vb-nav" style="display:flex; align-items:center; gap:18px; font-size:14px; color:oklch(0.78 0.01 250)">
         <button onClick="{{ goHome }}" style="font-family:inherit; font-size:14px; background:none; border:none; padding:3px 0; cursor:pointer; border-bottom:1.5px solid transparent; color:{{ homeFg }}; border-bottom-color:{{ homeUl }}" style-hover="color:oklch(0.96 0.008 250)">{{ ui.home }}</button>
         <button onClick="{{ goBlog }}" style="font-family:inherit; font-size:14px; background:none; border:none; padding:3px 0; cursor:pointer; border-bottom:1.5px solid transparent; color:{{ blogFg }}; border-bottom-color:{{ blogUl }}" style-hover="color:oklch(0.96 0.008 250)">{{ ui.blog }}</button>
         <button onClick="{{ goDocs }}" style="font-family:inherit; font-size:14px; background:none; border:none; padding:3px 0; cursor:pointer; border-bottom:1.5px solid transparent; color:{{ docsFg }}; border-bottom-color:{{ docsUl }}" style-hover="color:oklch(0.96 0.008 250)">{{ ui.docs }}</button>
         <a href="https://github.com/Vibisual/vibisual" style="color:inherit">GitHub</a>
-        <div style="position:relative">
+        <div class="vb-langwrap" style="position:relative">
           <button onClick="{{ toggleLang }}" style="display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:12px; color:oklch(0.9 0.008 250); background:oklch(0.24 0.01 260); border:1px solid oklch(0.34 0.012 250); border-radius:6px; padding:8px 12px; cursor:pointer" style-hover="border-color:oklch(0.5 0.08 195)">
             <span style="opacity:0.7">⊕</span>{{ langLabel }}<span style="opacity:0.6; font-size:9px">▾</span>
           </button>
-          <div style="position:absolute; right:0; top:44px; width:216px; max-height:{{ langPanelH }}; overflow:hidden; border:1px solid oklch(0.32 0.012 250); border-radius:8px; background:oklch(0.17 0.01 260); box-shadow:0 24px 48px -20px rgba(0,0,0,0.95); opacity:{{ langPanelO }}; transition:max-height 0.22s ease, opacity 0.18s ease; padding:6px">
+          <div class="vb-langpanel" style="position:absolute; right:0; top:44px; width:216px; max-height:{{ langPanelH }}; overflow:hidden; border:1px solid oklch(0.32 0.012 250); border-radius:8px; background:oklch(0.17 0.01 260); box-shadow:0 24px 48px -20px rgba(0,0,0,0.95); opacity:{{ langPanelO }}; transition:max-height 0.22s ease, opacity 0.18s ease; padding:6px">
             <sc-for list="{{ langs }}" as="l" hint-placeholder-count="12">
               <button onClick="{{ l.pick }}" style="display:flex; align-items:center; justify-content:space-between; width:100%; padding:9px 12px; border:none; border-radius:6px; cursor:pointer; font-family:inherit; font-size:14px; text-align:left; color:{{ l.fg }}; background:{{ l.bg }}" style-hover="background:oklch(0.26 0.01 260)">
                 <span>{{ l.label }}</span>
@@ -98,14 +185,14 @@
   <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
   <div>
 
-  <section style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:96px 32px 48px">
+  <section class="vb-sec" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:96px 32px 48px">
     <div style="display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:12px; letter-spacing:{{ eyeSpacing }}; text-transform:{{ eyeCase }}; color:oklch(0.82 0.12 195 / 0.95); text-shadow:0 0 20px oklch(0.72 0.14 195 / 0.45)">
       <span style="width:6px; height:6px; border-radius:50%; background:oklch(0.72 0.14 195); animation:vbPulse 2.4s ease-in-out infinite"></span>
       {{ t.eyebrow }}
     </div>
-    <h1 style="font-size:78px; line-height:0.97; letter-spacing:-0.045em; font-weight:600; margin:24px 0 0; max-width:960px; text-wrap:balance; background-image:linear-gradient(180deg, oklch(0.99 0.004 250), oklch(0.74 0.012 250)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent">{{ t.h1a }} <em style="color:oklch(0.86 0.14 195); -webkit-text-fill-color:oklch(0.86 0.14 195); text-shadow:0 0 24px oklch(0.74 0.15 195 / 0.38); font-style:normal">{{ t.h1em }}</em></h1>
+    <h1 class="vb-h1" style="font-size:78px; line-height:0.97; letter-spacing:-0.045em; font-weight:600; margin:24px 0 0; max-width:960px; text-wrap:balance; background-image:linear-gradient(180deg, oklch(0.99 0.004 250), oklch(0.74 0.012 250)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent">{{ t.h1a }} <em style="color:oklch(0.86 0.14 195); -webkit-text-fill-color:oklch(0.86 0.14 195); text-shadow:0 0 24px oklch(0.74 0.15 195 / 0.38); font-style:normal">{{ t.h1em }}</em></h1>
     <p style="margin:18px 0 0; font-family:var(--mono); font-size:13px; color:oklch(0.82 0.12 195 / 0.72)">{{ t.nameLine }}</p>
-    <p style="font-size:21px; line-height:1.5; color:oklch(0.97 0.008 250 / 0.66); max-width:680px; margin:26px 0 0; text-wrap:pretty">{{ t.sub }}</p>
+    <p class="vb-lead" style="font-size:21px; line-height:1.5; color:oklch(0.97 0.008 250 / 0.66); max-width:680px; margin:26px 0 0; text-wrap:pretty">{{ t.sub }}</p>
 
     <div style="display:flex; flex-wrap:wrap; align-items:center; gap:14px; margin-top:36px">
       <a href="https://github.com/Vibisual/vibisual/releases/latest" style="background:oklch(0.84 0.13 195); color:#0a0b0d; font-weight:600; font-size:15px; padding:14px 22px; border-radius:8px; box-shadow:0 10px 34px -10px oklch(0.72 0.14 195 / 0.6)">{{ t.ctaDl }}</a>
@@ -113,7 +200,7 @@
       <span style="font-family:var(--mono); font-size:13px; color:oklch(0.97 0.008 250 / 0.44)">{{ t.heroMeta }}</span>
     </div>
 
-    <div style="display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:1px; margin:52px -32px 0; background:oklch(0.26 0.012 250); border-top:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250)">
+    <div class="vb-stats" style="display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:1px; margin:52px -32px 0; background:oklch(0.26 0.012 250); border-top:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250)">
       <a href="https://github.com/Vibisual/vibisual/stargazers" style="display:flex; flex-direction:column; gap:12px; padding:26px 32px 24px; background:#0f1013; color:inherit" style-hover="background:#131419">
         <span style="font-size:34px; font-weight:700; letter-spacing:-0.03em; line-height:1; color:oklch(0.99 0.004 250)">{{ stat1 }}</span>
         <span style="display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.52)"><span style="color:oklch(0.7 0.15 300)">★</span>{{ t.st1 }}</span>
@@ -133,13 +220,13 @@
     </div>
   </section>
 
-  <section id="canvas" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:32px">
-    <div style="display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin-bottom:12px; font-family:var(--mono); font-size:12px; color:oklch(0.97 0.008 250 / 0.44)">
+  <section id="canvas" class="vb-sec" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:32px">
+    <div class="vb-caphead" style="display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin-bottom:12px; font-family:var(--mono); font-size:12px; color:oklch(0.97 0.008 250 / 0.44)">
       <span>{{ t.canvasHint }}</span>
       <span>vibisual · canvas</span>
     </div>
 
-    <div style="display:grid; grid-template-columns:176px minmax(0,1fr) 316px; min-height:720px; border:1px solid oklch(0.3 0.012 250); border-radius:0; overflow:hidden; background:#101116">
+    <div class="vb-canvas" style="display:grid; grid-template-columns:176px minmax(0,1fr) 316px; min-height:720px; border:1px solid oklch(0.3 0.012 250); border-radius:0; overflow:hidden; background:#101116">
 
       <aside style="display:flex; flex-direction:column; border-right:1px solid oklch(0.26 0.012 250); background:oklch(0.19 0.008 260)">
         <div style="padding:14px 14px; border-bottom:1px solid oklch(0.26 0.012 250); font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.42)">{{ t.bubListTitle }}</div>
@@ -159,7 +246,7 @@
         </div>
       </aside>
 
-      <div style="position:relative; overflow:hidden; background-color:#0f1014; background-image:radial-gradient(oklch(0.32 0.01 250) 1px, transparent 1px); background-size:26px 26px">
+      <div class="vb-canvasscroll" style="display:grid; min-width:0"><div class="vb-canvasmap" style="position:relative; overflow:hidden; background-color:#0f1014; background-image:radial-gradient(oklch(0.32 0.01 250) 1px, transparent 1px); background-size:26px 26px">
         <sc-for list="{{ bubbles }}" as="b" hint-placeholder-count="5">
           <div onClick="{{ b.select }}" onDoubleClick="{{ b.open }}" title="{{ b.tip }}" style="position:absolute; left:{{ b.left }}; top:{{ b.top }}; width:{{ b.px }}; height:{{ b.px }}; transform:translate(-50%,-50%); cursor:pointer; opacity:{{ b.opacity }}; transition:opacity 0.2s ease">
 
@@ -219,9 +306,10 @@
           </sc-for>
         </div>
 
-        <div style="position:absolute; right:14px; bottom:12px; font-family:var(--mono); font-size:10.5px; color:oklch(0.97 0.008 250 / 0.42); background:rgba(13,14,17,0.72); border-radius:4px; padding:3px 8px; pointer-events:none">{{ t.bubDblHint }}</div>
+        <div class="vb-maphint" style="position:absolute; right:14px; bottom:12px; font-family:var(--mono); font-size:10.5px; color:oklch(0.97 0.008 250 / 0.42); background:rgba(13,14,17,0.72); border-radius:4px; padding:3px 8px; pointer-events:none">{{ t.bubDblHint }}</div>
       </div>
 
+      </div>
       <aside style="display:flex; flex-direction:column; border-left:1px solid oklch(0.26 0.012 250); background:oklch(0.185 0.008 260); min-width:0">
         <div style="padding:16px; border-bottom:1px solid oklch(0.26 0.012 250)">
           <div style="display:flex; align-items:center; gap:9px">
@@ -263,10 +351,10 @@
     <p style="margin:14px 0 0; font-size:14px; color:oklch(0.97 0.008 250 / 0.46); font-style:italic">{{ t.canvasCaption }}</p>
   </section>
 
-  <section id="vde" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:80px 32px 24px">
-    <h2 style="font-size:40px; letter-spacing:-0.03em; margin:0; font-weight:600; background-image:linear-gradient(180deg, oklch(0.98 0.004 250), oklch(0.78 0.012 250)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent">IDE → ADE → VDE</h2>
+  <section id="vde" class="vb-sec" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:80px 32px 24px">
+    <h2 class="vb-h2" style="font-size:40px; letter-spacing:-0.03em; margin:0; font-weight:600; background-image:linear-gradient(180deg, oklch(0.98 0.004 250), oklch(0.78 0.012 250)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent">IDE → ADE → VDE</h2>
     <p style="font-size:18px; line-height:1.55; color:oklch(0.97 0.008 250 / 0.62); max-width:660px; margin:16px 0 36px; text-wrap:pretty">{{ t.vdeLead }}</p>
-    <div style="display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:1px; background:oklch(0.28 0.012 250); border:1px solid oklch(0.28 0.012 250); border-radius:0; overflow:hidden">
+    <div class="vb-3col" style="display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:1px; background:oklch(0.28 0.012 250); border:1px solid oklch(0.28 0.012 250); border-radius:0; overflow:hidden">
       <div style="display:flex; flex-direction:column; gap:14px; padding:26px; background:#101116">
         <span style="font-family:var(--mono); font-size:13px; color:oklch(0.97 0.008 250 / 0.42)">IDE</span>
         <span style="font-size:26px; font-weight:700; letter-spacing:-0.02em">{{ t.vde1 }}</span>
@@ -285,10 +373,10 @@
     </div>
   </section>
 
-  <section id="what" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:64px 32px 24px; display:flex; flex-direction:column; gap:0">
-    <h2 style="font-size:40px; letter-spacing:-0.03em; margin:0 0 12px; font-weight:700">{{ t.whatTitle }}</h2>
+  <section id="what" class="vb-sec" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:64px 32px 24px; display:flex; flex-direction:column; gap:0">
+    <h2 class="vb-h2" style="font-size:40px; letter-spacing:-0.03em; margin:0 0 12px; font-weight:700">{{ t.whatTitle }}</h2>
 
-    <article style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,0.95fr); gap:40px; align-items:start; padding:44px 0; border-top:1px solid oklch(0.26 0.012 250); background:transparent">
+    <article class="vb-art" style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,0.95fr); gap:40px; align-items:start; padding:44px 0; border-top:1px solid oklch(0.26 0.012 250); background:transparent">
       <div style="display:flex; flex-direction:column; gap:14px">
         <span style="font-family:var(--mono); font-size:12px; color:oklch(0.82 0.12 195 / 0.9); text-shadow:0 0 16px oklch(0.72 0.14 195 / 0.35)">01</span>
         <h3 style="font-size:28px; letter-spacing:-0.02em; margin:0; font-weight:600; color:oklch(0.98 0.006 250 / 0.9)">{{ t.f1t }}</h3>
@@ -303,7 +391,7 @@
       </div>
     </article>
 
-    <article style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,0.95fr); gap:40px; align-items:start; padding:44px 0; border-top:1px solid oklch(0.26 0.012 250); background:transparent">
+    <article class="vb-art" style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,0.95fr); gap:40px; align-items:start; padding:44px 0; border-top:1px solid oklch(0.26 0.012 250); background:transparent">
       <div style="display:flex; flex-direction:column; gap:14px">
         <span style="font-family:var(--mono); font-size:12px; color:oklch(0.82 0.12 195 / 0.9); text-shadow:0 0 16px oklch(0.72 0.14 195 / 0.35)">02</span>
         <h3 style="font-size:28px; letter-spacing:-0.02em; margin:0; font-weight:600; color:oklch(0.98 0.006 250 / 0.9)">{{ t.f2t }}</h3>
@@ -320,7 +408,7 @@
       </div>
     </article>
 
-    <article style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,0.95fr); gap:40px; align-items:start; padding:44px 0; border-top:1px solid oklch(0.26 0.012 250); background:transparent">
+    <article class="vb-art" style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,0.95fr); gap:40px; align-items:start; padding:44px 0; border-top:1px solid oklch(0.26 0.012 250); background:transparent">
       <div style="display:flex; flex-direction:column; gap:14px">
         <span style="font-family:var(--mono); font-size:12px; color:oklch(0.82 0.12 195 / 0.9); text-shadow:0 0 16px oklch(0.72 0.14 195 / 0.35)">03</span>
         <h3 style="font-size:28px; letter-spacing:-0.02em; margin:0; font-weight:600; color:oklch(0.98 0.006 250 / 0.9)">{{ t.f3t }}</h3>
@@ -344,8 +432,8 @@
     </article>
   </section>
 
-  <section style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:64px 32px 8px">
-    <a href="https://youtu.be/asJ_Z-75uqc" style="display:flex; align-items:center; justify-content:space-between; gap:24px; padding:36px 34px; border:1px solid oklch(0.26 0.012 250); border-radius:0; background:#101116; color:inherit" style-hover="border-color:oklch(0.5 0.08 195)">
+  <section class="vb-sec" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:64px 32px 8px">
+    <a class="vb-video" href="https://youtu.be/asJ_Z-75uqc" style="display:flex; align-items:center; justify-content:space-between; gap:24px; padding:36px 34px; border:1px solid oklch(0.26 0.012 250); border-radius:0; background:#101116; color:inherit" style-hover="border-color:oklch(0.5 0.08 195)">
       <span style="display:flex; flex-direction:column; gap:8px">
         <span style="font-family:var(--mono); font-size:12px; color:oklch(0.78 0.12 195)">walkthrough</span>
         <span style="font-size:26px; font-weight:700; letter-spacing:-0.02em">{{ t.videoTitle }}</span>
@@ -355,10 +443,10 @@
     </a>
   </section>
 
-  <section id="install" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:72px 32px 24px">
-    <h2 style="font-size:40px; letter-spacing:-0.03em; margin:0; font-weight:600; background-image:linear-gradient(180deg, oklch(0.98 0.004 250), oklch(0.78 0.012 250)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent">{{ t.instTitle }}</h2>
+  <section id="install" class="vb-sec" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:72px 32px 24px">
+    <h2 class="vb-h2" style="font-size:40px; letter-spacing:-0.03em; margin:0; font-weight:600; background-image:linear-gradient(180deg, oklch(0.98 0.004 250), oklch(0.78 0.012 250)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent">{{ t.instTitle }}</h2>
     <p style="font-size:18px; color:oklch(0.97 0.008 250 / 0.62); margin:14px 0 32px; max-width:620px">{{ t.instLead }}</p>
-    <div style="display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:1px; background:oklch(0.26 0.012 250); border:1px solid oklch(0.26 0.012 250)">
+    <div class="vb-2col" style="display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:1px; background:oklch(0.26 0.012 250); border:1px solid oklch(0.26 0.012 250)">
       <div style="display:flex; flex-direction:column; gap:16px; padding:32px; background:#101116">
         <span style="font-size:20px; font-weight:700">{{ t.instWin }}</span>
         <div style="display:flex; gap:6px; flex-wrap:wrap">
@@ -390,8 +478,8 @@
     </div>
   </section>
 
-  <section style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:56px 32px 24px">
-    <div style="display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:1px; background:oklch(0.26 0.012 250); border:1px solid oklch(0.26 0.012 250)">
+  <section class="vb-sec" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:56px 32px 24px">
+    <div class="vb-2col" style="display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:1px; background:oklch(0.26 0.012 250); border:1px solid oklch(0.26 0.012 250)">
       <div style="display:flex; flex-direction:column; gap:12px; padding:32px; background:oklch(0.195 0.028 65)">
         <span style="font-family:var(--mono); font-size:12px; color:oklch(0.8 0.14 65)">{{ t.statusLabel }}</span>
         <p style="margin:0; font-size:15px; line-height:1.6; color:oklch(0.86 0.02 70)">{{ t.statusBody }}</p>
@@ -403,8 +491,8 @@
     </div>
   </section>
 
-  <section style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:72px 32px 96px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:22px">
-    <h2 style="font-size:52px; letter-spacing:-0.04em; margin:0; font-weight:600; max-width:820px; text-wrap:balance; background-image:linear-gradient(180deg, oklch(0.99 0.004 250), oklch(0.72 0.012 250)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent">{{ t.ctaTitle }}</h2>
+  <section class="vb-sec" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:72px 32px 96px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:22px">
+    <h2 class="vb-h2xl" style="font-size:52px; letter-spacing:-0.04em; margin:0; font-weight:600; max-width:820px; text-wrap:balance; background-image:linear-gradient(180deg, oklch(0.99 0.004 250), oklch(0.72 0.012 250)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent">{{ t.ctaTitle }}</h2>
     <p style="margin:0; font-size:18px; color:oklch(0.97 0.008 250 / 0.62); max-width:580px">{{ t.ctaSub }}</p>
     <div style="display:flex; flex-wrap:wrap; gap:14px; justify-content:center">
       <a href="https://github.com/Vibisual/vibisual/releases/latest" style="background:oklch(0.84 0.13 195); color:#0a0b0d; font-weight:600; font-size:15px; padding:15px 26px; border-radius:8px; box-shadow:0 10px 34px -10px oklch(0.72 0.14 195 / 0.6)">{{ t.ctaDl }}</a>
@@ -419,16 +507,16 @@
   <div>
     <sc-if value="{{ noPost }}">
     <div>
-      <section style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:72px 32px 44px">
+      <section class="vb-sec" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:72px 32px 44px">
         <div style="display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:oklch(0.82 0.12 195 / 0.95)">
           <span style="width:6px; height:6px; border-radius:50%; background:oklch(0.72 0.14 195)"></span>{{ ui.blog }}
         </div>
-        <h1 style="font-size:58px; line-height:1.02; letter-spacing:-0.04em; font-weight:600; margin:22px 0 0; max-width:780px; text-wrap:balance; background-image:linear-gradient(180deg, oklch(0.99 0.004 250), oklch(0.76 0.012 250)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent">{{ ui.blogTitle }}</h1>
+        <h1 class="vb-h1" style="font-size:58px; line-height:1.02; letter-spacing:-0.04em; font-weight:600; margin:22px 0 0; max-width:780px; text-wrap:balance; background-image:linear-gradient(180deg, oklch(0.99 0.004 250), oklch(0.76 0.012 250)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent">{{ ui.blogTitle }}</h1>
         <p style="font-size:19px; line-height:1.55; color:oklch(0.97 0.008 250 / 0.62); max-width:620px; margin:22px 0 0; text-wrap:pretty">{{ ui.blogLead }}</p>
       </section>
 
-      <section style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250)">
-        <button onClick="{{ feat.open }}" style="display:flex; flex-direction:column; gap:16px; width:100%; text-align:left; padding:44px 32px; background:#101116; border:none; cursor:pointer; font-family:inherit; color:inherit" style-hover="background:#14151b">
+      <section class="vb-sec" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250)">
+        <button class="vb-feat" onClick="{{ feat.open }}" style="display:flex; flex-direction:column; gap:16px; width:100%; text-align:left; padding:44px 32px; background:#101116; border:none; cursor:pointer; font-family:inherit; color:inherit" style-hover="background:#14151b">
           <span style="display:flex; align-items:center; gap:14px; font-family:var(--mono); font-size:11.5px; color:oklch(0.97 0.008 250 / 0.44)">
             <span style="color:oklch(0.82 0.12 195); letter-spacing:0.1em; text-transform:uppercase">{{ ui.latest }}</span>
             <span>{{ feat.date }}</span>
@@ -440,7 +528,7 @@
           <span style="font-family:var(--mono); font-size:12.5px; color:oklch(0.82 0.12 195); margin-top:4px">{{ ui.more }} →</span>
         </button>
         <sc-for list="{{ posts }}" as="p" hint-placeholder-count="3">
-          <button onClick="{{ p.open }}" style="display:grid; grid-template-columns:136px minmax(0,1fr) 88px; gap:26px; align-items:start; width:100%; text-align:left; padding:30px 32px; background:transparent; border:none; border-top:1px solid oklch(0.26 0.012 250); cursor:pointer; font-family:inherit; color:inherit" style-hover="background:#101116">
+          <button class="vb-postrow" onClick="{{ p.open }}" style="display:grid; grid-template-columns:136px minmax(0,1fr) 88px; gap:26px; align-items:start; width:100%; text-align:left; padding:30px 32px; background:transparent; border:none; border-top:1px solid oklch(0.26 0.012 250); cursor:pointer; font-family:inherit; color:inherit" style-hover="background:#101116">
             <span style="display:flex; flex-direction:column; gap:7px; font-family:var(--mono); font-size:11.5px; color:oklch(0.97 0.008 250 / 0.44)">
               {{ p.date }}<span style="color:{{ p.tagFg }}">{{ p.tag }}</span>
             </span>
@@ -456,13 +544,13 @@
     </sc-if>
 
     <sc-if value="{{ hasPost }}">
-    <section style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:48px 32px 88px">
+    <section class="vb-sec" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:48px 32px 88px">
       <div style="display:flex; flex-direction:column; max-width:720px; margin:0 auto">
         <button onClick="{{ backToList }}" style="align-self:flex-start; font-family:var(--mono); font-size:12px; color:oklch(0.97 0.008 250 / 0.5); background:none; border:none; padding:0; cursor:pointer" style-hover="color:oklch(0.86 0.11 195)">← {{ ui.back }}</button>
         <div style="display:flex; align-items:center; gap:14px; font-family:var(--mono); font-size:11.5px; color:oklch(0.97 0.008 250 / 0.44); margin-top:36px">
           <span>{{ art.date }}</span><span style="color:{{ art.tagFg }}">{{ art.tag }}</span><span>{{ art.read }}</span>
         </div>
-        <h1 style="font-size:44px; line-height:1.1; letter-spacing:-0.035em; font-weight:600; margin:18px 0 0; text-wrap:balance; color:oklch(0.99 0.004 250)">{{ art.title }}</h1>
+        <h1 class="vb-h1md" style="font-size:44px; line-height:1.1; letter-spacing:-0.035em; font-weight:600; margin:18px 0 0; text-wrap:balance; color:oklch(0.99 0.004 250)">{{ art.title }}</h1>
         <p style="font-size:20px; line-height:1.55; color:oklch(0.97 0.008 250 / 0.6); margin:20px 0 0; text-wrap:pretty">{{ art.excerpt }}</p>
         <div style="height:1px; background:oklch(0.26 0.012 250); margin:36px 0 34px"></div>
         <sc-for list="{{ artBody }}" as="pa" hint-placeholder-count="4">
@@ -479,10 +567,10 @@
   </sc-if>
 
   <sc-if value="{{ isDocs }}">
-  <div style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250)">
-    <div style="display:grid; grid-template-columns:266px minmax(0,1fr) 216px; align-items:start">
+  <div class="vb-sec" style="max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); border-bottom:1px solid oklch(0.26 0.012 250); padding:0">
+    <div class="vb-docs" style="display:grid; grid-template-columns:266px minmax(0,1fr) 216px; align-items:start">
 
-      <aside style="position:sticky; top:84px; display:flex; flex-direction:column; border-right:1px solid oklch(0.26 0.012 250); padding:26px 0 32px; max-height:calc(100vh - 84px); overflow:auto">
+      <aside class="vb-docsnav" style="position:sticky; top:84px; display:flex; flex-direction:column; border-right:1px solid oklch(0.26 0.012 250); padding:26px 0 32px; max-height:calc(100vh - 84px); overflow:auto">
         <div style="display:flex; align-items:center; gap:9px; padding:0 20px 14px">
           <span style="font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.46)">{{ ui.docs }}</span>
           <span style="font-family:var(--mono); font-size:10.5px; color:oklch(0.8 0.12 195); border:1px solid oklch(0.36 0.05 210); border-radius:4px; padding:1px 5px">{{ verNum }}</span>
@@ -502,11 +590,11 @@
         </sc-for>
       </aside>
 
-      <main style="padding:42px 46px 64px; min-width:0">
+      <main class="vb-docsmain" style="padding:42px 46px 64px; min-width:0">
         <div style="display:flex; align-items:center; gap:9px; font-family:var(--mono); font-size:11.5px; color:oklch(0.97 0.008 250 / 0.42)">
           <span>{{ ui.docs }}</span><span style="opacity:0.45">/</span><span>{{ doc.g }}</span><span style="opacity:0.45">/</span><span style="color:oklch(0.8 0.12 195)">{{ doc.title }}</span>
         </div>
-        <h1 style="font-size:44px; line-height:1.1; letter-spacing:-0.035em; font-weight:600; margin:18px 0 0; color:oklch(0.99 0.004 250); text-wrap:balance">{{ doc.title }}</h1>
+        <h1 class="vb-h1md" style="font-size:44px; line-height:1.1; letter-spacing:-0.035em; font-weight:600; margin:18px 0 0; color:oklch(0.99 0.004 250); text-wrap:balance">{{ doc.title }}</h1>
         <p style="font-size:18.5px; line-height:1.6; color:oklch(0.97 0.008 250 / 0.66); margin:18px 0 24px; max-width:64ch; text-wrap:pretty">{{ doc.lead }}</p>
         <div style="font-family:var(--mono); font-size:11px; color:oklch(0.97 0.008 250 / 0.34); padding-bottom:26px; border-bottom:1px solid oklch(0.24 0.012 250)">{{ ui.updated }} {{ doc.updated }}</div>
 
@@ -526,7 +614,7 @@
             <sc-if value="{{ s.hasRows }}">
               <div style="display:flex; flex-direction:column; border:1px solid oklch(0.26 0.012 250); border-top:none; border-radius:4px; overflow:hidden; background:#0f1014">
                 <sc-for list="{{ s.rows }}" as="r" hint-placeholder-count="4">
-                  <div style="display:grid; grid-template-columns:minmax(150px,auto) minmax(0,1fr); gap:18px; padding:12px 16px; border-top:1px solid oklch(0.26 0.012 250)">
+                  <div class="vb-docrow" style="display:grid; grid-template-columns:minmax(150px,auto) minmax(0,1fr); gap:18px; padding:12px 16px; border-top:1px solid oklch(0.26 0.012 250)">
                     <span style="font-family:var(--mono); font-size:12px; color:oklch(0.82 0.1 195 / 0.92)">{{ r.k }}</span>
                     <span style="font-size:14px; line-height:1.5; color:oklch(0.97 0.008 250 / 0.7)">{{ r.v }}</span>
                   </div>
@@ -542,7 +630,7 @@
           </div>
         </sc-for>
 
-        <div style="display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:1px; background:oklch(0.26 0.012 250); border:1px solid oklch(0.26 0.012 250); margin-top:60px">
+        <div class="vb-2col" style="display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:1px; background:oklch(0.26 0.012 250); border:1px solid oklch(0.26 0.012 250); margin-top:60px">
           <sc-for list="{{ docNav }}" as="n" hint-placeholder-count="2">
             <button onClick="{{ n.pick }}" style="display:flex; flex-direction:column; gap:8px; padding:22px 24px; background:#101116; border:none; cursor:pointer; font-family:inherit; color:inherit; grid-column:{{ n.col }}; align-items:{{ n.align }}; text-align:{{ n.ta }}" style-hover="background:#15161c">
               <span style="font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.4)">{{ n.dir }}</span>
@@ -552,7 +640,7 @@
         </div>
       </main>
 
-      <aside style="position:sticky; top:84px; display:flex; flex-direction:column; gap:11px; padding:46px 22px 40px; border-left:1px solid oklch(0.26 0.012 250); max-height:calc(100vh - 84px); overflow:auto">
+      <aside class="vb-docstoc" style="position:sticky; top:84px; display:flex; flex-direction:column; gap:11px; padding:46px 22px 40px; border-left:1px solid oklch(0.26 0.012 250); max-height:calc(100vh - 84px); overflow:auto">
         <span style="font-family:var(--mono); font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:oklch(0.97 0.008 250 / 0.36)">{{ ui.onThisPage }}</span>
         <sc-for list="{{ docToc }}" as="h" hint-placeholder-count="3">
           <a href="{{ h.href }}" style="font-size:13px; line-height:1.45; color:oklch(0.97 0.008 250 / 0.6)" style-hover="color:oklch(0.88 0.11 195)">{{ h.h }}</a>
@@ -562,8 +650,8 @@
   </div>
   </sc-if>
 
-  <footer style="border-top:1px solid oklch(0.24 0.012 250); padding:28px 32px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); font-family:var(--mono); font-size:12px; color:oklch(0.97 0.008 250 / 0.42)">
-    <span style="display:flex; gap:18px">
+  <footer class="vb-foot" style="border-top:1px solid oklch(0.24 0.012 250); padding:28px 32px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; max-width:1280px; margin:0 auto; border-left:1px solid oklch(0.26 0.012 250); border-right:1px solid oklch(0.26 0.012 250); font-family:var(--mono); font-size:12px; color:oklch(0.97 0.008 250 / 0.42)">
+    <span class="vb-footlinks" style="display:flex; gap:18px">
       <a href="https://github.com/Vibisual/vibisual">github</a>
       <a href="https://github.com/Vibisual/vibisual/releases/latest">releases</a>
       <a href="https://youtu.be/asJ_Z-75uqc">walkthrough</a>
@@ -575,11 +663,11 @@
 </div>
 
   <sc-if value="{{ ideOpen }}">
-  <div style="position:fixed; inset:0; z-index:90; background:rgba(6,7,10,0.94); backdrop-filter:blur(4px); overflow:auto; padding:84px 20px 64px">
+  <div class="vb-modal" style="position:fixed; inset:0; z-index:90; background:rgba(6,7,10,0.94); backdrop-filter:blur(4px); overflow:auto; padding:84px 20px 64px">
     <div style="max-width:1180px; margin:0 auto">
 
       <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:14px">
-        <div style="display:flex; align-items:center; gap:12px; min-width:0">
+        <div class="vb-modaltitle" style="display:flex; align-items:center; gap:12px; min-width:0">
           <span style="width:11px; height:11px; border-radius:50%; flex:none; background:{{ pick.color }}"></span>
           <span style="font-size:18px; font-weight:700; letter-spacing:-0.02em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ pick.title }}</span>
           <span style="font-family:var(--mono); font-size:11px; color:oklch(0.97 0.008 250 / 0.44); border:1px solid oklch(0.3 0.012 250); border-radius:4px; padding:2px 7px; white-space:nowrap">{{ t.ideWindowTag }}</span>
@@ -591,7 +679,7 @@
 
       <!-- 창은 앱 화면 그대로 그린다(치수·색·자리 전부 실제 컴포넌트 값). 번호(주석)는 창 **밖**
            왼쪽 여백에 세워, 재현한 크롬을 한 픽셀도 건드리지 않는다. -->
-      <div style="position:relative; padding-left:32px">
+      <div class="vb-mockstrip" style="position:relative; padding-left:32px">
         <div aria-hidden="true" style="position:absolute; left:0; top:0; bottom:0; width:28px; pointer-events:none">
           <sc-for list="{{ ideMarks }}" as="mk" hint-placeholder-count="7">
             <span style="position:absolute; left:0; top:{{ mk.top }}; display:flex; align-items:center; gap:3px">
@@ -602,7 +690,7 @@
         </div>
 
       <sc-if value="{{ pick.isIde }}">
-      <div style="position:relative; display:flex; flex-direction:column; overflow:hidden; border:1px solid #374151; border-radius:8px; background:#111827; box-shadow:0 40px 90px -30px rgba(0,0,0,0.95)">
+      <div class="vb-mockwin" style="position:relative; display:flex; flex-direction:column; overflow:hidden; border:1px solid #374151; border-radius:8px; background:#111827; box-shadow:0 40px 90px -30px rgba(0,0,0,0.95)">
 
         <!-- (1) 타이틀바 — AgentIDEOverlay: h-10 · bg-[#1a2236] · border-b-gray-700 · px-4.
              이름 오른쪽은 cwd 가 아니라 정체 뱃지(커스텀/훅/CMD)이고, 오른쪽 손잡이는 창 버튼 셋이
@@ -885,7 +973,7 @@
            기억 라이브러리(BrainLibraryOverlay)를 연다. 자기 타이틀바를 가진 별도 창이고, 색도
            IDE 의 gray 사다리가 아니라 zinc 사다리(950 본체 · 800 선)를 쓴다. -->
       <sc-if value="{{ pick.isBrainWin }}">
-      <div style="position:relative; display:flex; flex-direction:column; overflow:hidden; border:1px solid #27272A; border-radius:12px; background:#09090B; box-shadow:0 40px 90px -30px rgba(0,0,0,0.95)">
+      <div class="vb-mockwin" style="position:relative; display:flex; flex-direction:column; overflow:hidden; border:1px solid #27272A; border-radius:12px; background:#09090B; box-shadow:0 40px 90px -30px rgba(0,0,0,0.95)">
 
         <!-- (1) 타이틀바 — h-11 · border-b-zinc-800 · px-3. 왼쪽은 액센트 12% 를 깐 28px 칩과 창
              이름, 그 뒤 1px 점과 프로젝트. 오른쪽은 [사용법] · 최소화 · 최대화 · 닫기 넷이다. -->
@@ -1043,7 +1131,7 @@
 
       <p style="margin:18px 0 12px; font-size:13px; line-height:1.6; color:oklch(0.97 0.008 250 / 0.5); max-width:780px; text-wrap:pretty">{{ t.ideAnnoLead }}</p>
 
-      <div style="display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:1px; background:oklch(0.26 0.012 250); border:1px solid oklch(0.26 0.012 250)">
+      <div class="vb-anno" style="display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:1px; background:oklch(0.26 0.012 250); border:1px solid oklch(0.26 0.012 250)">
         <sc-for list="{{ ideAnno }}" as="an" hint-placeholder-count="7">
           <div style="display:flex; flex-direction:column; gap:9px; padding:18px 20px 20px; background:#101116; min-width:0; grid-column:{{ an.col }}">
             <div style="display:flex; align-items:center; gap:9px">
@@ -1056,7 +1144,7 @@
         </sc-for>
       </div>
 
-      <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:16px; padding:16px 20px; border:1px solid oklch(0.26 0.012 250); background:#0f1014">
+      <div class="vb-idenext" style="display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:16px; padding:16px 20px; border:1px solid oklch(0.26 0.012 250); background:#0f1014">
         <div style="display:flex; flex-direction:column; gap:6px; min-width:0">
           <span style="font-family:var(--mono); font-size:11px; color:oklch(0.78 0.12 195)">{{ t.ideNextTag }}</span>
           <span style="font-size:14px; color:oklch(0.97 0.008 250 / 0.62); line-height:1.55">{{ t.ideNextBody }}</span>
