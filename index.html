@@ -3340,52 +3340,94 @@ class Component extends DCLogic {
     // Esc 로 창을 닫는다 — 덮개를 띄웠으면 되돌아갈 길이 키보드에도 있어야 한다.
     this.onKey = e => { if (e.key === 'Escape' && this.state.ide) this.setState({ ide: false }); };
     document.addEventListener('keydown', this.onKey);
-    // 최신 릴리스는 GitHub 공개 API 에서 받아 온다 — 버전을 페이지에 박아 두면
-    // 릴리스할 때마다 사이트가 낡는다. 실패하면 아래 폴백 문자열이 그대로 쓰인다.
-    fetch('https://api.github.com/repos/Vibisual/vibisual/releases/latest')
-      .then(r => (r.ok ? r.json() : null))
-      .then(j => {
-        if (!j || !j.tag_name) return;
-        const names = (j.assets || []).map(a => a.name);
-        const arm = (n) => (n.indexOf("arm64") >= 0 ? 1 : 0);
-        this.setState({ relVer: j.tag_name, relAssets: {
-          win: names.filter(n => n.slice(-10) === "-setup.exe"),
-          mac: names.filter(n => n.slice(-4) === ".dmg").sort((a, b) => arm(b) - arm(a)),
-          linux: names.filter(n => n.slice(-9) === ".AppImage" || n.slice(-4) === ".deb" || n.slice(-4) === ".rpm"),
-        } });
-      })
-      .catch(() => {});
-    // 지표 4칸에 숫자를 박아 두지 않는다 — 앞의 셋은 실측 조회고, 넷째만 이 페이지가 스스로 센다.
-    // ① 스타: 저장소 메타. 실패하면 칸을 '—' 로 두고 지어내지 않는다.
-    fetch('https://api.github.com/repos/Vibisual/vibisual')
-      .then(r => (r.ok ? r.json() : null))
-      .then(j => {
-        if (!j || typeof j.stargazers_count !== 'number') return;
-        this.setState({ stars: j.stargazers_count });
-      })
-      .catch(() => {});
-    // ② 누적 다운로드 — 설치본(exe · dmg · AppImage)만 센다. latest.yml 은 앱이 켜질 때마다
-    //    조회하는 업데이트 메타라 사람 수가 아니고, blockmap 은 델타 조각이다.
-    fetch('https://api.github.com/repos/Vibisual/vibisual/releases?per_page=100')
-      .then(r => (r.ok ? r.json() : null))
-      .then(j => {
-        if (!Array.isArray(j) || !j.length) return;
-        const isInstaller = n => {
-          const s = String(n).toLowerCase();
-          return s.endsWith('.exe') || s.endsWith('.dmg') || s.endsWith('.appimage');
-        };
-        let dls = 0;
-        j.forEach(rel => {
-          (rel.assets || []).forEach(a => {
-            if (isInstaller(a.name)) dls += a.download_count || 0;
+    // 지표 칸과 버전·자산 목록은 GitHub 공개 API 에서 받아 온다 — 숫자를 페이지에 박아 두면
+    // 릴리스할 때마다 사이트가 낡는다.
+    //
+    // ⚠ 이 API 는 키 없이 쓰면 **IP 당 시간 60회**뿐이다. 예전에는 페이지가 한 번 뜰 때마다
+    //    세 번씩 썼기 때문에 새로고침 스무 번이면 한도가 비었고, 그 순간부터 스타·설치 수가
+    //    '—' 로 떨어졌다 — 값이 0 이라서가 아니라 못 받아서다. 이동통신망처럼 여러 사람이
+    //    한 IP 를 나눠 쓰는 곳에서는 훨씬 빨리 빈다. 그래서 두 가지를 한다:
+    //      ① 릴리스 목록 한 번으로 최신 릴리스까지 같이 얻어 호출을 셋에서 둘로 줄인다.
+    //      ② 받은 값을 브라우저에 남겨 두고 한도 창(1시간) 안에는 다시 묻지 않는다. 조회에
+    //         실패해도 남아 있는 값을 그대로 쓴다 — 방금까지 보이던 숫자를 '—' 로 되돌리는
+    //         것이 아무것도 안 하는 것보다 나쁘다. 실패는 저장하지 않으므로 다음 방문에 다시 묻는다.
+    const STATS_KEY = 'vibisual-stats', STATS_TTL = 60 * 60 * 1000;
+    const readStats = () => {
+      try {
+        const o = JSON.parse(localStorage.getItem(STATS_KEY) || 'null');
+        return o && typeof o === 'object' ? o : null;
+      } catch (e) { return null; }
+    };
+    const saveStats = (patch) => {
+      try { localStorage.setItem(STATS_KEY, JSON.stringify({ ...(readStats() || {}), ...patch })); } catch (e) {}
+    };
+    const fresh = (at) => typeof at === 'number' && Date.now() - at < STATS_TTL;
+    const cached = readStats() || {};
+    {
+      // 남아 있는 값을 먼저 그린다 — 조회가 늦거나 막혀도 칸이 비어 보이지 않게.
+      const seed = {};
+      if (typeof cached.stars === 'number') seed.stars = cached.stars;
+      if (typeof cached.dls === 'number') seed.dls = cached.dls;
+      if (typeof cached.visits === 'number') seed.visits = cached.visits;
+      if (cached.relVer) { seed.relVer = cached.relVer; seed.relAssets = cached.relAssets || null; }
+      if (Object.keys(seed).length) this.setState(seed);
+    }
+
+    // ① 스타 — 저장소 메타. 0 이면 0 으로 적는다('—' 는 못 받았을 때만이다).
+    if (!fresh(cached.starsAt)) {
+      fetch('https://api.github.com/repos/Vibisual/vibisual')
+        .then(r => (r.ok ? r.json() : null))
+        .then(j => {
+          if (!j || typeof j.stargazers_count !== 'number') return;
+          this.setState({ stars: j.stargazers_count });
+          saveStats({ stars: j.stargazers_count, starsAt: Date.now() });
+        })
+        .catch(() => {});
+    }
+
+    // ② 누적 설치 수 + 최신 릴리스 — 목록 한 번으로 둘 다 얻는다.
+    //    사람이 받아서 설치하는 파일만 센다: exe · dmg · AppImage · deb · rpm(리눅스는 셋 다 낸다).
+    //    latest*.yml 은 설치된 앱이 켜질 때마다 조회하는 업데이트 메타라 사람 수가 아니고,
+    //    blockmap 은 델타 조각, mac 의 .zip 은 업데이트 페이로드다 — 셋 다 뺀다.
+    if (!fresh(cached.relAt)) {
+      fetch('https://api.github.com/repos/Vibisual/vibisual/releases?per_page=100')
+        .then(r => (r.ok ? r.json() : null))
+        .then(j => {
+          if (!Array.isArray(j) || !j.length) return;
+          const isInstaller = n => {
+            const s = String(n).toLowerCase();
+            return s.endsWith('.exe') || s.endsWith('.dmg') || s.endsWith('.appimage')
+              || s.endsWith('.deb') || s.endsWith('.rpm');
+          };
+          let dls = 0;
+          j.forEach(rel => {
+            (rel.assets || []).forEach(a => {
+              if (isInstaller(a.name)) dls += a.download_count || 0;
+            });
           });
-        });
-        this.setState({ dls });
-      })
-      .catch(() => {});
+          // 목록은 최신순이다 — 초안·프리릴리스를 건너뛴 첫 항목이 releases/latest 와 같은 것이다.
+          const patch = { dls, relAt: Date.now() };
+          const top = j.filter(r => !r.draft && !r.prerelease)[0];
+          if (top && top.tag_name) {
+            const names = (top.assets || []).map(a => a.name);
+            const arm = (n) => (n.indexOf("arm64") >= 0 ? 1 : 0);
+            patch.relVer = top.tag_name;
+            patch.relAssets = {
+              win: names.filter(n => n.slice(-10) === "-setup.exe"),
+              mac: names.filter(n => n.slice(-4) === ".dmg").sort((a, b) => arm(b) - arm(a)),
+              linux: names.filter(n => n.slice(-9) === ".AppImage" || n.slice(-4) === ".deb" || n.slice(-4) === ".rpm"),
+            };
+          }
+          this.setState(patch);
+          saveStats(patch);
+        })
+        .catch(() => {});
+    }
+
     // ③ 웹사이트 방문자 — GitHub 에는 출처가 없어 카운터를 따로 쓴다(Abacus, 키 불필요·CORS 개방).
-    //    처음 온 브라우저에서만 /hit 로 1 을 올리고, 이미 센 브라우저면 /get 으로 읽기만 한다.
-    //    그래서 이 숫자는 조회수가 아니라 사람 수다.
+    //    한도가 걸린 서비스가 아니라 이 조회는 위 TTL 과 무관하게 매번 한다. 처음 온 브라우저에서만
+    //    /hit 로 1 을 올리고, 이미 센 브라우저면 /get 으로 읽기만 한다 — 그래서 이 숫자는
+    //    조회수가 아니라 사람 수다.
     //    (④ 블로그 글 수는 이 페이지가 이미 들고 있는 목록에서 세므로 조회가 필요 없다.)
     let seen = null;
     try { seen = localStorage.getItem('vibisual-visited'); } catch (e) {}
@@ -3395,6 +3437,7 @@ class Component extends DCLogic {
         if (!j || typeof j.value !== 'number') return;
         if (!seen) { try { localStorage.setItem('vibisual-visited', '1'); } catch (e) {} }
         this.setState({ visits: j.value });
+        saveStats({ visits: j.value });
       })
       .catch(() => {});
     const saved = localStorage.getItem('vibisual-lang');
