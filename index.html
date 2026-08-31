@@ -3340,18 +3340,22 @@ class Component extends DCLogic {
     // Esc 로 창을 닫는다 — 덮개를 띄웠으면 되돌아갈 길이 키보드에도 있어야 한다.
     this.onKey = e => { if (e.key === 'Escape' && this.state.ide) this.setState({ ide: false }); };
     document.addEventListener('keydown', this.onKey);
-    // 지표 칸과 버전·자산 목록은 GitHub 공개 API 에서 받아 온다 — 숫자를 페이지에 박아 두면
-    // 릴리스할 때마다 사이트가 낡는다.
+    // 지표 칸(스타·설치 수)과 버전 배지·다운로드 파일명은 **이 사이트가 스스로 내보내는
+    // stats.json 한 장**에서 읽는다. 브라우저는 GitHub 을 부르지 않는다.
     //
-    // ⚠ 이 API 는 키 없이 쓰면 **IP 당 시간 60회**뿐이다. 예전에는 페이지가 한 번 뜰 때마다
-    //    세 번씩 썼기 때문에 새로고침 스무 번이면 한도가 비었고, 그 순간부터 스타·설치 수가
-    //    '—' 로 떨어졌다 — 값이 0 이라서가 아니라 못 받아서다. 이동통신망처럼 여러 사람이
-    //    한 IP 를 나눠 쓰는 곳에서는 훨씬 빨리 빈다. 그래서 두 가지를 한다:
-    //      ① 릴리스 목록 한 번으로 최신 릴리스까지 같이 얻어 호출을 셋에서 둘로 줄인다.
-    //      ② 받은 값을 브라우저에 남겨 두고 한도 창(1시간) 안에는 다시 묻지 않는다. 조회에
-    //         실패해도 남아 있는 값을 그대로 쓴다 — 방금까지 보이던 숫자를 '—' 로 되돌리는
-    //         것이 아무것도 안 하는 것보다 나쁘다. 실패는 저장하지 않으므로 다음 방문에 다시 묻는다.
-    const STATS_KEY = 'vibisual-stats', STATS_TTL = 60 * 60 * 1000;
+    // 왜: GitHub 공개 API 는 키 없이 쓰면 **사이트당이 아니라 보는 사람 IP 당 시간 60회**다.
+    //     예전에는 페이지가 뜰 때마다 세 번을 썼기 때문에, 새로고침 스무 번이면 한도가 비고
+    //     그때부터 숫자가 '—' 로 죽었다. 이동통신망처럼 수천 명이 한 IP 를 나눠 쓰는 곳에서는
+    //     먼저 온 사람이 한도를 비우고 뒤에 온 사람은 아무 숫자도 못 본다. 방문자가 늘수록
+    //     나빠지는 구조라 호출 횟수를 줄이는 것으로는 끝나지 않는다 — 호출하는 주체를 옮겨야 한다.
+    //
+    // 그래서 GitHub 에 묻는 일은 .github/workflows/stats.yml 하나만 한다(10분마다·인증 조회라
+    // 저장소당 시간 1,000회, 실제로는 한 번에 2회). 값이 바뀐 때만 stats.json 을 커밋하고,
+    // 방문자는 같은 도메인의 그 파일만 재검증해 읽는다. 방문자가 쓰는 GitHub 한도는 0 이다.
+    //
+    // stats.json 을 못 받으면(배포 중이거나 오프라인) 직전에 봤던 값을 그대로 그린다 —
+    // 방금까지 보이던 숫자를 '—' 로 되돌리는 것이 아무것도 안 하는 것보다 나쁘다.
+    const STATS_KEY = 'vibisual-stats';
     const readStats = () => {
       try {
         const o = JSON.parse(localStorage.getItem(STATS_KEY) || 'null');
@@ -3361,73 +3365,40 @@ class Component extends DCLogic {
     const saveStats = (patch) => {
       try { localStorage.setItem(STATS_KEY, JSON.stringify({ ...(readStats() || {}), ...patch })); } catch (e) {}
     };
-    const fresh = (at) => typeof at === 'number' && Date.now() - at < STATS_TTL;
-    const cached = readStats() || {};
     {
-      // 남아 있는 값을 먼저 그린다 — 조회가 늦거나 막혀도 칸이 비어 보이지 않게.
-      const seed = {};
-      if (typeof cached.stars === 'number') seed.stars = cached.stars;
-      if (typeof cached.dls === 'number') seed.dls = cached.dls;
-      if (typeof cached.visits === 'number') seed.visits = cached.visits;
-      if (cached.relVer) { seed.relVer = cached.relVer; seed.relAssets = cached.relAssets || null; }
+      const c = readStats() || {}, seed = {};
+      if (typeof c.stars === 'number') seed.stars = c.stars;
+      if (typeof c.dls === 'number') seed.dls = c.dls;
+      if (typeof c.visits === 'number') seed.visits = c.visits;
+      if (c.relVer) { seed.relVer = c.relVer; seed.relAssets = c.relAssets || null; }
       if (Object.keys(seed).length) this.setState(seed);
     }
 
-    // ① 스타 — 저장소 메타. 0 이면 0 으로 적는다('—' 는 못 받았을 때만이다).
-    if (!fresh(cached.starsAt)) {
-      fetch('https://api.github.com/repos/Vibisual/vibisual')
-        .then(r => (r.ok ? r.json() : null))
-        .then(j => {
-          if (!j || typeof j.stargazers_count !== 'number') return;
-          this.setState({ stars: j.stargazers_count });
-          saveStats({ stars: j.stargazers_count, starsAt: Date.now() });
-        })
-        .catch(() => {});
-    }
-
-    // ② 누적 설치 수 + 최신 릴리스 — 목록 한 번으로 둘 다 얻는다.
-    //    사람이 받아서 설치하는 파일만 센다: exe · dmg · AppImage · deb · rpm(리눅스는 셋 다 낸다).
-    //    latest*.yml 은 설치된 앱이 켜질 때마다 조회하는 업데이트 메타라 사람 수가 아니고,
-    //    blockmap 은 델타 조각, mac 의 .zip 은 업데이트 페이로드다 — 셋 다 뺀다.
-    if (!fresh(cached.relAt)) {
-      fetch('https://api.github.com/repos/Vibisual/vibisual/releases?per_page=100')
-        .then(r => (r.ok ? r.json() : null))
-        .then(j => {
-          if (!Array.isArray(j) || !j.length) return;
-          const isInstaller = n => {
-            const s = String(n).toLowerCase();
-            return s.endsWith('.exe') || s.endsWith('.dmg') || s.endsWith('.appimage')
-              || s.endsWith('.deb') || s.endsWith('.rpm');
-          };
-          let dls = 0;
-          j.forEach(rel => {
-            (rel.assets || []).forEach(a => {
-              if (isInstaller(a.name)) dls += a.download_count || 0;
-            });
-          });
-          // 목록은 최신순이다 — 초안·프리릴리스를 건너뛴 첫 항목이 releases/latest 와 같은 것이다.
-          const patch = { dls, relAt: Date.now() };
-          const top = j.filter(r => !r.draft && !r.prerelease)[0];
-          if (top && top.tag_name) {
-            const names = (top.assets || []).map(a => a.name);
-            const arm = (n) => (n.indexOf("arm64") >= 0 ? 1 : 0);
-            patch.relVer = top.tag_name;
-            patch.relAssets = {
-              win: names.filter(n => n.slice(-10) === "-setup.exe"),
-              mac: names.filter(n => n.slice(-4) === ".dmg").sort((a, b) => arm(b) - arm(a)),
-              linux: names.filter(n => n.slice(-9) === ".AppImage" || n.slice(-4) === ".deb" || n.slice(-4) === ".rpm"),
-            };
-          }
-          this.setState(patch);
-          saveStats(patch);
-        })
-        .catch(() => {});
-    }
+    // ① 스타 · ② 누적 설치 수 · 최신 릴리스(버전 배지 · 설치 카드의 파일명) — 전부 이 한 장에서.
+    //    no-cache 는 "쓰기 전에 서버에 물어보라"는 뜻이다(안 바뀌었으면 304 라 사실상 공짜).
+    //    그래야 액션이 새 값을 올린 직후 새로고침 한 번에 반영된다.
+    fetch('./stats.json', { cache: 'no-cache' })
+      .then(r => (r.ok ? r.json() : null))
+      .then(j => {
+        if (!j) return;
+        const patch = {};
+        if (typeof j.stars === 'number') patch.stars = j.stars;
+        if (typeof j.installs === 'number') patch.dls = j.installs;
+        const rel = j.release;
+        if (rel && rel.tag) {
+          patch.relVer = rel.tag;
+          patch.relAssets = { win: rel.win || [], mac: rel.mac || [], linux: rel.linux || [] };
+        }
+        if (!Object.keys(patch).length) return;
+        this.setState(patch);
+        saveStats(patch);
+      })
+      .catch(() => {});
 
     // ③ 웹사이트 방문자 — GitHub 에는 출처가 없어 카운터를 따로 쓴다(Abacus, 키 불필요·CORS 개방).
-    //    한도가 걸린 서비스가 아니라 이 조회는 위 TTL 과 무관하게 매번 한다. 처음 온 브라우저에서만
-    //    /hit 로 1 을 올리고, 이미 센 브라우저면 /get 으로 읽기만 한다 — 그래서 이 숫자는
-    //    조회수가 아니라 사람 수다.
+    //    한도가 걸린 서비스가 아니고 사람을 세는 일 자체가 방문 시점에 일어나야 하므로 여기서 부른다.
+    //    처음 온 브라우저에서만 /hit 로 1 을 올리고, 이미 센 브라우저면 /get 으로 읽기만 한다 —
+    //    그래서 이 숫자는 조회수가 아니라 사람 수다.
     //    (④ 블로그 글 수는 이 페이지가 이미 들고 있는 목록에서 세므로 조회가 필요 없다.)
     let seen = null;
     try { seen = localStorage.getItem('vibisual-visited'); } catch (e) {}

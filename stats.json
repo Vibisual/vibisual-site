@@ -1,0 +1,19 @@
+{
+  "stars": 0,
+  "installs": 69,
+  "release": {
+    "tag": "v0.1.16",
+    "win": [
+      "Vibisual-0.1.16-setup.exe"
+    ],
+    "mac": [
+      "Vibisual-0.1.16-arm64.dmg",
+      "Vibisual-0.1.16.dmg"
+    ],
+    "linux": [
+      "Vibisual-0.1.16.AppImage",
+      "vibisual-0.1.16.x86_64.rpm",
+      "vibisual_0.1.16_amd64.deb"
+    ]
+  }
+}
