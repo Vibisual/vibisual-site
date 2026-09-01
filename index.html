@@ -1194,12 +1194,12 @@ const OS_TABS = [
   ['mac', 'macOS', 'M3 5h18v11H3z M8 20h8 M12 16v4'],
   ['linux', 'Linux', 'M4 17l6-5-6-5 M12 17h8'],
 ];
-// 조회가 실패했을 때만 쓰는 이름 — v0.1.17 이 실제로 발행한 자산과 같다.
+// 조회가 실패했을 때만 쓰는 이름 — v0.1.18 이 실제로 발행한 자산과 같다.
 // (이 블록은 .github/scripts/build-stats.mjs 가 릴리스마다 다시 쓴다 — 손으로 고치지 마라.)
 const DL_FALLBACK = {
-  win: ['Vibisual-0.1.17-setup.exe'],
-  mac: ['Vibisual-0.1.17-arm64.dmg', 'Vibisual-0.1.17.dmg'],
-  linux: ['Vibisual-0.1.17.AppImage', 'vibisual-0.1.17.x86_64.rpm', 'vibisual_0.1.17_amd64.deb'],
+  win: ['Vibisual-0.1.18-setup.exe'],
+  mac: ['Vibisual-0.1.18-arm64.dmg', 'Vibisual-0.1.18.dmg'],
+  linux: ['Vibisual-0.1.18.AppImage', 'vibisual-0.1.18.x86_64.rpm', 'vibisual_0.1.18_amd64.deb'],
 };
 
 const T = {
@@ -1971,7 +1971,7 @@ const waveD = (baseY, back) => back
 // 재현이지 삽화가 아니다.
 const APPSTR = {
   en: {
-    acts: ["MCP", "Files", "Context sources", "Skills", "Session hooks", "Claude Code plugins", "Goal", "Run and debug", "Bookmarks", "Session summaries", "Repeat loop", "Verify", "Running subagents"],
+    acts: ["MCP", "Files", "Context sources", "Skills", "Session hooks", "Claude Code plugins", "Goal", "Run and debug", "Bookmarks", "Session summaries", "Repeat loop", "Verify", "Background tasks"],
     idle: "Idle", dormant: "Dormant", awaitInput: "Waiting for your input", running: "running", done: "done",
     stCustom: "Custom", stHook: "Hook", ctx: "ctx: {{used}}/{{max}}", tok: "{{in}} in / {{out}} out", sess: "{{count}} sessions", ac: "auto-compact {{value}}",
     explorer: "Explorer", ph: "Enter command...",
@@ -1990,7 +1990,7 @@ const APPSTR = {
     winBtn: { reading: "Reading settings", refresh: "Reload session", config: "Agent settings", dock: "Dock window", collapse: "Collapse", maximize: "Maximize", close: "Close IDE" },
   },
   fr: {
-    acts: ["MCP", "Fichiers", "Contexte", "Compétences", "Hooks de session", "Plugins Claude Code", "Objectif", "Exécuter et déboguer", "Signets", "Résumés de session", "Boucle de répétition", "Vérifier", "Sous-agents en cours"],
+    acts: ["MCP", "Fichiers", "Contexte", "Compétences", "Hooks de session", "Plugins Claude Code", "Objectif", "Exécuter et déboguer", "Signets", "Résumés de session", "Boucle de répétition", "Vérifier", "Tâches en arrière-plan"],
     idle: "Inactif", dormant: "En veille", awaitInput: "En attente de votre saisie", running: "en cours", done: "terminé",
     stCustom: "Personnalisé", stHook: "Hook", ctx: "ctx : {{used}}/{{max}}", tok: "{{in}} entrée / {{out}} sortie", sess: "{{count}} sessions", ac: "compactage auto {{value}}",
     explorer: "Explorateur", ph: "Saisir une commande...",
@@ -2009,7 +2009,7 @@ const APPSTR = {
     winBtn: { reading: "Paramètres de lecture", refresh: "Recharger la session", config: "Paramètres de l’agent", dock: "Ancrer la fenêtre", collapse: "Replier", maximize: "Agrandir", close: "Fermer l'IDE" },
   },
   de: {
-    acts: ["MCP", "Dateien", "Kontextquellen", "Skills", "Sitzungs-Hooks", "Claude Code-Plugins", "Ziel", "Ausführen und Debuggen", "Lesezeichen", "Session-Zusammenfassungen", "Wiederholungsschleife", "Prüfen", "Laufende Unteragenten"],
+    acts: ["MCP", "Dateien", "Kontextquellen", "Skills", "Sitzungs-Hooks", "Claude Code-Plugins", "Ziel", "Ausführen und Debuggen", "Lesezeichen", "Session-Zusammenfassungen", "Wiederholungsschleife", "Prüfen", "Hintergrundaufgaben"],
     idle: "Bereit", dormant: "Ruhend", awaitInput: "Wartet auf Ihre Eingabe", running: "läuft", done: "fertig",
     stCustom: "Benutzerdefiniert", stHook: "Hook", ctx: "Kontext: {{used}}/{{max}}", tok: "{{in}} ein / {{out}} aus", sess: "{{count}} Sessions", ac: "Auto-Verdichtung {{value}}",
     explorer: "Explorer", ph: "Befehl eingeben...",
@@ -2028,7 +2028,7 @@ const APPSTR = {
     winBtn: { reading: "Leseeinstellungen", refresh: "Sitzung neu laden", config: "Agent-Einstellungen", dock: "Fenster andocken", collapse: "Einklappen", maximize: "Maximieren", close: "IDE schließen" },
   },
   hi: {
-    acts: ["MCP", "फ़ाइलें", "Context स्रोत", "Skills", "सेशन हुक्स", "Claude Code प्लगइन्स", "लक्ष्य", "Run और debug", "बुकमार्क", "Session सारांश", "Repeat loop", "सत्यापन", "चल रहे subagents"],
+    acts: ["MCP", "फ़ाइलें", "Context स्रोत", "Skills", "सेशन हुक्स", "Claude Code प्लगइन्स", "लक्ष्य", "Run और debug", "बुकमार्क", "Session सारांश", "Repeat loop", "सत्यापन", "बैकग्राउंड कार्य"],
     idle: "निष्क्रिय", dormant: "सुप्त", awaitInput: "आपके इनपुट की प्रतीक्षा", running: "चल रहा है", done: "पूर्ण",
     stCustom: "Custom", stHook: "Hook", ctx: "ctx: {{used}}/{{max}}", tok: "{{in}} in / {{out}} out", sess: "{{count}} sessions", ac: "ऑटो-कॉम्पैक्ट {{value}}",
     explorer: "Explorer", ph: "कमांड दर्ज करें...",
@@ -2047,7 +2047,7 @@ const APPSTR = {
     winBtn: { reading: "Reading सेटिंग्स", refresh: "सत्र फिर से लोड करें", config: "एजेंट सेटिंग्स", dock: "विंडो डॉक करें", collapse: "समेटें", maximize: "अधिकतम करें", close: "IDE बंद करें" },
   },
   id: {
-    acts: ["MCP", "File", "Sumber konteks", "Skills", "Hook sesi", "Plugin Claude Code", "Sasaran", "Jalankan dan debug", "Bookmarks", "Ringkasan sesi", "Ulangi loop", "Verifikasi", "Sub-agent berjalan"],
+    acts: ["MCP", "File", "Sumber konteks", "Skills", "Hook sesi", "Plugin Claude Code", "Sasaran", "Jalankan dan debug", "Bookmarks", "Ringkasan sesi", "Ulangi loop", "Verifikasi", "Tugas latar belakang"],
     idle: "Idle", dormant: "Tidur", awaitInput: "Menunggu input Anda", running: "berjalan", done: "selesai",
     stCustom: "Kustom", stHook: "Hook", ctx: "ctx: {{used}}/{{max}}", tok: "{{in}} masuk / {{out}} keluar", sess: "{{count}} sesi", ac: "auto-compact {{value}}",
     explorer: "Explorer", ph: "Masukkan perintah...",
@@ -2066,7 +2066,7 @@ const APPSTR = {
     winBtn: { reading: "Pengaturan Baca", refresh: "Muat ulang sesi", config: "Pengaturan agen", dock: "Tambatkan jendela", collapse: "Ciutkan", maximize: "Maksimalkan", close: "Tutup IDE" },
   },
   it: {
-    acts: ["MCP", "File", "Fonti di contesto", "Skill", "Hook di sessione", "Plugin di Claude Code", "Obiettivo", "Esegui e debug", "Segnalibri", "Riepiloghi sessione", "Ciclo di ripetizione", "Verifica", "Subagent in esecuzione"],
+    acts: ["MCP", "File", "Fonti di contesto", "Skill", "Hook di sessione", "Plugin di Claude Code", "Obiettivo", "Esegui e debug", "Segnalibri", "Riepiloghi sessione", "Ciclo di ripetizione", "Verifica", "Attività in background"],
     idle: "Inattivo", dormant: "In sospensione", awaitInput: "In attesa del tuo input", running: "in esecuzione", done: "completato",
     stCustom: "Personalizzato", stHook: "Hook", ctx: "ctx: {{used}}/{{max}}", tok: "{{in}} in / {{out}} out", sess: "{{count}} sessioni", ac: "compattazione auto {{value}}",
     explorer: "Esplora", ph: "Inserisci comando...",
@@ -2085,7 +2085,7 @@ const APPSTR = {
     winBtn: { reading: "Impostazioni di lettura", refresh: "Ricarica sessione", config: "Impostazioni agente", dock: "Ancora finestra", collapse: "Comprimi", maximize: "Ingrandisci", close: "Chiudi IDE" },
   },
   ja: {
-    acts: ["MCP", "ファイル", "コンテキストソース", "スキル", "セッションフック", "Claude Code プラグイン", "目標", "実行とデバッグ", "ブックマーク", "セッションサマリー", "リピートループ", "検証", "実行中のサブエージェント"],
+    acts: ["MCP", "ファイル", "コンテキストソース", "スキル", "セッションフック", "Claude Code プラグイン", "目標", "実行とデバッグ", "ブックマーク", "セッションサマリー", "リピートループ", "検証", "バックグラウンド作業"],
     idle: "待機中", dormant: "休止中", awaitInput: "入力を待機中", running: "実行中", done: "完了",
     stCustom: "カスタム", stHook: "Hook", ctx: "ctx: {{used}}/{{max}}", tok: "{{in}}入力 / {{out}}出力", sess: "{{count}}セッション", ac: "自動圧縮 {{value}}",
     explorer: "エクスプローラー", ph: "コマンドを入力...",
@@ -2104,7 +2104,7 @@ const APPSTR = {
     winBtn: { reading: "閲覧設定", refresh: "セッションを再読み込み", config: "エージェント設定", dock: "ウィンドウを固定", collapse: "折りたたむ", maximize: "最大化", close: "IDEを閉じる" },
   },
   ko: {
-    acts: ["MCP", "파일", "컨텍스트 소스", "스킬", "세션 훅", "Claude Code 플러그인", "목표", "실행·디버그", "북마크", "세션 요약", "반복 루프", "검증", "실행 중 서브에이전트"],
+    acts: ["MCP", "파일", "컨텍스트 소스", "스킬", "세션 훅", "Claude Code 플러그인", "목표", "실행·디버그", "북마크", "세션 요약", "반복 루프", "검증", "백그라운드 작업"],
     idle: "대기", dormant: "잠듦", awaitInput: "입력 대기 중", running: "실행 중", done: "완료",
     stCustom: "커스텀", stHook: "Hook", ctx: "컨텍스트: {{used}}/{{max}}", tok: "입력 {{in}} / 출력 {{out}}", sess: "{{count}}개 세션", ac: "자동 압축 {{value}}",
     explorer: "탐색기", ph: "명령 입력...",
@@ -2123,7 +2123,7 @@ const APPSTR = {
     winBtn: { reading: "읽기 설정", refresh: "세션 새로고침", config: "에이전트 설정", dock: "창 붙이기", collapse: "접기", maximize: "최대화", close: "IDE 닫기" },
   },
   pt: {
-    acts: ["MCP", "Arquivos", "Fontes de contexto", "Habilidades", "Hooks da sessão", "Plugins do Claude Code", "Objetivo", "Executar e depurar", "Marcadores", "Resumos de sessão", "Loop de repetição", "Verificar", "Subagentes em execução"],
+    acts: ["MCP", "Arquivos", "Fontes de contexto", "Habilidades", "Hooks da sessão", "Plugins do Claude Code", "Objetivo", "Executar e depurar", "Marcadores", "Resumos de sessão", "Loop de repetição", "Verificar", "Tarefas em segundo plano"],
     idle: "Ocioso", dormant: "Em repouso", awaitInput: "Aguardando sua entrada", running: "em execução", done: "concluído",
     stCustom: "Personalizado", stHook: "Hook", ctx: "ctx: {{used}}/{{max}}", tok: "{{in}} entrada / {{out}} saída", sess: "{{count}} sessões", ac: "compactação auto {{value}}",
     explorer: "Explorador", ph: "Digite um comando...",
@@ -2142,7 +2142,7 @@ const APPSTR = {
     winBtn: { reading: "Configurações de leitura", refresh: "Recarregar sessão", config: "Configurações do agente", dock: "Encaixar janela", collapse: "Recolher", maximize: "Maximizar", close: "Fechar IDE" },
   },
   "es-419": {
-    acts: ["MCP", "Archivos", "Fuentes de contexto", "Habilidades", "Hooks de sesión", "Plugins de Claude Code", "Objetivo", "Ejecutar y depurar", "Marcadores", "Resúmenes de sesión", "Bucle de repetición", "Verificar", "Subagentes en ejecución"],
+    acts: ["MCP", "Archivos", "Fuentes de contexto", "Habilidades", "Hooks de sesión", "Plugins de Claude Code", "Objetivo", "Ejecutar y depurar", "Marcadores", "Resúmenes de sesión", "Bucle de repetición", "Verificar", "Tareas en segundo plano"],
     idle: "Inactivo", dormant: "En reposo", awaitInput: "Esperando tu respuesta", running: "en ejecución", done: "completado",
     stCustom: "Personalizado", stHook: "Hook", ctx: "ctx: {{used}}/{{max}}", tok: "{{in}} entrada / {{out}} salida", sess: "{{count}} sesiones", ac: "compactación auto {{value}}",
     explorer: "Explorador", ph: "Ingresa un comando...",
@@ -2161,7 +2161,7 @@ const APPSTR = {
     winBtn: { reading: "Configuración de lectura", refresh: "Recargar sesión", config: "Ajustes del agente", dock: "Acoplar ventana", collapse: "Contraer", maximize: "Maximizar", close: "Cerrar IDE" },
   },
   es: {
-    acts: ["MCP", "Archivos", "Fuentes de contexto", "Habilidades", "Hooks de sesión", "Plugins de Claude Code", "Objetivo", "Ejecutar y depurar", "Marcadores", "Resúmenes de sesión", "Bucle de repetición", "Verificar", "Subagentes en ejecución"],
+    acts: ["MCP", "Archivos", "Fuentes de contexto", "Habilidades", "Hooks de sesión", "Plugins de Claude Code", "Objetivo", "Ejecutar y depurar", "Marcadores", "Resúmenes de sesión", "Bucle de repetición", "Verificar", "Tareas en segundo plano"],
     idle: "Inactivo", dormant: "En reposo", awaitInput: "Esperando tu respuesta", running: "ejecutando", done: "terminado",
     stCustom: "Personalizado", stHook: "Hook", ctx: "ctx: {{used}}/{{max}}", tok: "{{in}} entrada / {{out}} salida", sess: "{{count}} sesiones", ac: "compactación auto {{value}}",
     explorer: "Explorador", ph: "Ingresa un comando...",
@@ -2180,7 +2180,7 @@ const APPSTR = {
     winBtn: { reading: "Ajustes de lectura", refresh: "Recargar sesión", config: "Ajustes del agente", dock: "Acoplar ventana", collapse: "Contraer", maximize: "Maximizar", close: "Cerrar IDE" },
   },
   zh: {
-    acts: ["MCP", "文件", "上下文来源", "技能", "会话 Hooks", "Claude Code 插件", "目标", "运行与调试", "书签", "Session 摘要", "重复循环", "验证", "运行中的子 Agent"],
+    acts: ["MCP", "文件", "上下文来源", "技能", "会话 Hooks", "Claude Code 插件", "目标", "运行与调试", "书签", "Session 摘要", "重复循环", "验证", "后台任务"],
     idle: "空闲", dormant: "休眠", awaitInput: "等待您的输入", running: "运行中", done: "已完成",
     stCustom: "自定义", stHook: "Hook", ctx: "上下文：{{used}}/{{max}}", tok: "{{in}} 输入 / {{out}} 输出", sess: "{{count}} 个 Session", ac: "自动压缩 {{value}}",
     explorer: "资源管理器", ph: "输入命令...",
@@ -3820,8 +3820,8 @@ class Component extends DCLogic {
       stat2: num(this.state.dls),
       stat3: num(this.state.visits),
       stat4: num((BLOG[lang] || BLOG.en).length),
-      verBadge: (this.state.relVer || 'v0.1.17') + ' preview',
-      verNum: this.state.relVer || 'v0.1.17',
+      verBadge: (this.state.relVer || 'v0.1.18') + ' preview',
+      verNum: this.state.relVer || 'v0.1.18',
       osTabs: OS_TABS.map(([id, label, d]) => ({
         id, label, d,
         fg: this.state.os === id ? 'oklch(0.9 0.11 195)' : 'oklch(0.9 0.008 250 / 0.6)',
