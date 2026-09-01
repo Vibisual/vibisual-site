@@ -1194,11 +1194,12 @@ const OS_TABS = [
   ['mac', 'macOS', 'M3 5h18v11H3z M8 20h8 M12 16v4'],
   ['linux', 'Linux', 'M4 17l6-5-6-5 M12 17h8'],
 ];
-// 조회가 실패했을 때만 쓰는 이름 — v0.1.16 이 실제로 발행한 자산과 같다.
+// 조회가 실패했을 때만 쓰는 이름 — v0.1.17 이 실제로 발행한 자산과 같다.
+// (이 블록은 .github/scripts/build-stats.mjs 가 릴리스마다 다시 쓴다 — 손으로 고치지 마라.)
 const DL_FALLBACK = {
-  win: ['Vibisual-0.1.16-setup.exe'],
-  mac: ['Vibisual-0.1.16-arm64.dmg', 'Vibisual-0.1.16.dmg'],
-  linux: ['Vibisual-0.1.16.AppImage'],
+  win: ['Vibisual-0.1.17-setup.exe'],
+  mac: ['Vibisual-0.1.17-arm64.dmg', 'Vibisual-0.1.17.dmg'],
+  linux: ['Vibisual-0.1.17.AppImage', 'vibisual-0.1.17.x86_64.rpm', 'vibisual_0.1.17_amd64.deb'],
 };
 
 const T = {
@@ -3819,8 +3820,8 @@ class Component extends DCLogic {
       stat2: num(this.state.dls),
       stat3: num(this.state.visits),
       stat4: num((BLOG[lang] || BLOG.en).length),
-      verBadge: (this.state.relVer || 'v0.1.16') + ' preview',
-      verNum: this.state.relVer || 'v0.1.16',
+      verBadge: (this.state.relVer || 'v0.1.17') + ' preview',
+      verNum: this.state.relVer || 'v0.1.17',
       osTabs: OS_TABS.map(([id, label, d]) => ({
         id, label, d,
         fg: this.state.os === id ? 'oklch(0.9 0.11 195)' : 'oklch(0.9 0.008 250 / 0.6)',
