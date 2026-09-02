@@ -13,11 +13,21 @@
 <!-- 웹폰트는 이 사이트가 직접 서빙한다 - 방문자 IP 가 Google 로 나가지 않게 하기 위함.
      원본 CSS 와 라이선스는 fonts/fonts.css · fonts/LICENSE.md 참조. -->
 <link href="/fonts/fonts.css" rel="stylesheet" />
+<!-- react / react-dom 도 이 사이트가 직접 서빙한다 — 폰트와 같은 이유다.
+     ① unpkg 가 흔들리면 사이트가 뜨지 않는다(그게 유일한 외부 의존이었다).
+     ② 방문자 IP 가 unpkg 로 나간다. 폰트만 자체 호스팅하고 이건 밖에서 받으면 앞뒤가 안 맞는다.
+     support.js 의 cdnScriptFor() 가 이 표를 먼저 보므로, 파일만 바꿔 두면 CDN 주소는 안 쓴다.
+     vendor/ 의 두 파일은 support.js 가 들고 있는 SRI 해시와 일치하는 원본 그대로다(MIT · vendor/LICENSE-react.txt).
+     이 <script> 는 support.js 보다 **먼저** 와야 한다 — 나중에 오면 이미 CDN 을 부른 뒤다. -->
+<script>window.__resources={
+"https://unpkg.com/react@18.3.1/umd/react.production.min.js":"/vendor/react-18.3.1.production.min.js",
+"https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js":"/vendor/react-dom-18.3.1.production.min.js"};</script>
 <script src="/support.js"></script>
 <!-- vb:seo:head:start · build-seo.mjs 가 갈아끼운다. 손으로 고치지 마라 -->
 <title>What Vibisual is — Vibisual docs</title>
 <meta name="description" content="Vibisual is a desktop application that wraps the Claude CLI. You start and steer a run from an editor pane; the window around it holds the file tree, the terminal, the preview and a live map drawn from Claude Code hook events — so one run fits in one place instead of six." />
 <link rel="canonical" href="https://vibisual.pro/docs/" />
+<link rel="alternate" type="application/atom+xml" title="Vibisual Blog" href="https://vibisual.pro/feed.xml" />
 <link rel="alternate" hreflang="en" href="https://vibisual.pro/docs/" />
 <link rel="alternate" hreflang="ko" href="https://vibisual.pro/docs/?lang=ko" />
 <link rel="alternate" hreflang="x-default" href="https://vibisual.pro/docs/" />

@@ -1,0 +1,72 @@
+# 페이지가 바뀌면 빙(IndexNow)에 즉시 알린다.
+#
+# 왜: 사이트맵은 "여기 주소가 있다"고 걸어 두는 것이고 크롤러가 언제 볼지는 그쪽 사정이다.
+# IndexNow 는 반대로 우리가 "이 주소가 방금 바뀌었다"고 밀어 넣는다. Bing · Yandex · Seznam ·
+# Naver 가 이 한 번의 신고를 나눠 받는다(구글은 참여하지 않는다 — 구글 몫은 Search Console 이다).
+#
+# 권한 증명은 비밀번호가 아니라 **공개된 키 파일**이다. build-seo.mjs 가 사이트 루트에
+# <키>.txt 를 만들어 두고, 아래 요청이 그 위치를 함께 알려 준다. 그 파일이 사라지면 신고가
+# 거부되므로 지우지 마라.
+
+name: indexnow
+
+on:
+  push:
+    branches: [main]
+    # 페이지가 실제로 바뀐 때만 알린다. README 나 워크플로만 고친 푸시로 신고하면
+    # "바뀌지도 않은 주소를 반복 신고하는 사이트"가 되어 신뢰도만 깎인다.
+    paths:
+      - 'index.html'
+      - 'blog/**'
+      - 'docs/**'
+      - 'sitemap.xml'
+      - 'feed.xml'
+      - '404.html'
+      - 'robots.txt'
+  workflow_dispatch:        # 손으로 즉시 돌리고 싶을 때
+
+concurrency:
+  group: indexnow
+  cancel-in-progress: false
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 주소 목록은 sitemap.xml 에서 읽는다 — 여기에 목록을 또 적어 두면 화면이 늘어날 때마다
+      # 두 곳을 고쳐야 하고, 한쪽을 잊으면 새 글이 영영 신고되지 않는다.
+      - name: 바뀐 주소를 IndexNow 에 신고
+        run: |
+          set -euo pipefail
+          KEY=$(ls -1 [0-9a-f][0-9a-f]*.txt 2>/dev/null | head -1 | sed 's/\.txt$//')
+          if [ -z "$KEY" ]; then echo "IndexNow 키 파일이 없다 - 건너뛴다"; exit 0; fi
+          echo "키: $KEY"
+
+          # Pages 가 이 푸시를 배포할 시간을 준다. 신고가 배포보다 빠르면 크롤러가
+          # 옛 내용을 받아 가고, 그 다음 방문까지 새 글이 안 보인다.
+          sleep 90
+
+          BODY=$(KEY="$KEY" node -e '
+            const fs = require("fs");
+            const xml = fs.readFileSync("sitemap.xml", "utf8");
+            const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
+            urls.push("https://vibisual.pro/feed.xml");
+            process.stdout.write(JSON.stringify({
+              host: "vibisual.pro",
+              key: process.env.KEY,
+              keyLocation: "https://vibisual.pro/" + process.env.KEY + ".txt",
+              urlList: urls,
+            }));
+          ')
+          echo "$BODY" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log("신고할 주소 "+JSON.parse(s).urlList.length+"개"))'
+
+          CODE=$(curl -s -o /tmp/resp.txt -w '%{http_code}' -X POST 'https://api.indexnow.org/IndexNow' \
+            -H 'Content-Type: application/json; charset=utf-8' --data-binary "$BODY")
+          echo "응답 $CODE"; cat /tmp/resp.txt || true; echo
+          # 200 = 접수, 202 = 접수했으나 키 확인 대기. 둘 다 정상이다.
+          case "$CODE" in
+            200|202) echo "접수됨" ;;
+            *) echo "신고 실패 - 색인 자체가 막히는 것은 아니지만(사이트맵이 있다) 원인은 봐야 한다"; exit 1 ;;
+          esac

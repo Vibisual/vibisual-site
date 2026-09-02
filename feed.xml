@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <title>Vibisual Blog</title>
+  <subtitle>Essays, release notes and guides from Vibisual — the agent visual desktop for Claude Code.</subtitle>
+  <link rel="self" type="application/atom+xml" href="https://vibisual.pro/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://vibisual.pro/blog/"/>
+  <id>https://vibisual.pro/blog/</id>
+  <updated>2026-08-27T00:00:00Z</updated>
+  <icon>https://vibisual.pro/favicon.svg</icon>
+  <logo>https://vibisual.pro/og.png</logo>
+  <rights>© Vibisual</rights>
+  <author><name>Vibisual</name><uri>https://vibisual.pro</uri></author>
+  <entry>
+    <title>0.1.14: the update button actually updates</title>
+    <link rel="alternate" type="text/html" href="https://vibisual.pro/blog/r0114/"/>
+    <id>https://vibisual.pro/blog/r0114/</id>
+    <published>2026-08-27T00:00:00Z</published>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <category term="release"/>
+    <author><name>Vibisual</name></author>
+    <summary type="text">Pressing Update closed the app and brought it back on the same version. Three fixes, all about the moments around shutdown.</summary>
+    <content type="html">&lt;p&gt;The installer was launched before the app had finished shutting down. It replaces the installed files by renaming them one at a time, and that fails outright while Vibisual.exe is still running — after five one-second retries it gave up and installed nothing. From your side the app simply closed and came back on the old version. The installer is now launched at the very last moment, once cleanup is done and the process is about to disappear.&lt;/p&gt;&lt;p&gt;Shutdown itself was the other half of the problem. It waited for every open network connection to finish on its own, so a phone still connected over LAN access, or an idle keep-alive socket, could hold the app open for over a minute — 68 seconds, measured. Sockets are now cut once we have decided to close, and cleanup has a hard four-second ceiling after which the app exits regardless. Everything written to disk is flushed before that point.&lt;/p&gt;&lt;p&gt;The update button no longer asks twice, either. It already warns you and asks for confirmation; the ordinary close-confirmation was then asking again about the same thing — and the time spent answering it was enough for the installer to give up.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>Why we drew the terminal as space</title>
+    <link rel="alternate" type="text/html" href="https://vibisual.pro/blog/space/"/>
+    <id>https://vibisual.pro/blog/space/</id>
+    <published>2026-08-18T00:00:00Z</published>
+    <updated>2026-08-18T00:00:00Z</updated>
+    <category term="essay"/>
+    <author><name>Vibisual</name></author>
+    <summary type="text">A log tells you what happened, in order. A map tells you where everything is, right now. Agent runs need the second one.</summary>
+    <content type="html">&lt;p&gt;A terminal is a good instrument for one worker. One cursor, one column of output, time running downward. When you were the one typing, that shape matched the work exactly.&lt;/p&gt;&lt;p&gt;Five agents break it. Output from unrelated tasks interleaves, the thing you care about scrolls away while you read something else, and the question you actually have — which one is stuck? — gets answered only by paging back through text that has already moved.&lt;/p&gt;&lt;p&gt;So we stopped printing the run and started drawing it. A node per agent, an edge per handoff, a child bubble per tool call. Position carries meaning, and state is a colour instead of a sentence you have to find.&lt;/p&gt;&lt;p&gt;The surprising part was not the map. It was that the same canvas turned out to be the right place to design the team: if a graph is how you read a run, a graph is also how you write one. Configuration and observation ended up being the same picture, seen at two different times.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>Designing a five-agent checkout refactor</title>
+    <link rel="alternate" type="text/html" href="https://vibisual.pro/blog/five/"/>
+    <id>https://vibisual.pro/blog/five/</id>
+    <published>2026-07-21T00:00:00Z</published>
+    <updated>2026-07-21T00:00:00Z</updated>
+    <category term="guide"/>
+    <author><name>Vibisual</name></author>
+    <summary type="text">One orchestrator, a schema migration, an API rewrite, a test runner that may not write, and a doc writer that waits for green.</summary>
+    <content type="html">&lt;p&gt;Take a checkout refactor touching a migration, two route files and a price helper. Done by one agent it is a long single session, and one mistake anywhere costs the whole run.&lt;/p&gt;&lt;p&gt;Split five ways it becomes a graph. The orchestrator owns the plan. schema-migrator writes the migration in its own worktree and hands the new column names forward. api-builder rewrites the route against them.&lt;/p&gt;&lt;p&gt;test-runner gets read-only access to src/** — it can run the suite and read anything, but it cannot fix what it finds. That constraint is the point: a runner that edits code stops being a measurement.&lt;/p&gt;&lt;p&gt;doc-writer sits behind an edge from test-runner and starts only when the suite is green, so the changelog never describes a build that got rolled back. The whole design is five bubbles and five edges, and it reads faster than the paragraph describing it.&lt;/p&gt;</content>
+  </entry>
+</feed>

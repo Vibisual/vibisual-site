@@ -27,6 +27,10 @@ const REPO = 'https://github.com/Vibisual/vibisual';
 const OG = ORIGIN + '/og.png';
 const SRC = join(ROOT, 'index.html');
 
+// IndexNow 키. **비밀이 아니다** — 규약이 이 값을 <키>.txt 로 사이트에 공개하도록 정한다.
+// 그것이 곧 "이 주소를 신고할 권한이 있다"는 증명이다. 바꾸면 옛 파일이 남으니 그냥 두는 편이 낫다.
+const INDEXNOW_KEY = '9e344fe78575afcbaf85c63d3eadbd5c';
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. index.html 안의 데이터 리터럴을 그대로 읽어 온다
 //
@@ -256,6 +260,8 @@ function headBlock(r) {
   L.push('<title>' + esc(m.title) + '</title>');
   L.push('<meta name="description" content="' + esc(m.desc) + '" />');
   L.push('<link rel="canonical" href="' + abs(r.path) + '" />');
+  // 피드는 모든 화면에 건다 — 리더·수집기는 지금 보고 있는 페이지의 <head> 에서 이것을 찾는다.
+  L.push('<link rel="alternate" type="application/atom+xml" title="Vibisual Blog" href="' + ORIGIN + '/feed.xml" />');
   // 로케일 대안. 본문이 없는 언어까지 신고하면 없는 페이지를 있다고 말하는 셈이라 넣지 않는다.
   for (const code of r.langs) {
     L.push('<link rel="alternate" hreflang="' + esc(HTML_LANG[code] || code) + '" href="' + abs(r.path, code) + '" />');
@@ -517,6 +523,78 @@ put('sitemap.xml', [
     '  </url>',
   ].join('\n')),
   '</urlset>',
+  '',
+].join('\n'));
+
+// ─── 피드 ────────────────────────────────────────────────────────────────────
+// 블로그가 있는데 피드가 없으면 리더·뉴스레터·커뮤니티 봇이 우리 글을 자동으로 물어갈
+// 길이 없다. 사람이 매번 들러 주기를 기다리는 셈이다.
+const iso = (d) => d + 'T00:00:00Z';
+const byNewest = [...posts].sort((a, b) => (a.date < b.date ? 1 : -1));
+
+put('feed.xml', [
+  '<?xml version="1.0" encoding="utf-8"?>',
+  '<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">',
+  '  <title>Vibisual Blog</title>',
+  '  <subtitle>Essays, release notes and guides from Vibisual — the agent visual desktop for Claude Code.</subtitle>',
+  '  <link rel="self" type="application/atom+xml" href="' + ORIGIN + '/feed.xml"/>',
+  '  <link rel="alternate" type="text/html" href="' + ORIGIN + '/blog/"/>',
+  '  <id>' + ORIGIN + '/blog/</id>',
+  '  <updated>' + iso(byNewest[0].date) + '</updated>',
+  '  <icon>' + ORIGIN + '/favicon.svg</icon>',
+  '  <logo>' + OG + '</logo>',
+  '  <rights>© Vibisual</rights>',
+  '  <author><name>Vibisual</name><uri>' + ORIGIN + '</uri></author>',
+  ...byNewest.map((p) => [
+    '  <entry>',
+    '    <title>' + esc(p.title) + '</title>',
+    '    <link rel="alternate" type="text/html" href="' + ORIGIN + '/blog/' + p.id + '/"/>',
+    '    <id>' + ORIGIN + '/blog/' + p.id + '/</id>',
+    '    <published>' + iso(p.date) + '</published>',
+    '    <updated>' + iso(p.date) + '</updated>',
+    '    <category term="' + esc(p.tag) + '"/>',
+    '    <author><name>' + esc(p.author) + '</name></author>',
+    '    <summary type="text">' + esc(p.excerpt) + '</summary>',
+    // 전문을 싣는다 — 요약만 주면 리더에서 읽히지 않고, 우리는 광고를 붙이지 않으므로
+    // 클릭을 붙잡을 이유가 없다.
+    '    <content type="html">' + esc(p.body.map((v) => '<p>' + esc(v) + '</p>').join('')) + '</content>',
+    '  </entry>',
+  ].join('\n')),
+  '</feed>',
+  '',
+].join('\n'));
+
+// ─── IndexNow ────────────────────────────────────────────────────────────────
+// 이 파일이 있어야 빙이 "이 주소를 신고할 권한이 있는 사람"으로 인정한다. 규약이 요구하는
+// 내용은 키 한 줄뿐이다(줄바꿈도 넣지 않는다).
+put(INDEXNOW_KEY + '.txt', INDEXNOW_KEY);
+
+// ─── 404 ─────────────────────────────────────────────────────────────────────
+// GitHub Pages 는 없는 주소에 이 파일을 404 상태로 내보낸다. 여기에 앱을 통째로 실을 이유는
+// 없다 — 366KB 를 받아 봐야 보여 줄 것이 "없습니다" 한 줄이고, 앱이 뜨면 주소는 /no-such-page/
+// 인데 화면은 홈이 되어 더 헷갈린다. 그래서 이 한 장만 따로 만든다.
+put('404.html', [
+  '<!DOCTYPE html>',
+  '<html lang="en">',
+  '<head>',
+  '<meta charset="utf-8">',
+  '<meta name="viewport" content="width=device-width, initial-scale=1">',
+  '<meta name="robots" content="noindex">',
+  '<title>Page not found — Vibisual</title>',
+  '<meta name="theme-color" content="#0d0e11" />',
+  '<link rel="icon" href="/favicon.svg" type="image/svg+xml" />',
+  '<link href="/fonts/fonts.css" rel="stylesheet" />',
+  '</head>',
+  '<body style="margin:0;background:#0d0e11">',
+  '<main style="' + S.wrap + '">',
+  '<p style="' + S.eyebrow + '">404</p>',
+  '<h1 style="' + S.h1 + '">This page does not exist.</h1>',
+  '<p style="' + S.lead + '">The address may have changed, or the link that brought you here may be out of date. Everything the site has is below.</p>',
+  crawlNav(''),
+  '<p style="' + S.meta + '">Vibisual — the agent visual desktop for Claude Code.</p>',
+  '</main>',
+  '</body>',
+  '</html>',
   '',
 ].join('\n'));
 

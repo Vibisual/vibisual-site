@@ -62,7 +62,7 @@ jobs:
       # index.html 도 같이 본다 — 스크립트가 그 안의 폴백(버전 · 다운로드 파일 이름)도 맞추기 때문이다.
       - name: 바뀐 때만 커밋
         run: |
-          PATHS="stats.json index.html blog docs robots.txt sitemap.xml"
+          PATHS="stats.json index.html blog docs robots.txt sitemap.xml feed.xml 404.html"
           if [ -z "$(git status --porcelain -- $PATHS)" ]; then
             echo "값 그대로 - 커밋하지 않는다"
             exit 0
