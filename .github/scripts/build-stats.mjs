@@ -105,6 +105,22 @@ function syncPage(s) {
       s = s.slice(0, a) + block + s.slice(b);
     }
   }
+
+  // ③ 구조화 데이터(JSON-LD)의 `softwareVersion`.
+  //
+  // 왜 여기까지: 이 값은 화면에 안 보이지만 **검색엔진이 읽는다**(schema.org
+  // SoftwareApplication). 눈에 안 보이니 아무도 안 고쳐서 ①②를 맞춘 뒤에도 혼자 낡는다 —
+  // v0.1.20 을 냈는데 여기만 0.1.19 로 남아 있었다. 태그에서 `v` 를 뗀 형태를 쓴다.
+  const VMARK = '"softwareVersion":"';
+  for (let i = s.indexOf(VMARK); i >= 0; i = s.indexOf(VMARK, i + VMARK.length)) {
+    const a2 = i + VMARK.length;
+    const b2 = s.indexOf('"', a2);
+    if (b2 < 0) break;
+    const bare = tag.replace(/^v/, '');
+    if (s.slice(a2, b2) !== bare) hits++;
+    s = s.slice(0, a2) + bare + s.slice(b2);
+  }
+
   return { text: s, hits };
 }
 
