@@ -10,66 +10,42 @@
 <link href="/fonts/fonts.css" rel="stylesheet" />
 <script src="/support.js"></script>
 <!-- vb:seo:head:start · build-seo.mjs 가 갈아끼운다. 손으로 고치지 마라 -->
-<title>Vibisual — The agent visual desktop · built on Claude Code</title>
-<meta name="description" content="Vibisual is an all-in-one desktop for Claude Code — your terminal window, made visual. You still write in an editor pane; what changes is everything around it. The files it touched, the commands it ran, the preview it started, the run drawn as a map you glance at instead of scrolling through." />
-<link rel="canonical" href="https://vibisual.pro/" />
-<link rel="alternate" hreflang="en" href="https://vibisual.pro/" />
-<link rel="alternate" hreflang="fr" href="https://vibisual.pro/?lang=fr" />
-<link rel="alternate" hreflang="de" href="https://vibisual.pro/?lang=de" />
-<link rel="alternate" hreflang="hi" href="https://vibisual.pro/?lang=hi" />
-<link rel="alternate" hreflang="id" href="https://vibisual.pro/?lang=id" />
-<link rel="alternate" hreflang="it" href="https://vibisual.pro/?lang=it" />
-<link rel="alternate" hreflang="ja" href="https://vibisual.pro/?lang=ja" />
-<link rel="alternate" hreflang="ko" href="https://vibisual.pro/?lang=ko" />
-<link rel="alternate" hreflang="pt-BR" href="https://vibisual.pro/?lang=pt" />
-<link rel="alternate" hreflang="es-419" href="https://vibisual.pro/?lang=es-419" />
-<link rel="alternate" hreflang="es" href="https://vibisual.pro/?lang=es" />
-<link rel="alternate" hreflang="zh-CN" href="https://vibisual.pro/?lang=zh" />
-<link rel="alternate" hreflang="x-default" href="https://vibisual.pro/" />
-<meta property="og:type" content="website" />
+<title>0.1.14: the update button actually updates — Vibisual</title>
+<meta name="description" content="Pressing Update closed the app and brought it back on the same version. Three fixes, all about the moments around shutdown." />
+<link rel="canonical" href="https://vibisual.pro/blog/r0114/" />
+<link rel="alternate" hreflang="en" href="https://vibisual.pro/blog/r0114/" />
+<link rel="alternate" hreflang="ko" href="https://vibisual.pro/blog/r0114/?lang=ko" />
+<link rel="alternate" hreflang="x-default" href="https://vibisual.pro/blog/r0114/" />
+<meta property="og:type" content="article" />
 <meta property="og:site_name" content="Vibisual" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content="https://vibisual.pro/" />
-<meta property="og:title" content="Vibisual — The agent visual desktop · built on Claude Code" />
-<meta property="og:description" content="Vibisual is an all-in-one desktop for Claude Code — your terminal window, made visual. You still write in an editor pane; what changes is everything around it. The files it touched, the commands it ran, the preview it started, the run drawn as a map you glance at instead of scrolling through." />
+<meta property="og:url" content="https://vibisual.pro/blog/r0114/" />
+<meta property="og:title" content="0.1.14: the update button actually updates — Vibisual" />
+<meta property="og:description" content="Pressing Update closed the app and brought it back on the same version. Three fixes, all about the moments around shutdown." />
 <meta property="og:image" content="https://vibisual.pro/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-08-27" />
+<meta property="article:section" content="release" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Vibisual — The agent visual desktop · built on Claude Code" />
-<meta name="twitter:description" content="Vibisual is an all-in-one desktop for Claude Code — your terminal window, made visual. You still write in an editor pane; what changes is everything around it. The files it touched, the commands it ran, the preview it started, the run drawn as a map you glance at instead of scrolling through." />
+<meta name="twitter:title" content="0.1.14: the update button actually updates — Vibisual" />
+<meta name="twitter:description" content="Pressing Update closed the app and brought it back on the same version. Three fixes, all about the moments around shutdown." />
 <meta name="twitter:image" content="https://vibisual.pro/og.png" />
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://vibisual.pro/#org","name":"Vibisual","url":"https://vibisual.pro","logo":"https://vibisual.pro/favicon.svg","sameAs":["https://github.com/Vibisual/vibisual"]},{"@type":"WebSite","@id":"https://vibisual.pro/#website","name":"Vibisual","url":"https://vibisual.pro","inLanguage":"en","publisher":{"@id":"https://vibisual.pro/#org"}},{"@type":"SoftwareApplication","@id":"https://vibisual.pro/#app","name":"Vibisual","alternateName":"Vibisual — Visual Development Environment for Claude Code","applicationCategory":"DeveloperApplication","applicationSubCategory":"IDE","operatingSystem":"Windows 10, Windows 11, macOS, Linux","description":"Vibisual is an all-in-one desktop for Claude Code — your terminal window, made visual. You still write in an editor pane; what changes is everything around it. The files it touched, the commands it ran, the preview it started, the run drawn as a map you glance at instead of scrolling through. One window instead of six.","url":"https://vibisual.pro","downloadUrl":"https://github.com/Vibisual/vibisual/releases/latest","installUrl":"https://github.com/Vibisual/vibisual/releases/latest","softwareVersion":"0.1.19","license":"https://www.apache.org/licenses/LICENSE-2.0","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/InStock"},"author":{"@id":"https://vibisual.pro/#org"},"publisher":{"@id":"https://vibisual.pro/#org"},"screenshot":"https://vibisual.pro/og.png","softwareRequirements":"Claude CLI on PATH","featureList":["See where the run is without reading it","Set up an agent team without writing flags","Fix it in the same window"]}]}</script>
-<script>window.__VB_ROUTE__={"view":"home","post":null,"doc":null};</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://vibisual.pro/#org","name":"Vibisual","url":"https://vibisual.pro","logo":"https://vibisual.pro/favicon.svg","sameAs":["https://github.com/Vibisual/vibisual"]},{"@type":"WebSite","@id":"https://vibisual.pro/#website","name":"Vibisual","url":"https://vibisual.pro","inLanguage":"en","publisher":{"@id":"https://vibisual.pro/#org"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vibisual.pro/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://vibisual.pro/blog/"},{"@type":"ListItem","position":3,"name":"0.1.14: the update button actually updates","item":"https://vibisual.pro/blog/r0114/"}]},{"@type":"BlogPosting","@id":"https://vibisual.pro/blog/r0114/#post","headline":"0.1.14: the update button actually updates","description":"Pressing Update closed the app and brought it back on the same version. Three fixes, all about the moments around shutdown.","articleSection":"release","datePublished":"2026-08-27","dateModified":"2026-08-27","inLanguage":"en","wordCount":199,"author":{"@type":"Organization","name":"Vibisual","url":"https://vibisual.pro"},"publisher":{"@id":"https://vibisual.pro/#org"},"image":"https://vibisual.pro/og.png","isPartOf":{"@id":"https://vibisual.pro/blog/#blog"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://vibisual.pro/blog/r0114/"}}]}</script>
+<script>window.__VB_ROUTE__={"view":"blog","post":"r0114","doc":null};</script>
 <!-- vb:seo:head:end -->
 </head>
 <body>
 <!-- vb:seo:body:start · JS 없이도 읽히는 본문. build-seo.mjs 가 갈아끼운다 -->
 <div id="vb-seo" style="margin:0 auto;max-width:840px;padding:64px 22px 80px;font-family:Geist,'IBM Plex Sans KR',Helvetica,sans-serif;color:oklch(0.9 0.008 250);line-height:1.65">
-<p style="margin:0 0 14px;font-size:12px;letter-spacing:0.09em;text-transform:uppercase;color:oklch(0.78 0.13 195)">built on Claude Code</p>
-<h1 style="margin:0 0 18px;font-size:42px;line-height:1.08;letter-spacing:-0.03em;color:oklch(0.97 0.005 250)">The agent visual desktop.</h1>
-<p style="margin:0 0 26px;font-size:19px;color:oklch(0.88 0.008 250)">Vibisual is an all-in-one desktop for Claude Code — your terminal window, made visual. You still write in an editor pane; what changes is everything around it. The files it touched, the commands it ran, the preview it started, the run drawn as a map you glance at instead of scrolling through. One window instead of six.</p>
-<p style="margin:0 0 26px;font-size:13px;color:oklch(0.68 0.01 250)">Windows · macOS · Linux — needs the Claude CLI on your PATH</p>
-<nav style="margin:0 0 34px;font-size:14px;display:flex;flex-wrap:wrap;gap:8px 18px"><a href="/blog/" style="color:oklch(0.78 0.13 195);text-decoration:none">Blog</a><a href="/docs/" style="color:oklch(0.78 0.13 195);text-decoration:none">Docs</a><a href="/docs/install/" style="color:oklch(0.78 0.13 195);text-decoration:none">Install and first run</a><a href="/docs/graph/" style="color:oklch(0.78 0.13 195);text-decoration:none">Designing an agent graph</a><a href="/docs/workspace/" style="color:oklch(0.78 0.13 195);text-decoration:none">The in-map workspace</a><a href="/docs/hooks/" style="color:oklch(0.78 0.13 195);text-decoration:none">Hook events</a><a href="/docs/settings/" style="color:oklch(0.78 0.13 195);text-decoration:none">Settings and environment</a><a href="/blog/space/" style="color:oklch(0.78 0.13 195);text-decoration:none">Why we drew the terminal as space</a><a href="/blog/r0114/" style="color:oklch(0.78 0.13 195);text-decoration:none">0.1.14: the update button actually updates</a><a href="/blog/five/" style="color:oklch(0.78 0.13 195);text-decoration:none">Designing a five-agent checkout refactor</a></nav>
-<p style="margin:0 0 16px;font-size:16px;color:oklch(0.86 0.008 250)"><a href="https://github.com/Vibisual/vibisual/releases/latest" style="color:oklch(0.78 0.13 195);text-decoration:none">Download</a> · <a href="https://github.com/Vibisual/vibisual" style="color:oklch(0.78 0.13 195);text-decoration:none">Star on GitHub</a> · <a href="https://youtu.be/asJ_Z-75uqc" style="color:oklch(0.78 0.13 195);text-decoration:none">2-minute walkthrough</a></p>
-<h2 style="margin:38px 0 12px;font-size:24px;line-height:1.2;letter-spacing:-0.02em;color:oklch(0.95 0.005 250)">What it does</h2>
-<h3 style="margin:26px 0 10px;font-size:18px;color:oklch(0.93 0.005 250)">See where the run is without reading it</h3>
-<p style="margin:0 0 16px;font-size:16px;color:oklch(0.86 0.008 250)">Claude Code emits a hook event at every meaningful point — a prompt submitted, a tool about to run, a sub-agent spawned, a session ended. Vibisual turns those into nodes and edges on a canvas, so “which one is stuck?” is a glance instead of a scroll back through output.</p>
-<h3 style="margin:26px 0 10px;font-size:18px;color:oklch(0.93 0.005 250)">Set up an agent team without writing flags</h3>
-<p style="margin:0 0 16px;font-size:16px;color:oklch(0.86 0.008 250)">Drop a bubble to define a sub-agent — model, permission mode, tools, isolation, max turns, skills, per-agent rules — and wire task edges for handoffs. Vibisual reads the graph and launches the matching Claude Code run, so the configuration stays something you can point at.</p>
-<h3 style="margin:26px 0 10px;font-size:18px;color:oklch(0.93 0.005 250)">Fix it in the same window</h3>
-<p style="margin:0 0 16px;font-size:16px;color:oklch(0.86 0.008 250)">Double-click a bubble and the workspace opens in place: the agent's live stream, a file tree, an editor with syntax highlighting, diffs and a terminal. No second app to alt-tab into, and the canvas keeps running behind it.</p>
-<h2 style="margin:38px 0 12px;font-size:24px;line-height:1.2;letter-spacing:-0.02em;color:oklch(0.95 0.005 250)">Quick start</h2>
-<p style="margin:0 0 16px;font-size:16px;color:oklch(0.86 0.008 250)">Vibisual runs on top of the Claude CLI, which must already be installed and on your PATH.</p>
-<h3 style="margin:26px 0 10px;font-size:18px;color:oklch(0.93 0.005 250)">Install</h3>
-<p style="margin:0 0 16px;font-size:16px;color:oklch(0.86 0.008 250)">Every release ships a Windows installer, macOS builds for Apple Silicon and Intel, and a Linux AppImage. Download the one for your system and run it. The builds are not code-signed yet, so Windows SmartScreen and macOS Gatekeeper ask for confirmation the first time.</p>
-<h3 style="margin:26px 0 10px;font-size:18px;color:oklch(0.93 0.005 250)">Build from source</h3>
-<p style="margin:0 0 16px;font-size:16px;color:oklch(0.86 0.008 250)">Node 20+. On first launch Vibisual writes a managed hook block into ~/.claude/settings.json and keeps a timestamped backup. Set VIBISUAL_SKIP_HOOK_INSTALL=1 to wire hooks yourself.</p>
-<h2 style="margin:38px 0 12px;font-size:24px;line-height:1.2;letter-spacing:-0.02em;color:oklch(0.95 0.005 250)">status · early preview</h2>
-<p style="margin:0 0 16px;font-size:16px;color:oklch(0.86 0.008 250)">This 0.1.x preview is for experimentation, demos and feedback. Expect bugs, incomplete features and occasional breaking changes. Not recommended for critical production workflows or repositories with highly sensitive data.</p>
-<h2 style="margin:38px 0 12px;font-size:24px;line-height:1.2;letter-spacing:-0.02em;color:oklch(0.95 0.005 250)">security &amp; privacy</h2>
-<p style="margin:0 0 16px;font-size:16px;color:oklch(0.86 0.008 250)">Hook payloads may include prompts, tool calls, file paths, shell commands and session metadata. Command hooks run with your local user permissions. Review the generated hook configuration before use, especially in repositories holding secrets or customer data.</p>
-<p style="margin:0 0 26px;font-size:13px;color:oklch(0.68 0.01 250)">Vibisual is an independent open-source project, not affiliated with, endorsed by or sponsored by Anthropic. Claude, Claude Code and Anthropic are trademarks of Anthropic, PBC.</p>
+<p style="margin:0 0 14px;font-size:12px;letter-spacing:0.09em;text-transform:uppercase;color:oklch(0.78 0.13 195)">release</p>
+<h1 style="margin:0 0 18px;font-size:42px;line-height:1.08;letter-spacing:-0.03em;color:oklch(0.97 0.005 250)">0.1.14: the update button actually updates</h1>
+<p style="margin:0 0 26px;font-size:13px;color:oklch(0.68 0.01 250)">2026-08-27 · 3 min · Vibisual</p>
+<nav style="margin:0 0 34px;font-size:14px;display:flex;flex-wrap:wrap;gap:8px 18px"><a href="/" style="color:oklch(0.78 0.13 195);text-decoration:none">Home</a><a href="/blog/" style="color:oklch(0.78 0.13 195);text-decoration:none">Blog</a><a href="/docs/" style="color:oklch(0.78 0.13 195);text-decoration:none">Docs</a><a href="/docs/install/" style="color:oklch(0.78 0.13 195);text-decoration:none">Install and first run</a><a href="/docs/graph/" style="color:oklch(0.78 0.13 195);text-decoration:none">Designing an agent graph</a><a href="/docs/workspace/" style="color:oklch(0.78 0.13 195);text-decoration:none">The in-map workspace</a><a href="/docs/hooks/" style="color:oklch(0.78 0.13 195);text-decoration:none">Hook events</a><a href="/docs/settings/" style="color:oklch(0.78 0.13 195);text-decoration:none">Settings and environment</a><a href="/blog/space/" style="color:oklch(0.78 0.13 195);text-decoration:none">Why we drew the terminal as space</a><a href="/blog/five/" style="color:oklch(0.78 0.13 195);text-decoration:none">Designing a five-agent checkout refactor</a></nav>
+<p style="margin:0 0 26px;font-size:19px;color:oklch(0.88 0.008 250)">Pressing Update closed the app and brought it back on the same version. Three fixes, all about the moments around shutdown.</p>
+<p style="margin:0 0 16px;font-size:16px;color:oklch(0.86 0.008 250)">The installer was launched before the app had finished shutting down. It replaces the installed files by renaming them one at a time, and that fails outright while Vibisual.exe is still running — after five one-second retries it gave up and installed nothing. From your side the app simply closed and came back on the old version. The installer is now launched at the very last moment, once cleanup is done and the process is about to disappear.</p>
+<p style="margin:0 0 16px;font-size:16px;color:oklch(0.86 0.008 250)">Shutdown itself was the other half of the problem. It waited for every open network connection to finish on its own, so a phone still connected over LAN access, or an idle keep-alive socket, could hold the app open for over a minute — 68 seconds, measured. Sockets are now cut once we have decided to close, and cleanup has a hard four-second ceiling after which the app exits regardless. Everything written to disk is flushed before that point.</p>
+<p style="margin:0 0 16px;font-size:16px;color:oklch(0.86 0.008 250)">The update button no longer asks twice, either. It already warns you and asks for confirmation; the ordinary close-confirmation was then asking again about the same thing — and the time spent answering it was enough for the installer to give up.</p>
 </div>
 <!-- vb:seo:body:end -->
 <x-dc>
