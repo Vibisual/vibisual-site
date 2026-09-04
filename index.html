@@ -54,7 +54,7 @@
 <meta name="twitter:title" content="Vibisual — The agent visual desktop · built on Claude Code" />
 <meta name="twitter:description" content="Vibisual is an all-in-one desktop for Claude Code — your terminal window, made visual. You still write in an editor pane; what changes is everything around it. The files it touched, the commands it ran, the preview it started, the run drawn as a map you glance at instead of scrolling through." />
 <meta name="twitter:image" content="https://vibisual.pro/og.png" />
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://vibisual.pro/#org","name":"Vibisual","url":"https://vibisual.pro","logo":"https://vibisual.pro/favicon.svg","sameAs":["https://github.com/Vibisual/vibisual"]},{"@type":"WebSite","@id":"https://vibisual.pro/#website","name":"Vibisual","url":"https://vibisual.pro","inLanguage":"en","publisher":{"@id":"https://vibisual.pro/#org"}},{"@type":"SoftwareApplication","@id":"https://vibisual.pro/#app","name":"Vibisual","alternateName":"Vibisual — Visual Development Environment for Claude Code","applicationCategory":"DeveloperApplication","applicationSubCategory":"IDE","operatingSystem":"Windows 10, Windows 11, macOS, Linux","description":"Vibisual is an all-in-one desktop for Claude Code — your terminal window, made visual. You still write in an editor pane; what changes is everything around it. The files it touched, the commands it ran, the preview it started, the run drawn as a map you glance at instead of scrolling through. One window instead of six.","url":"https://vibisual.pro","downloadUrl":"https://github.com/Vibisual/vibisual/releases/latest","installUrl":"https://github.com/Vibisual/vibisual/releases/latest","softwareVersion":"0.1.20","license":"https://www.apache.org/licenses/LICENSE-2.0","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/InStock"},"author":{"@id":"https://vibisual.pro/#org"},"publisher":{"@id":"https://vibisual.pro/#org"},"screenshot":"https://vibisual.pro/og.png","softwareRequirements":"Claude CLI on PATH","featureList":["See where the run is without reading it","Set up an agent team without writing flags","Fix it in the same window"]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://vibisual.pro/#org","name":"Vibisual","url":"https://vibisual.pro","logo":"https://vibisual.pro/favicon.svg","sameAs":["https://github.com/Vibisual/vibisual"]},{"@type":"WebSite","@id":"https://vibisual.pro/#website","name":"Vibisual","url":"https://vibisual.pro","inLanguage":"en","publisher":{"@id":"https://vibisual.pro/#org"}},{"@type":"SoftwareApplication","@id":"https://vibisual.pro/#app","name":"Vibisual","alternateName":"Vibisual — Visual Development Environment for Claude Code","applicationCategory":"DeveloperApplication","applicationSubCategory":"IDE","operatingSystem":"Windows 10, Windows 11, macOS, Linux","description":"Vibisual is an all-in-one desktop for Claude Code — your terminal window, made visual. You still write in an editor pane; what changes is everything around it. The files it touched, the commands it ran, the preview it started, the run drawn as a map you glance at instead of scrolling through. One window instead of six.","url":"https://vibisual.pro","downloadUrl":"https://github.com/Vibisual/vibisual/releases/latest","installUrl":"https://github.com/Vibisual/vibisual/releases/latest","softwareVersion":"0.1.22","license":"https://www.apache.org/licenses/LICENSE-2.0","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/InStock"},"author":{"@id":"https://vibisual.pro/#org"},"publisher":{"@id":"https://vibisual.pro/#org"},"screenshot":"https://vibisual.pro/og.png","softwareRequirements":"Claude CLI on PATH","featureList":["See where the run is without reading it","Set up an agent team without writing flags","Fix it in the same window"]}]}</script>
 <script>window.__VB_ROUTE__={"view":"home","post":null,"doc":null};</script>
 <!-- vb:seo:head:end -->
 </head>
@@ -1284,12 +1284,12 @@ const OS_TABS = [
   ['mac', 'macOS', 'M3 5h18v11H3z M8 20h8 M12 16v4'],
   ['linux', 'Linux', 'M4 17l6-5-6-5 M12 17h8'],
 ];
-// 조회가 실패했을 때만 쓰는 이름 — v0.1.20 이 실제로 발행한 자산과 같다.
+// 조회가 실패했을 때만 쓰는 이름 — v0.1.22 이 실제로 발행한 자산과 같다.
 // (이 블록은 .github/scripts/build-stats.mjs 가 릴리스마다 다시 쓴다 — 손으로 고치지 마라.)
 const DL_FALLBACK = {
-  win: ['Vibisual-0.1.20-setup.exe'],
-  mac: ['Vibisual-0.1.20-arm64.dmg', 'Vibisual-0.1.20.dmg'],
-  linux: ['Vibisual-0.1.20.AppImage', 'vibisual-0.1.20.x86_64.rpm', 'vibisual_0.1.20_amd64.deb'],
+  win: ['Vibisual-0.1.22-setup.exe'],
+  mac: ['Vibisual-0.1.22-arm64.dmg', 'Vibisual-0.1.22.dmg'],
+  linux: ['Vibisual-0.1.22.AppImage', 'vibisual-0.1.22.x86_64.rpm', 'vibisual_0.1.22_amd64.deb'],
 };
 
 const T = {
@@ -3973,8 +3973,8 @@ class Component extends DCLogic {
       stat2: num(this.state.dls),
       stat3: num(this.state.visits),
       stat4: num((BLOG[lang] || BLOG.en).length),
-      verBadge: (this.state.relVer || 'v0.1.20') + ' preview',
-      verNum: this.state.relVer || 'v0.1.20',
+      verBadge: (this.state.relVer || 'v0.1.22') + ' preview',
+      verNum: this.state.relVer || 'v0.1.22',
       osTabs: OS_TABS.map(([id, label, d]) => ({
         id, label, d,
         fg: this.state.os === id ? 'oklch(0.9 0.11 195)' : 'oklch(0.9 0.008 250 / 0.6)',

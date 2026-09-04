@@ -1,19 +1,19 @@
 {
   "stars": 1,
-  "installs": 121,
+  "installs": 126,
   "release": {
-    "tag": "v0.1.20",
+    "tag": "v0.1.22",
     "win": [
-      "Vibisual-0.1.20-setup.exe"
+      "Vibisual-0.1.22-setup.exe"
     ],
     "mac": [
-      "Vibisual-0.1.20-arm64.dmg",
-      "Vibisual-0.1.20.dmg"
+      "Vibisual-0.1.22-arm64.dmg",
+      "Vibisual-0.1.22.dmg"
     ],
     "linux": [
-      "Vibisual-0.1.20.AppImage",
-      "vibisual-0.1.20.x86_64.rpm",
-      "vibisual_0.1.20_amd64.deb"
+      "Vibisual-0.1.22.AppImage",
+      "vibisual-0.1.22.x86_64.rpm",
+      "vibisual_0.1.22_amd64.deb"
     ]
   }
 }
