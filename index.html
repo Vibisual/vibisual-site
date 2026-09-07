@@ -57,6 +57,33 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://vibisual.pro/#org","name":"Vibisual","url":"https://vibisual.pro","logo":"https://vibisual.pro/favicon.svg","sameAs":["https://github.com/Vibisual/vibisual"]},{"@type":"WebSite","@id":"https://vibisual.pro/#website","name":"Vibisual","url":"https://vibisual.pro","inLanguage":"en","publisher":{"@id":"https://vibisual.pro/#org"}},{"@type":"SoftwareApplication","@id":"https://vibisual.pro/#app","name":"Vibisual","alternateName":"Vibisual — Visual Development Environment for Claude Code","applicationCategory":"DeveloperApplication","applicationSubCategory":"IDE","operatingSystem":"Windows 10, Windows 11, macOS, Linux","description":"Vibisual is an all-in-one desktop for Claude Code — your terminal window, made visual. You still write in an editor pane; what changes is everything around it. The files it touched, the commands it ran, the preview it started, the run drawn as a map you glance at instead of scrolling through. One window instead of six.","url":"https://vibisual.pro","downloadUrl":"https://github.com/Vibisual/vibisual/releases/latest","installUrl":"https://github.com/Vibisual/vibisual/releases/latest","softwareVersion":"0.1.22","license":"https://www.apache.org/licenses/LICENSE-2.0","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/InStock"},"author":{"@id":"https://vibisual.pro/#org"},"publisher":{"@id":"https://vibisual.pro/#org"},"screenshot":"https://vibisual.pro/og.png","softwareRequirements":"Claude CLI on PATH","featureList":["See where the run is without reading it","Set up an agent team without writing flags","Fix it in the same window"]}]}</script>
 <script>window.__VB_ROUTE__={"view":"home","post":null,"doc":null};</script>
 <!-- vb:seo:head:end -->
+<!-- 방문·내려받기 계수. **우리 서버로만** 보낸다 — 이 사이트가 웹폰트도 react 도 직접
+     서빙하는 이유(방문자 IP 를 제3자에게 넘기지 않는다)를 분석에서도 지키기 위함이다.
+     그래서 Cloudflare Web Analytics 같은 남의 비콘은 쓰지 않는다. 보내는 값은
+     `e=view|download` 하나뿐이고 쿠키·기기 식별자·경로·리퍼러는 보내지 않는다.
+     받는 쪽 구현과 보존 규칙(하루치 소금으로 접은 16자 · 35일 TTL)은 앱 저장소의
+     infra/update-proxy/src/worker.js — PRIVACY.md 의 "The website" 절과 한 벌이다.
+     ⚠️ ENDPOINT 가 비어 있으면 **요청 자체가 없다.** 프록시를 배포한 뒤 그 주소를 적는다. -->
+<script>
+(function () {
+  var ENDPOINT = '';   // 예: 'https://update.vibisual.pro/px'
+  if (!ENDPOINT) return;
+  function ping(kind) {
+    try {
+      var url = ENDPOINT + '?e=' + kind;
+      if (navigator.sendBeacon) navigator.sendBeacon(url);
+      else fetch(url, { method: 'POST', keepalive: true, mode: 'no-cors' });
+    } catch (err) { /* 계수가 실패해도 사이트는 그대로 떠야 한다 */ }
+  }
+  ping('view');
+  // 내려받기 버튼은 화면마다 다른 컴포넌트가 그리므로 개별로 걸지 않고 위임으로 받는다.
+  document.addEventListener('click', function (ev) {
+    var el = ev.target;
+    var a = el && el.closest ? el.closest('a[href]') : null;
+    if (a && String(a.href).indexOf('/releases/') >= 0) ping('download');
+  }, true);
+})();
+</script>
 </head>
 <body>
 <!-- vb:seo:body:start · JS 없이도 읽히는 본문. build-seo.mjs 가 갈아끼운다 -->

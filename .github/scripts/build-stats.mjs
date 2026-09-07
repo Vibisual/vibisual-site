@@ -45,12 +45,29 @@ const isInstaller = (name) => {
 const repo = await api(`/repos/${REPO}`);
 const releases = await api(`/repos/${REPO}/releases?per_page=100`);
 
-let installs = 0;
+// 2026-09-07 이전의 설치본 다운로드는 **거의 전부 우리 CI 였다.**
+//
+// 스모크 워크플로(4종 러너)가 검증할 설치본을 `gh release download` 로 받으면서 릴리스마다
+// 6회씩 쌓았고(win 1 · linux 2 · mac arm64 1 · mac x64 2 — `*.dmg` 패턴이 arm64 것까지 집는다),
+// 재시도·수동 재설치까지 더하면 릴리스당 10~15회였다. 실측 근거 둘:
+//   · 릴리스가 없는 날의 증가 = 0 (metrics 브랜치 traction.csv 9/3→9/4, 9/5→9/6)
+//   · 릴리스당 합계가 스모크 도입일(2026-08-27 · v0.1.14)을 경계로 0~6 → 7~40 으로 점프
+//
+// 그날 앱 저장소의 스모크가 아티팩트 경로로 바뀌어 카운터를 더는 건드리지 않는다. 그래서
+// 그 시점의 누계를 **기준선으로 빼고**, 여기 적히는 숫자는 그 뒤에 사람이 받은 것만 센다.
+// 부풀린 수를 그대로 내보이는 것보다 0 에서 다시 세는 편이 낫다 — 이 숫자는 남이 우리를
+// 판단하는 근거로 쓰인다.
+//
+// 되돌리려면 이 값을 0 으로. 늘리지는 마라(그 순간 이 숫자는 다시 지어낸 것이 된다).
+const CI_BASELINE_INSTALLS = 138;
+
+let rawInstalls = 0;
 for (const rel of releases) {
   for (const a of rel.assets || []) {
-    if (isInstaller(a.name)) installs += a.download_count || 0;
+    if (isInstaller(a.name)) rawInstalls += a.download_count || 0;
   }
 }
+const installs = Math.max(0, rawInstalls - CI_BASELINE_INSTALLS);
 
 // 목록은 최신순이다 — 초안·프리릴리스를 건너뛴 첫 항목이 releases/latest 와 같은 것이다.
 const top = releases.filter((r) => !r.draft && !r.prerelease)[0];
@@ -138,4 +155,7 @@ const jsonChanged = prev !== next;
 if (jsonChanged) writeFileSync(OUT, next);
 
 const what = [jsonChanged ? OUT : null, pageChanged ? PAGE : null].filter(Boolean).join(' + ');
-console.log(`${what || 'unchanged'} · stars=${stats.stars} installs=${stats.installs} tag=${stats.release.tag}`);
+console.log(
+  `${what || 'unchanged'} · stars=${stats.stars} installs=${stats.installs}`
+  + ` (raw ${rawInstalls} - CI 기준선 ${CI_BASELINE_INSTALLS}) tag=${stats.release.tag}`,
+);
