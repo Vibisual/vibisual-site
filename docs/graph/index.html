@@ -23,6 +23,33 @@
 "https://unpkg.com/react@18.3.1/umd/react.production.min.js":"/vendor/react-18.3.1.production.min.js",
 "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js":"/vendor/react-dom-18.3.1.production.min.js"};</script>
 <script src="/support.js"></script>
+<!-- 방문·내려받기 계수. **우리 서버로만** 보낸다 — 이 사이트가 웹폰트도 react 도 직접
+     서빙하는 이유(방문자 IP 를 제3자에게 넘기지 않는다)를 분석에서도 지키기 위함이다.
+     그래서 Cloudflare Web Analytics 같은 남의 비콘은 쓰지 않는다. 보내는 값은
+     `e=view|download` 하나뿐이고 쿠키·기기 식별자·경로·리퍼러는 보내지 않는다.
+     받는 쪽 구현과 보존 규칙(하루치 소금으로 접은 16자 · 35일 TTL)은 앱 저장소의
+     infra/update-proxy/src/worker.js — PRIVACY.md 의 "The website" 절과 한 벌이다.
+     ⚠️ ENDPOINT 가 비어 있으면 **요청 자체가 없다.** 프록시를 배포한 뒤 그 주소를 적는다. -->
+<script>
+(function () {
+  var ENDPOINT = '';   // 예: 'https://update.vibisual.pro/px'
+  if (!ENDPOINT) return;
+  function ping(kind) {
+    try {
+      var url = ENDPOINT + '?e=' + kind;
+      if (navigator.sendBeacon) navigator.sendBeacon(url);
+      else fetch(url, { method: 'POST', keepalive: true, mode: 'no-cors' });
+    } catch (err) { /* 계수가 실패해도 사이트는 그대로 떠야 한다 */ }
+  }
+  ping('view');
+  // 내려받기 버튼은 화면마다 다른 컴포넌트가 그리므로 개별로 걸지 않고 위임으로 받는다.
+  document.addEventListener('click', function (ev) {
+    var el = ev.target;
+    var a = el && el.closest ? el.closest('a[href]') : null;
+    if (a && String(a.href).indexOf('/releases/') >= 0) ping('download');
+  }, true);
+})();
+</script>
 <!-- vb:seo:head:start · build-seo.mjs 가 갈아끼운다. 손으로 고치지 마라 -->
 <title>Designing an agent graph — Vibisual docs</title>
 <meta name="description" content="A bubble is a sub-agent. An edge is a handoff. Vibisual reads the graph you draw and launches the matching Claude Code workflow." />
