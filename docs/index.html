@@ -50,6 +50,7 @@
   }, true);
 })();
 </script>
+
 <!-- vb:seo:head:start · build-seo.mjs 가 갈아끼운다. 손으로 고치지 마라 -->
 <title>What Vibisual is — Vibisual docs</title>
 <meta name="description" content="Vibisual is a desktop application that wraps the Claude CLI. You start and steer a run from an editor pane; the window around it holds the file tree, the terminal, the preview and a live map drawn from Claude Code hook events — so one run fits in one place instead of six." />
@@ -98,6 +99,7 @@ Stop / SessionEnd   → node closed</pre>
 <table style="margin:0 0 16px;border-collapse:collapse;font-size:14px;width:100%"><tbody><tr><td style="padding:7px 12px 7px 0;border-bottom:1px solid oklch(0.24 0.012 250);vertical-align:top;color:oklch(0.84 0.01 250)"><strong>os</strong></td><td style="padding:7px 12px 7px 0;border-bottom:1px solid oklch(0.24 0.012 250);vertical-align:top;color:oklch(0.84 0.01 250)">Windows 10/11 · macOS (Apple Silicon and Intel) · Linux (AppImage)</td></tr><tr><td style="padding:7px 12px 7px 0;border-bottom:1px solid oklch(0.24 0.012 250);vertical-align:top;color:oklch(0.84 0.01 250)"><strong>dependency</strong></td><td style="padding:7px 12px 7px 0;border-bottom:1px solid oklch(0.24 0.012 250);vertical-align:top;color:oklch(0.84 0.01 250)">Claude CLI installed and on PATH</td></tr><tr><td style="padding:7px 12px 7px 0;border-bottom:1px solid oklch(0.24 0.012 250);vertical-align:top;color:oklch(0.84 0.01 250)"><strong>runtime</strong></td><td style="padding:7px 12px 7px 0;border-bottom:1px solid oklch(0.24 0.012 250);vertical-align:top;color:oklch(0.84 0.01 250)">Node 20+ (source builds only)</td></tr><tr><td style="padding:7px 12px 7px 0;border-bottom:1px solid oklch(0.24 0.012 250);vertical-align:top;color:oklch(0.84 0.01 250)"><strong>config</strong></td><td style="padding:7px 12px 7px 0;border-bottom:1px solid oklch(0.24 0.012 250);vertical-align:top;color:oklch(0.84 0.01 250)">~/.claude/settings.json must be writable</td></tr></tbody></table>
 </div>
 <!-- vb:seo:body:end -->
+
 <x-dc>
 <helmet>
 <style>
@@ -1295,12 +1297,12 @@ const OS_TABS = [
   ['mac', 'macOS', 'M3 5h18v11H3z M8 20h8 M12 16v4'],
   ['linux', 'Linux', 'M4 17l6-5-6-5 M12 17h8'],
 ];
-// 조회가 실패했을 때만 쓰는 이름 — v0.2.1 이 실제로 발행한 자산과 같다.
+// 조회가 실패했을 때만 쓰는 이름 — v0.2.2 이 실제로 발행한 자산과 같다.
 // (이 블록은 .github/scripts/build-stats.mjs 가 릴리스마다 다시 쓴다 — 손으로 고치지 마라.)
 const DL_FALLBACK = {
-  win: ['Vibisual-0.2.1-setup.exe'],
-  mac: ['Vibisual-0.2.1-arm64.dmg', 'Vibisual-0.2.1.dmg'],
-  linux: ['Vibisual-0.2.1.AppImage', 'vibisual-0.2.1.x86_64.rpm', 'vibisual_0.2.1_amd64.deb'],
+  win: ['Vibisual-0.2.2-setup.exe'],
+  mac: ['Vibisual-0.2.2-arm64.dmg', 'Vibisual-0.2.2.dmg'],
+  linux: ['Vibisual-0.2.2.AppImage', 'vibisual-0.2.2.x86_64.rpm', 'vibisual_0.2.2_amd64.deb'],
 };
 
 const T = {
@@ -3984,8 +3986,8 @@ class Component extends DCLogic {
       stat2: num(this.state.dls),
       stat3: num(this.state.visits),
       stat4: num((BLOG[lang] || BLOG.en).length),
-      verBadge: (this.state.relVer || 'v0.2.1') + ' preview',
-      verNum: this.state.relVer || 'v0.2.1',
+      verBadge: (this.state.relVer || 'v0.2.2') + ' preview',
+      verNum: this.state.relVer || 'v0.2.2',
       osTabs: OS_TABS.map(([id, label, d]) => ({
         id, label, d,
         fg: this.state.os === id ? 'oklch(0.9 0.11 195)' : 'oklch(0.9 0.008 250 / 0.6)',
