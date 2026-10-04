@@ -2,18 +2,18 @@
   "stars": 1,
   "installs": 34,
   "release": {
-    "tag": "v0.2.2",
+    "tag": "v0.2.3",
     "win": [
-      "Vibisual-0.2.2-setup.exe"
+      "Vibisual-0.2.3-setup.exe"
     ],
     "mac": [
-      "Vibisual-0.2.2-arm64.dmg",
-      "Vibisual-0.2.2.dmg"
+      "Vibisual-0.2.3-arm64.dmg",
+      "Vibisual-0.2.3.dmg"
     ],
     "linux": [
-      "Vibisual-0.2.2.AppImage",
-      "vibisual-0.2.2.x86_64.rpm",
-      "vibisual_0.2.2_amd64.deb"
+      "Vibisual-0.2.3.AppImage",
+      "vibisual-0.2.3.x86_64.rpm",
+      "vibisual_0.2.3_amd64.deb"
     ]
   }
 }
