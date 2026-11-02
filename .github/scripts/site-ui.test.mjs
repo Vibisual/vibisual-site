@@ -11,7 +11,7 @@ const current = {
   release: { tag: 'v0.2.6', win: ['Vibisual-0.2.6-setup.exe'], mac: [], linux: [] },
 };
 
-async function mount({ entries = {}, response = current, offline = false } = {}) {
+async function mount({ entries = {}, response = current, offline = false, visitorResponse = { value: 337 }, visitorOffline = false } = {}) {
   const storage = new Map(Object.entries(entries));
   const requests = [];
   const context = vm.createContext({
@@ -26,8 +26,8 @@ async function mount({ entries = {}, response = current, offline = false } = {})
     localStorage: { getItem: key => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, value) },
     fetch: async (url, options) => {
       requests.push({ url, options });
-      if (offline) throw new Error('Offline');
-      return { ok: true, json: async () => response };
+      if (offline || (visitorOffline && url.includes('abacus.'))) throw new Error('Offline');
+      return { ok: true, json: async () => url.includes('abacus.') ? visitorResponse : response };
     },
   });
   vm.runInContext(script + '\n;globalThis.api = { Component, T, LANGS, PUBLIC_STATS_KEY, readPublicStats };', context);
@@ -39,7 +39,7 @@ async function mount({ entries = {}, response = current, offline = false } = {})
   return { ...api, app, storage, requests };
 }
 
-test('legacy cache and legacy response cannot supply installer downloads or visits', async () => {
+test('legacy installer cache remains isolated while the existing visitor counter is restored', async () => {
   const { app, requests } = await mount({
     entries: { 'vibisual-stats': JSON.stringify({ stars: 999, dls: 999, visits: 999 }), 'vibisual-visited': '1' },
     response: { stars: 999, installs: 999 },
@@ -49,7 +49,8 @@ test('legacy cache and legacy response cannot supply installer downloads or visi
   assert.equal(values.stat2, '—');
   assert.equal(values.statsAsOf, '—');
   assert.equal(values.t.statsNotMeasured, 'Not measured');
-  assert.deepEqual(requests.map(r => r.url), ['/stats.json']);
+  assert.equal(values.stat3, '337');
+  assert.deepEqual(requests.map(r => r.url), ['/stats.json', 'https://abacus.jasoncameron.dev/get/vibisual-pro/site-total']);
 });
 
 test('schema 2 displays its own timestamp and stores only the new schema', async () => {
@@ -105,7 +106,7 @@ test('counts reject invalid numbers and strings while accepting a measured zero'
   assert.equal(app.renderVals().t.statsNotMeasured, 'Not measured');
 });
 
-test('every supported locale renders the definition, caveat, unmeasured state and source labels', async () => {
+test('every supported locale keeps the visitor card and download clarification', async () => {
   const { app, LANGS, T } = await mount();
   for (const [lang] of LANGS) {
     app.state.lang = lang;
@@ -118,9 +119,44 @@ test('every supported locale renders the definition, caveat, unmeasured state an
       assert.ok(t.statsDefinition.includes(extension), `${lang}: ${extension}`);
     }
     assert.match(stat4, /^\d+$/, `${lang}: blog count preserved`);
-    assert.doesNotMatch(t.sitePrivacy, /abacus|unpkg/);
+    assert.match(t.sitePrivacy, /abacus\.jasoncameron\.dev/);
+    assert.doesNotMatch(t.sitePrivacy, /unpkg/);
   }
   assert.match(html, /href="\/metrics\/"/);
-  assert.match(html, /{{ t\.statsNotMeasured }}/);
-  assert.doesNotMatch(html, /abacus\.jasoncameron\.dev/);
+  assert.match(html, /{{ stat3 }}/);
+  assert.doesNotMatch(html, /{{ t\.statsNotMeasured }}|class="vb-stats-note"/);
+  assert.match(html, /title="{{ t\.statsCaveat }}"/);
+  assert.equal(T.ko.st3, '웹사이트 방문자');
+  assert.equal(T.en.st3, 'website visitors');
+});
+
+
+test('a new browser uses the existing hit endpoint once; return visits use get', async () => {
+  const first = await mount({ visitorResponse: { value: 338 } });
+  assert.equal(first.requests[1].url, 'https://abacus.jasoncameron.dev/hit/vibisual-pro/site-total');
+  assert.equal(first.storage.get('vibisual-visited'), '1');
+  assert.equal(first.app.renderVals().stat3, '338');
+  assert.equal(JSON.parse(first.storage.get('vibisual-stats')).visits, 338);
+  const again = await mount({ entries: Object.fromEntries(first.storage), visitorResponse: { value: 338 } });
+  assert.equal(again.requests[1].url, 'https://abacus.jasoncameron.dev/get/vibisual-pro/site-total');
+  assert.equal(again.app.renderVals().stat3, '338');
+});
+
+test('visitor failure preserves the old visitor value without importing legacy installs', async () => {
+  const previous = { visits: 336, dls: 999, stars: 999 };
+  const result = await mount({ entries: { 'vibisual-stats': JSON.stringify(previous) }, visitorOffline: true });
+  assert.equal(result.app.renderVals().stat3, '336');
+  assert.equal(result.app.renderVals().stat2, '240');
+  assert.equal(result.storage.has('vibisual-visited'), false);
+  assert.deepEqual(JSON.parse(result.storage.get('vibisual-stats')), previous);
+});
+
+test('invalid visitor responses do not erase cached visits or mark a failed first visit', async () => {
+  for (const value of [undefined, null, '337', -1, NaN, 1.5]) {
+    const result = await mount({ entries: { 'vibisual-stats': JSON.stringify({ visits: 336 }) }, visitorResponse: { value } });
+    assert.equal(result.app.renderVals().stat3, '336');
+    assert.equal(result.storage.has('vibisual-visited'), false);
+  }
+  const result = await mount({ visitorResponse: { value: 0 } });
+  assert.equal(result.app.renderVals().stat3, '0');
 });
