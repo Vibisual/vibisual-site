@@ -1,6 +1,17 @@
 {
+  "schemaVersion": 2,
+  "methodology": "github-installer-downloads-v2",
   "stars": 1,
-  "installs": 196,
+  "installerDownloads": 334,
+  "allAssetDownloads": 1661,
+  "verifiedInstallations": null,
+  "activeUsers": null,
+  "asOf": "2026-11-02T08:54:23.241Z",
+  "source": "https://api.github.com/repos/Vibisual/vibisual/releases?per_page=100",
+  "methodologyUrl": "/metrics/",
+  "snapshot": "/metrics/snapshots/2026-11-02T08-54-23.241Z.json",
+  "evidenceSha256": "bff7d417fd586216476e894e92dc6b28074b5796e3803dd5aaa6e132f9152e7e",
+  "dataSha256": "5f631a328517cfb69d52ce8a77d17432cbf4b2ec1e1705d3b6404e06384de475",
   "release": {
     "tag": "v0.2.6",
     "win": [

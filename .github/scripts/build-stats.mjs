@@ -1,4 +1,4 @@
-// stats.json 을 짓는다 — 스타 수 · 누적 설치 수 · 최신 릴리스 자산 목록.
+// stats.json 을 짓는다 — 스타 수 · 설치 파일 다운로드 요청 수 · 최신 릴리스 자산 목록.
 // 같은 값으로 index.html 안의 '조회 실패용' 폴백(버전 문자열 · 다운로드 파일 이름)도 맞춘다.
 //
 // 왜 이걸 여기서 짓나: 이 숫자를 브라우저가 직접 GitHub 에 물으면 안 되기 때문이다.
@@ -11,9 +11,11 @@
 // 실행: node .github/scripts/build-stats.mjs [출력경로] [페이지경로]
 //   GITHUB_TOKEN 이 있으면 인증 조회(권장), 없으면 무인증으로도 돈다(로컬에서 초기값 만들 때).
 
-import { writeFileSync, readFileSync, existsSync } from 'node:fs';
+import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { createHash } from 'node:crypto';
+import { REPO, summarize, readAllReleases } from './metrics-data.mjs';
 
-const REPO = 'Vibisual/vibisual';                 // 앱 저장소(이 사이트 저장소가 아니다)
 const OUT = process.argv[2] || 'stats.json';
 const PAGE = process.argv[3] || 'index.html';
 const TOKEN = process.env.GITHUB_TOKEN || '';
@@ -25,64 +27,60 @@ const headers = {
   ...(TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {}),
 };
 
-async function api(path) {
+async function api(path, { allowNotFound = false } = {}) {
   const r = await fetch(`https://api.github.com${path}`, { headers });
+  if (allowNotFound && r.status === 404) return null;
   if (!r.ok) throw new Error(`${path} → ${r.status} ${r.statusText}`);
   return r.json();
 }
 
-// 사람이 받아서 설치하는 파일만 센다.
-//   · exe / dmg / AppImage / deb / rpm  → 설치본 (리눅스는 셋 다 낸다)
-//   · latest*.yml                       → 설치된 앱이 켜질 때마다 조회하는 업데이트 메타. 사람 수가 아니다
-//   · *.blockmap                        → 델타 업데이트 조각
-//   · *-mac.zip                         → macOS 업데이트 페이로드(사람이 받는 것은 dmg 다)
-const isInstaller = (name) => {
-  const s = String(name).toLowerCase();
-  return s.endsWith('.exe') || s.endsWith('.dmg') || s.endsWith('.appimage')
-    || s.endsWith('.deb') || s.endsWith('.rpm');
-};
-
+// Read and validate every public release before changing any published file.
+const collectionStartedAt = new Date().toISOString();
 const repo = await api(`/repos/${REPO}`);
-const releases = await api(`/repos/${REPO}/releases?per_page=100`);
+const releases = await readAllReleases(api);
+const latest = await api(`/repos/${REPO}/releases/latest`, { allowNotFound: true });
+const observed = summarize(repo, releases, latest?.id ?? null);
+const dataSha256 = createHash('sha256').update(JSON.stringify(observed)).digest('hex');
+const now = new Date().toISOString();
+let previous = null;
+try { previous = JSON.parse(readFileSync(OUT, 'utf8')); } catch { /* first recording */ }
 
-// 2026-09-07 이전의 설치본 다운로드는 **거의 전부 우리 CI 였다.**
-//
-// 스모크 워크플로(4종 러너)가 검증할 설치본을 `gh release download` 로 받으면서 릴리스마다
-// 6회씩 쌓았고(win 1 · linux 2 · mac arm64 1 · mac x64 2 — `*.dmg` 패턴이 arm64 것까지 집는다),
-// 재시도·수동 재설치까지 더하면 릴리스당 10~15회였다. 실측 근거 둘:
-//   · 릴리스가 없는 날의 증가 = 0 (metrics 브랜치 traction.csv 9/3→9/4, 9/5→9/6)
-//   · 릴리스당 합계가 스모크 도입일(2026-08-27 · v0.1.14)을 경계로 0~6 → 7~40 으로 점프
-//
-// 그날 앱 저장소의 스모크가 아티팩트 경로로 바뀌어 카운터를 더는 건드리지 않는다. 그래서
-// 그 시점의 누계를 **기준선으로 빼고**, 여기 적히는 숫자는 그 뒤에 사람이 받은 것만 센다.
-// 부풀린 수를 그대로 내보이는 것보다 0 에서 다시 세는 편이 낫다 — 이 숫자는 남이 우리를
-// 판단하는 근거로 쓰인다.
-//
-// 되돌리려면 이 값을 0 으로. 늘리지는 마라(그 순간 이 숫자는 다시 지어낸 것이 된다).
-const CI_BASELINE_INSTALLS = 138;
-
-let rawInstalls = 0;
-for (const rel of releases) {
-  for (const a of rel.assets || []) {
-    if (isInstaller(a.name)) rawInstalls += a.download_count || 0;
-  }
+// Record on a data change or once per UTC day. asOf is the recorded observation,
+// not an assertion that an old number was checked just now. Git retains history.
+let asOf = now;
+let snapshot;
+let evidenceSha256;
+const previousPath = typeof previous?.snapshot === 'string'
+  && /^\/metrics\/snapshots\/[0-9TZ.-]+\.json$/.test(previous.snapshot)
+  ? join(dirname(OUT), previous.snapshot.slice(1)) : null;
+if (previous?.schemaVersion === 2 && previous.dataSha256 === dataSha256
+    && previous.asOf?.slice(0, 10) === now.slice(0, 10)
+    && previousPath && existsSync(previousPath)
+    && createHash('sha256').update(readFileSync(previousPath)).digest('hex') === previous.evidenceSha256) {
+  ({ asOf, snapshot, evidenceSha256 } = previous);
+} else {
+  const evidence = JSON.stringify({ ...observed, collectionStartedAt, asOf }, null, 2) + '\n';
+  evidenceSha256 = createHash('sha256').update(evidence).digest('hex');
+  snapshot = `/metrics/snapshots/${asOf.replaceAll(':', '-')}.json`;
+  const evidencePath = join(dirname(OUT), snapshot.slice(1));
+  mkdirSync(dirname(evidencePath), { recursive: true });
+  writeFileSync(evidencePath, evidence, { flag: 'wx' });
 }
-const installs = Math.max(0, rawInstalls - CI_BASELINE_INSTALLS);
-
-// 목록은 최신순이다 — 초안·프리릴리스를 건너뛴 첫 항목이 releases/latest 와 같은 것이다.
-const top = releases.filter((r) => !r.draft && !r.prerelease)[0];
-const names = top ? (top.assets || []).map((a) => a.name) : [];
-const arm = (n) => (n.indexOf('arm64') >= 0 ? 1 : 0);
-
 const stats = {
-  stars: repo.stargazers_count,
-  installs,
-  release: {
-    tag: top ? top.tag_name : null,
-    win: names.filter((n) => n.slice(-10) === '-setup.exe'),
-    mac: names.filter((n) => n.slice(-4) === '.dmg').sort((a, b) => arm(b) - arm(a)),
-    linux: names.filter((n) => n.slice(-9) === '.AppImage' || n.slice(-4) === '.deb' || n.slice(-4) === '.rpm'),
-  },
+  schemaVersion: 2,
+  methodology: observed.methodology,
+  stars: observed.stars,
+  installerDownloads: observed.installerDownloads,
+  allAssetDownloads: observed.allAssetDownloads,
+  verifiedInstallations: null,
+  activeUsers: null,
+  asOf,
+  source: observed.source,
+  methodologyUrl: '/metrics/',
+  snapshot,
+  evidenceSha256,
+  dataSha256,
+  release: observed.release,
 };
 
 // index.html 안의 폴백도 같은 값으로 맞춘다.
@@ -148,7 +146,7 @@ if (existsSync(PAGE)) {
   if (text !== before) { writeFileSync(PAGE, text); pageChanged = true; }
 }
 
-// 시각 같은 것은 넣지 않는다 — 매번 달라지면 값이 그대로인 시간에도 커밋이 쌓인다.
+// Same data within the same UTC day reuses the timestamped evidence.
 const next = JSON.stringify(stats, null, 2) + '\n';
 const prev = existsSync(OUT) ? readFileSync(OUT, 'utf8') : '';
 const jsonChanged = prev !== next;
@@ -156,6 +154,6 @@ if (jsonChanged) writeFileSync(OUT, next);
 
 const what = [jsonChanged ? OUT : null, pageChanged ? PAGE : null].filter(Boolean).join(' + ');
 console.log(
-  `${what || 'unchanged'} · stars=${stats.stars} installs=${stats.installs}`
-  + ` (raw ${rawInstalls} - CI 기준선 ${CI_BASELINE_INSTALLS}) tag=${stats.release.tag}`,
+  `${what || 'unchanged'} · stars=${stats.stars} installerDownloads=${stats.installerDownloads}`
+  + ` recorded=${stats.asOf} tag=${stats.release.tag}`,
 );
