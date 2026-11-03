@@ -1,17 +1,33 @@
 {
   "schemaVersion": 2,
+  "observationVersion": 1,
   "methodology": "github-installer-downloads-v2",
   "stars": 1,
-  "installerDownloads": 334,
-  "allAssetDownloads": 1665,
+  "installerDownloads": 335,
+  "allAssetDownloads": 1668,
   "verifiedInstallations": null,
   "activeUsers": null,
-  "asOf": "2026-11-02T18:31:00.184Z",
+  "asOf": "2026-11-03T00:21:59.838Z",
   "source": "https://api.github.com/repos/Vibisual/vibisual/releases?per_page=100",
   "methodologyUrl": "/metrics/",
-  "snapshot": "/metrics/snapshots/2026-11-02T18-31-00.184Z.json",
-  "evidenceSha256": "d75bd148b22924ff41558b5ac0a1e5ed58a4a234a81fbc01105e9f8afc74daa5",
-  "dataSha256": "7bef6a3bbf73c33e2db679d0b06d85a11c02d066bd0837164e33032517f3b937",
+  "snapshot": "/metrics/snapshots/2026-11-03T00-21-59.838Z.json",
+  "evidenceSha256": "096616c92cb44481697090f5b8268b6363975837ec86097eb6f610937842a4a7",
+  "dataSha256": "a0e080ad9775f9213c473abda233a6277d9bda617e5bb06a12d6fcae0849ecd9",
+  "previousObservation": {
+    "snapshot": "/metrics/snapshots/2026-11-02T18-31-00.184Z.json",
+    "evidenceSha256": "d75bd148b22924ff41558b5ac0a1e5ed58a4a234a81fbc01105e9f8afc74daa5",
+    "asOf": "2026-11-02T18:31:00.184Z"
+  },
+  "downloadChange": {
+    "basis": "same-methodology-asset-ids",
+    "previousInstallerDownloads": 334,
+    "currentInstallerDownloads": 335,
+    "installerDelta": 1,
+    "retainedInstallerDelta": 1,
+    "enteredInstallerDownloads": 0,
+    "leftInstallerDownloads": 0,
+    "allAssetDelta": 3
+  },
   "release": {
     "tag": "v0.2.6",
     "win": [

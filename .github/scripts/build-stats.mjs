@@ -11,10 +11,9 @@
 // 실행: node .github/scripts/build-stats.mjs [출력경로] [페이지경로]
 //   GITHUB_TOKEN 이 있으면 인증 조회(권장), 없으면 무인증으로도 돈다(로컬에서 초기값 만들 때).
 
-import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { createHash } from 'node:crypto';
+import { readFileSync, existsSync } from 'node:fs';
 import { REPO, summarize, readAllReleases } from './metrics-data.mjs';
+import { atomicText, prepareMetricsRecord, writeMetricsRecord } from './metrics-record.mjs';
 
 const OUT = process.argv[2] || 'stats.json';
 const PAGE = process.argv[3] || 'index.html';
@@ -28,7 +27,7 @@ const headers = {
 };
 
 async function api(path, { allowNotFound = false } = {}) {
-  const r = await fetch(`https://api.github.com${path}`, { headers });
+  const r = await fetch(`https://api.github.com${path}`, { headers, signal: AbortSignal.timeout(15_000) });
   if (allowNotFound && r.status === 404) return null;
   if (!r.ok) throw new Error(`${path} → ${r.status} ${r.statusText}`);
   return r.json();
@@ -40,48 +39,7 @@ const repo = await api(`/repos/${REPO}`);
 const releases = await readAllReleases(api);
 const latest = await api(`/repos/${REPO}/releases/latest`, { allowNotFound: true });
 const observed = summarize(repo, releases, latest?.id ?? null);
-const dataSha256 = createHash('sha256').update(JSON.stringify(observed)).digest('hex');
-const now = new Date().toISOString();
-let previous = null;
-try { previous = JSON.parse(readFileSync(OUT, 'utf8')); } catch { /* first recording */ }
-
-// Record on a data change or once per UTC day. asOf is the recorded observation,
-// not an assertion that an old number was checked just now. Git retains history.
-let asOf = now;
-let snapshot;
-let evidenceSha256;
-const previousPath = typeof previous?.snapshot === 'string'
-  && /^\/metrics\/snapshots\/[0-9TZ.-]+\.json$/.test(previous.snapshot)
-  ? join(dirname(OUT), previous.snapshot.slice(1)) : null;
-if (previous?.schemaVersion === 2 && previous.dataSha256 === dataSha256
-    && previous.asOf?.slice(0, 10) === now.slice(0, 10)
-    && previousPath && existsSync(previousPath)
-    && createHash('sha256').update(readFileSync(previousPath)).digest('hex') === previous.evidenceSha256) {
-  ({ asOf, snapshot, evidenceSha256 } = previous);
-} else {
-  const evidence = JSON.stringify({ ...observed, collectionStartedAt, asOf }, null, 2) + '\n';
-  evidenceSha256 = createHash('sha256').update(evidence).digest('hex');
-  snapshot = `/metrics/snapshots/${asOf.replaceAll(':', '-')}.json`;
-  const evidencePath = join(dirname(OUT), snapshot.slice(1));
-  mkdirSync(dirname(evidencePath), { recursive: true });
-  writeFileSync(evidencePath, evidence, { flag: 'wx' });
-}
-const stats = {
-  schemaVersion: 2,
-  methodology: observed.methodology,
-  stars: observed.stars,
-  installerDownloads: observed.installerDownloads,
-  allAssetDownloads: observed.allAssetDownloads,
-  verifiedInstallations: null,
-  activeUsers: null,
-  asOf,
-  source: observed.source,
-  methodologyUrl: '/metrics/',
-  snapshot,
-  evidenceSha256,
-  dataSha256,
-  release: observed.release,
-};
+const stats = prepareMetricsRecord({ outputPath: OUT, observed, collectionStartedAt });
 
 // index.html 안의 폴백도 같은 값으로 맞춘다.
 //
@@ -143,14 +101,10 @@ let pageChanged = false;
 if (existsSync(PAGE)) {
   const before = readFileSync(PAGE, 'utf8');
   const { text } = syncPage(before);
-  if (text !== before) { writeFileSync(PAGE, text); pageChanged = true; }
+  if (text !== before) { atomicText(PAGE, text); pageChanged = true; }
 }
 
-// Same data within the same UTC day reuses the timestamped evidence.
-const next = JSON.stringify(stats, null, 2) + '\n';
-const prev = existsSync(OUT) ? readFileSync(OUT, 'utf8') : '';
-const jsonChanged = prev !== next;
-if (jsonChanged) writeFileSync(OUT, next);
+const jsonChanged = writeMetricsRecord(OUT, stats);
 
 const what = [jsonChanged ? OUT : null, pageChanged ? PAGE : null].filter(Boolean).join(' + ');
 console.log(

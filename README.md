@@ -32,32 +32,52 @@ GitHub 다운로드에서 사람이나 CI 비율을 추정해서 차감하지 �
 - `.github/scripts/metrics-data.mjs`: 포함 확장자·검증·페이지 순회·합산 정의.
 - `.github/scripts/build-stats.mjs`: 공개 원본을 조회하고 `stats.json`과
   `metrics/snapshots/<관측시각>.json`을 함께 기록합니다.
+- `.github/scripts/metrics-delta.mjs`: 이전 관측의 같은 자산 ID와 비교해 카운터 증감,
+  신규·삭제·분류 변경 자산의 기여를 분리합니다. 새로 목록에 들어온 자산의 누계를
+  관측 구간의 신규 다운로드로 간주하지 않습니다.
+- `.github/scripts/visitor-snapshot.mjs`: 기존 방문 카운터를 읽기 전용으로 조회해
+  `metrics/visitors/latest.json`과 별도의 관측 스냅샷을 보존합니다.
 - `metrics/index.html`: 한국어·영어 지표 정의, 한계, 이전 설치 수 표기의 정정.
 - `.github/workflows/stats.yml`: 검증 통과 후 기록합니다. 조회 오류는 이전 관측을 유지합니다.
 
 ```bash
-node --test .github/scripts/metrics-data.test.mjs
+node --test .github/scripts/*.test.mjs
 node .github/scripts/build-stats.mjs stats.json index.html
+node .github/scripts/visitor-snapshot.mjs
+node .github/scripts/verify-site-metrics.mjs
 node build-seo.mjs
 ```
 
 스냅샷은 공개 릴리스 자산의 ID·파일명·카운터·관측 시점만 담습니다. 요청자의 IP·계정·
 사용 내용은 수집하지 않습니다. 기록 이전의 상세 내역은 소급해서 만들지 않습니다.
 원본 누계는 삭제·재업로드·상류 집계 조정으로 줄어들 수도 있습니다.
+각 새 관측은 이전 관측의 경로와 해시를 가리킵니다. 원본 해시·산식이 일치하지 않으면
+새 값으로 덮어쓰지 않습니다. 최신 포인터는 임시 파일을 거쳐 원자적으로 교체합니다.
 
 ## 런타임과 방문자 데이터
 
 폰트와 React 런타임은 사이트에서 직접 서빙합니다. GitHub 통계는 방문자 브라우저에서
 GitHub API를 호출하지 않습니다. 웹사이트 방문자 수는 별도로
 `abacus.jasoncameron.dev`의 기존 `vibisual-pro/site-total` 카운터에서 읽습니다.
-`vibisual-visited` 표시가 없으면 `/hit`으로 증가시키고, 성공 후 표시를 저장하여
-다음부터는 `/get`으로 조회합니다. 이는 브라우저에서 중복을 줄이는 방식이며,
-저장소 삭제·다른 브라우저·자동 요청 등으로 고유한 사람 수와 다를 수 있습니다.
+정식 사이트의 브라우저에서 Web Locks로 탭 간 요청을 순서대로 처리합니다.
+`vibisual-visited` 표시가 없으면 기존 키에 `pending`을 먼저 저장·재확인한 뒤
+`/hit`을 한 번 시도합니다. 성공하면 `1`로 바꾸며, 응답이 불명확해도 표식을 지우거나
+증가를 자동 재시도하지 않습니다. 저장 불가·잠금 미지원·미리보기·브라우저 자동화에서는
+`/get`만 사용합니다. 고유 식별자를 새로 만들거나 전송하지 않습니다.
+
+이는 브라우저 중복 증가를 줄이는 보수적인 처리로, 집계 누락이 생길 수 있습니다.
+저장소 삭제·다른 브라우저·외부 자동 요청을 고유한 사람과 구분하지 못합니다.
+Abacus 카운터 자체는 공개 쓰기가 가능하므로, 원본 기록의 검산 가능성이 사람 수나
+외부 조작 방지를 보증하지 않습니다.
 
 언어 선택, 방문 표시, 마지막 방문자 값(`vibisual-stats`의 `visits`)과 공개 GitHub
 통계 캐시(`vibisual-public-stats-v2`)는 로컬 브라우저에 보존합니다. 방문자 요청이
 실패하면 기존 캐시를 표시합니다. `stats.json`의 스키마·`asOf`·원본 스냅샷은
-GitHub 통계에만 적용하며 방문자 카운터의 기록이나 관측 시각을 나타내지 않습니다.
+GitHub 통계에만 적용합니다. 방문 카운터의 관측 시각·원본 응답·해시는
+`metrics/visitors/latest.json`에 별도로 있습니다. GitHub Actions는 증가 API를 호출하지
+않으며 공개된 `{value}`와 응답 시각·ETag만 보관합니다. IP·UA·개별 방문 이력은
+수집하지 않습니다. 같은 값의 같은 UTC 날짜에는 원래 관측 시각을 재사용하고,
+실패하면 마지막 정상 기록을 유지합니다. 유효한 하락·0도 그대로 기록합니다.
 
 ## 배포
 

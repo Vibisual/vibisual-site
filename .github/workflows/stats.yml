@@ -54,6 +54,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node .github/scripts/build-stats.mjs stats.json index.html
 
+      - name: Record the public visitor aggregate without incrementing it
+        run: node .github/scripts/visitor-snapshot.mjs
+
+      - name: Recalculate saved evidence before publication
+        run: node .github/scripts/verify-site-metrics.mjs
+
       # 위 단계가 index.html 안의 버전·파일명을 고쳤으면, 그것을 복사해 만든 화면별 페이지도
       # 같이 다시 지어야 한다. 안 그러면 /blog/ · /docs/ 이하가 지난 버전을 계속 내보낸다.
       # (index.html 이 그대로면 이 스크립트도 아무 파일도 건드리지 않는다 — 내용이 같으면 쓰지 않는다.)
