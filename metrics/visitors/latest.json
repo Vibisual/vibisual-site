@@ -2,17 +2,17 @@
   "schemaVersion": 1,
   "methodology": "abacus-browser-marker-v2",
   "source": "https://abacus.jasoncameron.dev/get/vibisual-pro/site-total",
-  "counterValue": 341,
-  "collectionStartedAt": "2026-11-05T08:35:47.762Z",
-  "asOf": "2026-11-05T08:35:48.001Z",
-  "snapshot": "/metrics/visitors/snapshots/2026-11-05T08-35-48.001Z.json",
-  "evidenceSha256": "56593f3e3a0881860e71cac006481bf337931c072285e704d8c7563fa5d81bb6",
-  "sourceResponseSha256": "c7298fced206e029542d81a3a8d5dae1521637e62ca370634a06e2baf2ff4e30",
+  "counterValue": 342,
+  "collectionStartedAt": "2026-11-05T16:48:56.217Z",
+  "asOf": "2026-11-05T16:48:58.372Z",
+  "snapshot": "/metrics/visitors/snapshots/2026-11-05T16-48-58.372Z.json",
+  "evidenceSha256": "3d6d736f996717e4928f38b5d60e50214c8ef124ddedce0cc3c431523ddde1e4",
+  "sourceResponseSha256": "1cf3f96c52ff897532be726cf7d1c19ae3d5a0b5ca1877c0ce956c15fa818e27",
   "previous": {
-    "snapshot": "/metrics/visitors/snapshots/2026-11-05T01-51-05.156Z.json",
-    "evidenceSha256": "66d5376d80cd0b14b177b05c9bc3204533c0b8ba4f2cb61c051a7c2d1a490779",
-    "asOf": "2026-11-05T01:51:05.156Z",
-    "counterValue": 340
+    "snapshot": "/metrics/visitors/snapshots/2026-11-05T08-35-48.001Z.json",
+    "evidenceSha256": "56593f3e3a0881860e71cac006481bf337931c072285e704d8c7563fa5d81bb6",
+    "asOf": "2026-11-05T08:35:48.001Z",
+    "counterValue": 341
   },
   "changeFromPrevious": 1,
   "caveats": {
