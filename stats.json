@@ -4,19 +4,19 @@
   "methodology": "github-installer-downloads-v2",
   "stars": 1,
   "installerDownloads": 335,
-  "allAssetDownloads": 1694,
+  "allAssetDownloads": 1695,
   "verifiedInstallations": null,
   "activeUsers": null,
-  "asOf": "2026-11-06T17:13:53.585Z",
+  "asOf": "2026-11-06T19:45:42.260Z",
   "source": "https://api.github.com/repos/Vibisual/vibisual/releases?per_page=100",
   "methodologyUrl": "/metrics/",
-  "snapshot": "/metrics/snapshots/2026-11-06T17-13-53.585Z.json",
-  "evidenceSha256": "f6eb59db1122eea0806d0fd3207e4ef0adec7f0f262ef32b09aca9011086dbbf",
-  "dataSha256": "8a2d23c80c28da9268d2b42dc5a1c699ab5db3603ecb7dc82345a44309d1cd1f",
+  "snapshot": "/metrics/snapshots/2026-11-06T19-45-42.260Z.json",
+  "evidenceSha256": "25c74a7e481dd875202d9c17344833862510ac384d62eb8fcb1dd40adabbbf37",
+  "dataSha256": "bef2bbc92ad9a90c1a09f8331bf7ef304b8ec751ef3067bca25e0be364e33ea4",
   "previousObservation": {
-    "snapshot": "/metrics/snapshots/2026-11-06T09-56-01.668Z.json",
-    "evidenceSha256": "34d7ce6e5aa5ca8c10e09de45931f6f5bde3a61e494a4d11b07ab851dd008fa7",
-    "asOf": "2026-11-06T09:56:01.668Z"
+    "snapshot": "/metrics/snapshots/2026-11-06T17-13-53.585Z.json",
+    "evidenceSha256": "f6eb59db1122eea0806d0fd3207e4ef0adec7f0f262ef32b09aca9011086dbbf",
+    "asOf": "2026-11-06T17:13:53.585Z"
   },
   "downloadChange": {
     "basis": "same-methodology-asset-ids",
@@ -26,21 +26,21 @@
     "retainedInstallerDelta": 0,
     "enteredInstallerDownloads": 0,
     "leftInstallerDownloads": 0,
-    "allAssetDelta": 2
+    "allAssetDelta": 1
   },
   "release": {
-    "tag": "v0.2.6",
+    "tag": "v0.2.7",
     "win": [
-      "Vibisual-0.2.6-setup.exe"
+      "Vibisual-0.2.7-setup.exe"
     ],
     "mac": [
-      "Vibisual-0.2.6-arm64.dmg",
-      "Vibisual-0.2.6.dmg"
+      "Vibisual-0.2.7-arm64.dmg",
+      "Vibisual-0.2.7.dmg"
     ],
     "linux": [
-      "Vibisual-0.2.6.AppImage",
-      "vibisual-0.2.6.x86_64.rpm",
-      "vibisual_0.2.6_amd64.deb"
+      "Vibisual-0.2.7.AppImage",
+      "vibisual-0.2.7.x86_64.rpm",
+      "vibisual_0.2.7_amd64.deb"
     ]
   }
 }

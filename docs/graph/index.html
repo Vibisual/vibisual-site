@@ -1296,12 +1296,12 @@ const OS_TABS = [
   ['mac', 'macOS', 'M3 5h18v11H3z M8 20h8 M12 16v4'],
   ['linux', 'Linux', 'M4 17l6-5-6-5 M12 17h8'],
 ];
-// 조회가 실패했을 때만 쓰는 이름 — v0.2.6 이 실제로 발행한 자산과 같다.
+// 조회가 실패했을 때만 쓰는 이름 — v0.2.7 이 실제로 발행한 자산과 같다.
 // (이 블록은 .github/scripts/build-stats.mjs 가 릴리스마다 다시 쓴다 — 손으로 고치지 마라.)
 const DL_FALLBACK = {
-  win: ['Vibisual-0.2.6-setup.exe'],
-  mac: ['Vibisual-0.2.6-arm64.dmg', 'Vibisual-0.2.6.dmg'],
-  linux: ['Vibisual-0.2.6.AppImage', 'vibisual-0.2.6.x86_64.rpm', 'vibisual_0.2.6_amd64.deb'],
+  win: ['Vibisual-0.2.7-setup.exe'],
+  mac: ['Vibisual-0.2.7-arm64.dmg', 'Vibisual-0.2.7.dmg'],
+  linux: ['Vibisual-0.2.7.AppImage', 'vibisual-0.2.7.x86_64.rpm', 'vibisual_0.2.7_amd64.deb'],
 };
 
 const T = {
@@ -4103,8 +4103,8 @@ class Component extends DCLogic {
       statsAsOf: this.state.statsAsOf
         ? new Date(this.state.statsAsOf).toISOString().replace('T', ' ').replace(/\.\d{3}Z$/, ' UTC')
         : '—',
-      verBadge: (this.state.relVer || 'v0.2.6') + ' preview',
-      verNum: this.state.relVer || 'v0.2.6',
+      verBadge: (this.state.relVer || 'v0.2.7') + ' preview',
+      verNum: this.state.relVer || 'v0.2.7',
       osTabs: OS_TABS.map(([id, label, d]) => ({
         id, label, d,
         fg: this.state.os === id ? 'oklch(0.9 0.11 195)' : 'oklch(0.9 0.008 250 / 0.6)',
