@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "methodology": "abacus-browser-marker-v2",
+  "source": "https://abacus.jasoncameron.dev/get/vibisual-pro/site-total",
+  "collectionStartedAt": "2026-11-14T03:27:53.013Z",
+  "asOf": "2026-11-14T03:27:53.214Z",
+  "counterValue": 361,
+  "sourceResponse": {
+    "value": 361
+  },
+  "sourceResponseSha256": "c73c1b1acf0536167af21b66c54d5ef8f8900df9e7eadf03a9f6a61953246077",
+  "sourceHeaders": {
+    "httpDate": "2026-11-14T03:27:53.000Z"
+  },
+  "previous": {
+    "snapshot": "/metrics/visitors/snapshots/2026-11-13T10-39-35.845Z.json",
+    "evidenceSha256": "9a606396187b8a14fab81efdbe52382b561907ee922117551353758a7e09fa23",
+    "asOf": "2026-11-13T10:39:35.845Z",
+    "counterValue": 361
+  },
+  "changeFromPrevious": 0,
+  "caveats": {
+    "publicWritableCounter": true,
+    "verifiedPeople": null,
+    "automatedRequests": null,
+    "description": "An external publicly writable aggregate counter. Browser markers reduce repeated increments; unique people and automated requests are not verified."
+  }
+}
