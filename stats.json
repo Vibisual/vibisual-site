@@ -4,19 +4,19 @@
   "methodology": "github-installer-downloads-v2",
   "stars": 1,
   "installerDownloads": 350,
-  "allAssetDownloads": 1791,
+  "allAssetDownloads": 1792,
   "verifiedInstallations": null,
   "activeUsers": null,
-  "asOf": "2026-11-15T23:52:18.437Z",
+  "asOf": "2026-11-16T03:16:12.688Z",
   "source": "https://api.github.com/repos/Vibisual/vibisual/releases?per_page=100",
   "methodologyUrl": "/metrics/",
-  "snapshot": "/metrics/snapshots/2026-11-15T23-52-18.437Z.json",
-  "evidenceSha256": "d5cb437b3e53ff4fe0d04a6f439db72023e9765e817b44865b27069028f815fc",
-  "dataSha256": "204c999d4c51782806efb806fdbb7b8599bd8ad8366ffc9b65d158704fd8ba8b",
+  "snapshot": "/metrics/snapshots/2026-11-16T03-16-12.688Z.json",
+  "evidenceSha256": "efa5a96fdd7addf1a335f0bd93c86a681184dd52c400602dc22a25f225fa5275",
+  "dataSha256": "fcdce3558eea07a88d255878dca3734313f025f6e845e03929d9b8f4b097af86",
   "previousObservation": {
-    "snapshot": "/metrics/snapshots/2026-11-15T19-59-21.760Z.json",
-    "evidenceSha256": "0127586f2af342703cae49ef7ad01736c5fe439f0326efd7fe47cdcdc101eac7",
-    "asOf": "2026-11-15T19:59:21.760Z"
+    "snapshot": "/metrics/snapshots/2026-11-15T23-52-18.437Z.json",
+    "evidenceSha256": "d5cb437b3e53ff4fe0d04a6f439db72023e9765e817b44865b27069028f815fc",
+    "asOf": "2026-11-15T23:52:18.437Z"
   },
   "downloadChange": {
     "basis": "same-methodology-asset-ids",
