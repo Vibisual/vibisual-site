@@ -626,7 +626,14 @@
         <p style="font-size:20px; line-height:1.55; color:oklch(0.97 0.008 250 / 0.6); margin:20px 0 0; text-wrap:pretty">{{ art.excerpt }}</p>
         <div style="height:1px; background:oklch(0.26 0.012 250); margin:36px 0 34px"></div>
         <sc-if value="{{ art.video }}">
-          <video controls preload="metadata" playsinline poster="{{ art.poster }}" src="{{ art.video }}" style="display:block; width:100%; aspect-ratio:16/9; margin:0 0 14px; border-radius:8px; border:1px solid oklch(0.26 0.012 250); background:#08090b"></video>
+          <div style="position:relative; margin:0 0 14px">
+            <video preload="metadata" playsinline poster="{{ art.poster }}" src="{{ art.video }}" style="display:block; width:100%; aspect-ratio:16/9; border-radius:8px; border:1px solid oklch(0.26 0.012 250); background:#08090b"></video>
+            <button onClick="{{ playVideo }}" aria-label="{{ art.videoLabel }}" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:oklch(0.12 0.01 250 / 0.28); border:none; border-radius:8px; padding:0; cursor:pointer" style-hover="background:oklch(0.12 0.01 250 / 0.12)">
+              <span style="display:flex; align-items:center; justify-content:center; width:84px; height:84px; border-radius:50%; background:oklch(0.86 0.13 195); box-shadow:0 8px 34px oklch(0.1 0.01 250 / 0.7)">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="oklch(0.18 0.02 250)" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
+              </span>
+            </button>
+          </div>
           <p style="margin:0 0 30px; font-family:var(--mono); font-size:12px"><a href="{{ art.video }}" style="color:oklch(0.82 0.12 195)">{{ art.videoLabel }} →</a></p>
         </sc-if>
         <sc-for list="{{ artBody }}" as="pa" hint-placeholder-count="4">
@@ -1781,7 +1788,7 @@ UI['es-419'] = UI.es;
 const BLOG = {
   en: [
     { id:'walkthrough', date:'2026-11-17', tag:'guide', read:'3 min', author:'Vibisual',
-      video:'https://github.com/Vibisual/vibisual/releases/download/v0.2.8/vibisual-walkthrough.mp4', poster:'/media/walkthrough-poster.jpg', videoLabel:'Watch the walkthrough video (1:41)',
+      video:'/media/walkthrough.mp4', poster:'/media/walkthrough-poster.jpg', videoLabel:'Watch the walkthrough video (1:41)',
       title:'One task, two agents, two minutes: a walkthrough',
       excerpt:'A coupon feature built by a Claude agent and tested by a Codex agent, recorded start to finish. What each part of the window is for, in the order you would meet it.',
       body:[
@@ -1823,7 +1830,7 @@ const BLOG = {
   ],
   ko: [
     { id:'walkthrough', date:'2026-11-17', tag:'가이드', read:'3분', author:'Vibisual',
-      video:'https://github.com/Vibisual/vibisual/releases/download/v0.2.8/vibisual-walkthrough.mp4', poster:'/media/walkthrough-poster.jpg', videoLabel:'따라 보기 영상 보기 (1분 41초)',
+      video:'/media/walkthrough.mp4', poster:'/media/walkthrough-poster.jpg', videoLabel:'따라 보기 영상 보기 (1분 41초)',
       title:'작업 하나, 에이전트 둘, 2분: 따라 보기',
       excerpt:'Claude 에이전트가 쿠폰 기능을 만들고 Codex 에이전트가 테스트를 붙이는 과정을 처음부터 끝까지 녹화했습니다. 창의 각 부분이 무엇을 위한 것인지, 마주치는 순서대로 설명합니다.',
       body:[
@@ -4183,6 +4190,7 @@ class Component extends DCLogic {
       art: art ? { ...art, tagFg: TAG_FG[art.tag] || 'oklch(0.72 0.01 250)' } : {},
       artBody: art ? art.body.map(v => ({ v })) : [],
       backToList: () => this.setView('blog'),
+      playVideo: (e) => { const b = e.currentTarget, v = b.parentElement.querySelector('video'); b.style.display = 'none'; v.controls = true; v.play(); },
       doc, docGroups, docSections, docNav,
       docToc: doc.sections.map((s, i) => ({ href: '#doc-s' + i, h: s.h })),
       docQ: this.state.docQ,
