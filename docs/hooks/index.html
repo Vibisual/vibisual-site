@@ -116,6 +116,24 @@
   aside::-webkit-scrollbar-thumb, main div::-webkit-scrollbar-thumb { background: oklch(0.34 0.012 250); border-radius: 999px; }
   @keyframes vbPulse { 0%,100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 1; transform: scale(1.4); } }
   @keyframes vbSpin { to { transform: rotate(360deg); } }
+  @keyframes vbRing { from { transform: scale(1); opacity: 0.75; } to { transform: scale(1.75); opacity: 0; } }
+  .vb-play { position:absolute; inset:0; display:grid; place-items:center; padding:0; border:0; border-radius:8px; cursor:pointer; color:#fff;
+    background: radial-gradient(70% 70% at 50% 50%, oklch(0.1 0.02 250 / 0.30), oklch(0.08 0.02 250 / 0.66)); transition: background .3s; }
+  .vb-play:hover { background: radial-gradient(70% 70% at 50% 50%, oklch(0.1 0.02 250 / 0.16), oklch(0.08 0.02 250 / 0.52)); }
+  .vb-play:focus-visible { outline: 2px solid oklch(0.86 0.13 195); outline-offset: 3px; }
+  .vb-play-disc { position:relative; display:grid; place-items:center; width:78px; height:78px; border-radius:50%;
+    background: oklch(0.18 0.02 250 / 0.5); -webkit-backdrop-filter: blur(14px) saturate(1.5); backdrop-filter: blur(14px) saturate(1.5);
+    border: 1px solid oklch(1 0 0 / 0.3); box-shadow: 0 14px 44px oklch(0 0 0 / 0.55), inset 0 1px 0 oklch(1 0 0 / 0.2);
+    transition: transform .3s cubic-bezier(.2,.8,.2,1), border-color .3s, background .3s, box-shadow .3s; }
+  .vb-play-disc svg { transform: translateX(2px); filter: drop-shadow(0 1px 6px oklch(0 0 0 / 0.5)); }
+  .vb-play-disc::before { content:""; position:absolute; inset:-1px; border-radius:50%; border:1px solid oklch(0.86 0.13 195 / 0.7); animation: vbRing 2.6s cubic-bezier(.2,.6,.3,1) infinite; }
+  .vb-play:hover .vb-play-disc { transform: scale(1.08); border-color: oklch(0.86 0.13 195 / 0.95); background: oklch(0.86 0.13 195 / 0.2);
+    box-shadow: 0 14px 44px oklch(0 0 0 / 0.55), 0 0 34px oklch(0.86 0.13 195 / 0.45), inset 0 1px 0 oklch(1 0 0 / 0.25); }
+  .vb-play:active .vb-play-disc { transform: scale(0.97); }
+  .vb-play-meta { position:absolute; left:18px; bottom:16px; display:flex; align-items:center; gap:9px; font-family:var(--mono); font-size:11.5px; letter-spacing:0.1em; color:oklch(1 0 0 / 0.86); text-shadow:0 1px 8px oklch(0 0 0 / 0.8); }
+  .vb-play-meta i { width:6px; height:6px; border-radius:50%; background:oklch(0.86 0.13 195); box-shadow:0 0 10px oklch(0.86 0.13 195); }
+  @media (prefers-reduced-motion: reduce) { .vb-play-disc::before { animation: none; opacity: 0; } }
+  @media (max-width: 520px) { .vb-play-disc { width:60px; height:60px; } .vb-play-disc svg { width:21px; height:21px; } .vb-play-meta { left:12px; bottom:10px; font-size:10px; } }
 
   /* ── 좁은 화면 대응 ───────────────────────────────────────────────────
      본문은 dc 템플릿의 인라인 style 로 그려지므로, 여기서 덮으려면 !important 가 필요하다.
@@ -625,10 +643,9 @@
         <sc-if value="{{ art.video }}">
           <div style="position:relative; margin:0 0 14px">
             <video preload="metadata" playsinline poster="{{ art.poster }}" src="{{ art.video }}" style="display:block; width:100%; aspect-ratio:16/9; border-radius:8px; border:1px solid oklch(0.26 0.012 250); background:#08090b"></video>
-            <button onClick="{{ playVideo }}" aria-label="{{ art.videoLabel }}" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:oklch(0.12 0.01 250 / 0.28); border:none; border-radius:8px; padding:0; cursor:pointer" style-hover="background:oklch(0.12 0.01 250 / 0.12)">
-              <span style="display:flex; align-items:center; justify-content:center; width:84px; height:84px; border-radius:50%; background:oklch(0.86 0.13 195); box-shadow:0 8px 34px oklch(0.1 0.01 250 / 0.7)">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="oklch(0.18 0.02 250)" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
-              </span>
+            <button class="vb-play" onClick="{{ playVideo }}" aria-label="{{ art.videoLabel }}">
+              <span class="vb-play-disc"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.2v13.6a.9.9 0 0 0 1.37.77l11-6.8a.9.9 0 0 0 0-1.54l-11-6.8A.9.9 0 0 0 8 5.2z"/></svg></span>
+              <span class="vb-play-meta"><i></i>{{ art.videoMeta }}</span>
             </button>
           </div>
           <p style="margin:0 0 30px; font-family:var(--mono); font-size:12px"><a href="{{ art.video }}" style="color:oklch(0.82 0.12 195)">{{ art.videoLabel }} →</a></p>
@@ -1785,7 +1802,7 @@ UI['es-419'] = UI.es;
 const BLOG = {
   en: [
     { id:'walkthrough', date:'2026-11-17', tag:'guide', read:'3 min', author:'Vibisual',
-      video:'/media/walkthrough.mp4', poster:'/media/walkthrough-poster.jpg', videoLabel:'Watch the walkthrough video (1:41)',
+      video:'/media/walkthrough.mp4', poster:'/media/walkthrough-poster.jpg', videoLabel:'Watch the walkthrough video (1:41)', videoMeta:'WALKTHROUGH · 1:41',
       title:'One task, two agents, two minutes: a walkthrough',
       excerpt:'A coupon feature built by a Claude agent and tested by a Codex agent, recorded start to finish. What each part of the window is for, in the order you would meet it.',
       body:[
@@ -1827,7 +1844,7 @@ const BLOG = {
   ],
   ko: [
     { id:'walkthrough', date:'2026-11-17', tag:'가이드', read:'3분', author:'Vibisual',
-      video:'/media/walkthrough.mp4', poster:'/media/walkthrough-poster.jpg', videoLabel:'따라 보기 영상 보기 (1분 41초)',
+      video:'/media/walkthrough.mp4', poster:'/media/walkthrough-poster.jpg', videoLabel:'따라 보기 영상 보기 (1분 41초)', videoMeta:'따라 보기 · 1:41',
       title:'작업 하나, 에이전트 둘, 2분: 따라 보기',
       excerpt:'Claude 에이전트가 쿠폰 기능을 만들고 Codex 에이전트가 테스트를 붙이는 과정을 처음부터 끝까지 녹화했습니다. 창의 각 부분이 무엇을 위한 것인지, 마주치는 순서대로 설명합니다.',
       body:[
