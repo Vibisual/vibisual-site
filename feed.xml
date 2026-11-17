@@ -5,11 +5,22 @@
   <link rel="self" type="application/atom+xml" href="https://vibisual.pro/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://vibisual.pro/blog/"/>
   <id>https://vibisual.pro/blog/</id>
-  <updated>2026-08-27T00:00:00Z</updated>
+  <updated>2026-11-17T00:00:00Z</updated>
   <icon>https://vibisual.pro/favicon.svg</icon>
   <logo>https://vibisual.pro/og.png</logo>
   <rights>© Vibisual</rights>
   <author><name>Vibisual</name><uri>https://vibisual.pro</uri></author>
+  <entry>
+    <title>One task, two agents, two minutes: a walkthrough</title>
+    <link rel="alternate" type="text/html" href="https://vibisual.pro/blog/walkthrough/"/>
+    <id>https://vibisual.pro/blog/walkthrough/</id>
+    <published>2026-11-17T00:00:00Z</published>
+    <updated>2026-11-17T00:00:00Z</updated>
+    <category term="guide"/>
+    <author><name>Vibisual</name></author>
+    <summary type="text">A coupon feature built by a Claude agent and tested by a Codex agent, recorded start to finish. What each part of the window is for, in the order you would meet it.</summary>
+    <content type="html">&lt;p&gt;Most descriptions of Vibisual start from the idea. This one starts from the screen. The video above is one small task — add coupon codes to a checkout API — done by two agents in under two minutes, and everything below is what you are looking at, in order.&lt;/p&gt;&lt;p&gt;It begins with a right-click. The canvas is empty apart from the project root, so you drop an agent where you want it and double-click the bubble to open its workspace. You type the task there. Nothing about the agent is hidden in a config file: the bubble is the agent.&lt;/p&gt;&lt;p&gt;The first thing it wants to do is write a file, and it cannot until you say so. The approval card shows the exact path and content. Allow it once, allow it for the session, or deny it with a reason the agent will read.&lt;/p&gt;&lt;p&gt;Then close the workspace, because the interesting part is behind it. Every file the agent reads or edits appears as a bubble next to its folder, with an edge back to the agent that touched it. You are not reading a log to find out where the run is. You are looking at it.&lt;/p&gt;&lt;p&gt;The strip at the bottom-left changes how much of that you see. One button hides the file bubbles when you only care about the agents. The heatmap colours each bubble by how often it was read, or how often it was written, which answers &amp;quot;where did the effort go&amp;quot; faster than any summary.&lt;/p&gt;&lt;p&gt;Back in the workspace there is a sticky memo pinned to the session — a note to yourself that stays with the conversation it is about. The second agent in the video runs on Codex rather than Claude Code; it sits on the same map and is driven the same way.&lt;/p&gt;&lt;p&gt;Two more things are worth a second each. The ring in the header is plan usage, so you know how much of the five-hour and weekly limits is gone before you start something large. And Command Center lists every session in the project by who is waiting on whom, which matters more the more agents you run.&lt;/p&gt;&lt;p&gt;Vibisual is free and open source under Apache-2.0, for Windows, macOS and Linux. It needs the Claude CLI on your PATH. If the map looks like something you want over your own runs, the installer is on the releases page.&lt;/p&gt;</content>
+  </entry>
   <entry>
     <title>0.1.14: the update button actually updates</title>
     <link rel="alternate" type="text/html" href="https://vibisual.pro/blog/r0114/"/>

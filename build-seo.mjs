@@ -388,6 +388,7 @@ function prePost(p) {
   out.push('<p style="' + S.meta + '">' + esc(p.date + ' · ' + p.read + ' · ' + p.author) + '</p>');
   out.push(crawlNav('/blog/' + p.id + '/'));
   out.push('<p style="' + S.lead + '">' + esc(p.excerpt) + '</p>');
+  if (p.video) out.push('<p style="' + S.meta + '">' + link(p.video, p.videoLabel) + '</p>');
   for (const v of p.body) out.push(para(v));
   return out.join('\n');
 }

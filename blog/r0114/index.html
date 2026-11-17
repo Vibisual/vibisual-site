@@ -85,7 +85,7 @@
 <p style="margin:0 0 14px;font-size:12px;letter-spacing:0.09em;text-transform:uppercase;color:oklch(0.78 0.13 195)">release</p>
 <h1 style="margin:0 0 18px;font-size:42px;line-height:1.08;letter-spacing:-0.03em;color:oklch(0.97 0.005 250)">0.1.14: the update button actually updates</h1>
 <p style="margin:0 0 26px;font-size:13px;color:oklch(0.68 0.01 250)">2026-08-27 · 3 min · Vibisual</p>
-<nav style="margin:0 0 34px;font-size:14px;display:flex;flex-wrap:wrap;gap:8px 18px"><a href="/" style="color:oklch(0.78 0.13 195);text-decoration:none">Home</a><a href="/blog/" style="color:oklch(0.78 0.13 195);text-decoration:none">Blog</a><a href="/docs/" style="color:oklch(0.78 0.13 195);text-decoration:none">Docs</a><a href="/docs/install/" style="color:oklch(0.78 0.13 195);text-decoration:none">Install and first run</a><a href="/docs/graph/" style="color:oklch(0.78 0.13 195);text-decoration:none">Designing an agent graph</a><a href="/docs/workspace/" style="color:oklch(0.78 0.13 195);text-decoration:none">The in-map workspace</a><a href="/docs/hooks/" style="color:oklch(0.78 0.13 195);text-decoration:none">Hook events</a><a href="/docs/settings/" style="color:oklch(0.78 0.13 195);text-decoration:none">Settings and environment</a><a href="/blog/space/" style="color:oklch(0.78 0.13 195);text-decoration:none">Why we drew the terminal as space</a><a href="/blog/five/" style="color:oklch(0.78 0.13 195);text-decoration:none">Designing a five-agent checkout refactor</a></nav>
+<nav style="margin:0 0 34px;font-size:14px;display:flex;flex-wrap:wrap;gap:8px 18px"><a href="/" style="color:oklch(0.78 0.13 195);text-decoration:none">Home</a><a href="/blog/" style="color:oklch(0.78 0.13 195);text-decoration:none">Blog</a><a href="/docs/" style="color:oklch(0.78 0.13 195);text-decoration:none">Docs</a><a href="/docs/install/" style="color:oklch(0.78 0.13 195);text-decoration:none">Install and first run</a><a href="/docs/graph/" style="color:oklch(0.78 0.13 195);text-decoration:none">Designing an agent graph</a><a href="/docs/workspace/" style="color:oklch(0.78 0.13 195);text-decoration:none">The in-map workspace</a><a href="/docs/hooks/" style="color:oklch(0.78 0.13 195);text-decoration:none">Hook events</a><a href="/docs/settings/" style="color:oklch(0.78 0.13 195);text-decoration:none">Settings and environment</a><a href="/blog/walkthrough/" style="color:oklch(0.78 0.13 195);text-decoration:none">One task, two agents, two minutes: a walkthrough</a><a href="/blog/space/" style="color:oklch(0.78 0.13 195);text-decoration:none">Why we drew the terminal as space</a><a href="/blog/five/" style="color:oklch(0.78 0.13 195);text-decoration:none">Designing a five-agent checkout refactor</a></nav>
 <p style="margin:0 0 26px;font-size:19px;color:oklch(0.88 0.008 250)">Pressing Update closed the app and brought it back on the same version. Three fixes, all about the moments around shutdown.</p>
 <p style="margin:0 0 16px;font-size:16px;color:oklch(0.86 0.008 250)">The installer was launched before the app had finished shutting down. It replaces the installed files by renaming them one at a time, and that fails outright while Vibisual.exe is still running — after five one-second retries it gave up and installed nothing. From your side the app simply closed and came back on the old version. The installer is now launched at the very last moment, once cleanup is done and the process is about to disappear.</p>
 <p style="margin:0 0 16px;font-size:16px;color:oklch(0.86 0.008 250)">Shutdown itself was the other half of the problem. It waited for every open network connection to finish on its own, so a phone still connected over LAN access, or an idle keep-alive socket, could hold the app open for over a minute — 68 seconds, measured. Sockets are now cut once we have decided to close, and cleanup has a hard four-second ceiling after which the app exits regardless. Everything written to disk is flushed before that point.</p>
@@ -621,6 +621,10 @@
         <h1 class="vb-h1md" style="font-size:44px; line-height:1.1; letter-spacing:-0.035em; font-weight:600; margin:18px 0 0; text-wrap:balance; color:oklch(0.99 0.004 250)">{{ art.title }}</h1>
         <p style="font-size:20px; line-height:1.55; color:oklch(0.97 0.008 250 / 0.6); margin:20px 0 0; text-wrap:pretty">{{ art.excerpt }}</p>
         <div style="height:1px; background:oklch(0.26 0.012 250); margin:36px 0 34px"></div>
+        <sc-if value="{{ art.video }}">
+          <video controls preload="metadata" playsinline poster="{{ art.poster }}" src="{{ art.video }}" style="display:block; width:100%; aspect-ratio:16/9; margin:0 0 14px; border-radius:8px; border:1px solid oklch(0.26 0.012 250); background:#08090b"></video>
+          <p style="margin:0 0 30px; font-family:var(--mono); font-size:12px"><a href="{{ art.video }}" style="color:oklch(0.82 0.12 195)">{{ art.videoLabel }} →</a></p>
+        </sc-if>
         <sc-for list="{{ artBody }}" as="pa" hint-placeholder-count="4">
           <p style="margin:0 0 26px; font-size:17.5px; line-height:1.8; color:oklch(0.97 0.008 250 / 0.74); text-wrap:pretty">{{ pa.v }}</p>
         </sc-for>
@@ -1772,6 +1776,20 @@ UI['es-419'] = UI.es;
 
 const BLOG = {
   en: [
+    { id:'walkthrough', date:'2026-11-17', tag:'guide', read:'3 min', author:'Vibisual',
+      video:'https://github.com/Vibisual/vibisual/releases/download/v0.2.8/vibisual-walkthrough.mp4', poster:'/media/walkthrough-poster.jpg', videoLabel:'Watch the walkthrough video (1:41)',
+      title:'One task, two agents, two minutes: a walkthrough',
+      excerpt:'A coupon feature built by a Claude agent and tested by a Codex agent, recorded start to finish. What each part of the window is for, in the order you would meet it.',
+      body:[
+        'Most descriptions of Vibisual start from the idea. This one starts from the screen. The video above is one small task — add coupon codes to a checkout API — done by two agents in under two minutes, and everything below is what you are looking at, in order.',
+        'It begins with a right-click. The canvas is empty apart from the project root, so you drop an agent where you want it and double-click the bubble to open its workspace. You type the task there. Nothing about the agent is hidden in a config file: the bubble is the agent.',
+        'The first thing it wants to do is write a file, and it cannot until you say so. The approval card shows the exact path and content. Allow it once, allow it for the session, or deny it with a reason the agent will read.',
+        'Then close the workspace, because the interesting part is behind it. Every file the agent reads or edits appears as a bubble next to its folder, with an edge back to the agent that touched it. You are not reading a log to find out where the run is. You are looking at it.',
+        'The strip at the bottom-left changes how much of that you see. One button hides the file bubbles when you only care about the agents. The heatmap colours each bubble by how often it was read, or how often it was written, which answers "where did the effort go" faster than any summary.',
+        'Back in the workspace there is a sticky memo pinned to the session — a note to yourself that stays with the conversation it is about. The second agent in the video runs on Codex rather than Claude Code; it sits on the same map and is driven the same way.',
+        'Two more things are worth a second each. The ring in the header is plan usage, so you know how much of the five-hour and weekly limits is gone before you start something large. And Command Center lists every session in the project by who is waiting on whom, which matters more the more agents you run.',
+        'Vibisual is free and open source under Apache-2.0, for Windows, macOS and Linux. It needs the Claude CLI on your PATH. If the map looks like something you want over your own runs, the installer is on the releases page.',
+      ] },
     { id:'space', date:'2026-08-18', tag:'essay', read:'6 min', author:'Vibisual',
       title:'Why we drew the terminal as space',
       excerpt:'A log tells you what happened, in order. A map tells you where everything is, right now. Agent runs need the second one.',
@@ -1800,6 +1818,20 @@ const BLOG = {
       ] },
   ],
   ko: [
+    { id:'walkthrough', date:'2026-11-17', tag:'가이드', read:'3분', author:'Vibisual',
+      video:'https://github.com/Vibisual/vibisual/releases/download/v0.2.8/vibisual-walkthrough.mp4', poster:'/media/walkthrough-poster.jpg', videoLabel:'따라 보기 영상 보기 (1분 41초)',
+      title:'작업 하나, 에이전트 둘, 2분: 따라 보기',
+      excerpt:'Claude 에이전트가 쿠폰 기능을 만들고 Codex 에이전트가 테스트를 붙이는 과정을 처음부터 끝까지 녹화했습니다. 창의 각 부분이 무엇을 위한 것인지, 마주치는 순서대로 설명합니다.',
+      body:[
+        'Vibisual을 설명하는 글은 대개 개념에서 시작합니다. 이 글은 화면에서 시작합니다. 위 영상은 체크아웃 API에 쿠폰 코드를 추가하는 작은 작업 하나를 에이전트 둘이 2분 안에 끝내는 모습이고, 아래는 그 화면에 보이는 것들을 순서대로 적은 것입니다.',
+        '시작은 우클릭입니다. 캔버스에는 프로젝트 루트만 있으니, 원하는 자리에 에이전트를 놓고 버블을 더블클릭해 작업 공간을 엽니다. 할 일은 거기에 적습니다. 에이전트에 관한 것이 설정 파일 속에 숨어 있지 않습니다. 버블이 곧 에이전트입니다.',
+        '에이전트가 처음 하려는 일은 파일 쓰기인데, 허락하기 전에는 할 수 없습니다. 승인 카드에 정확한 경로와 내용이 보입니다. 한 번만 허용하거나, 이 세션 동안 허용하거나, 에이전트가 읽을 사유를 붙여 거절할 수 있습니다.',
+        '그다음에는 작업 공간을 닫습니다. 볼 만한 것은 그 뒤에 있기 때문입니다. 에이전트가 읽거나 고친 파일이 폴더 옆에 버블로 나타나고, 손댄 에이전트와 선으로 이어집니다. 실행이 어디까지 왔는지 로그를 읽어서 아는 것이 아니라 그냥 보게 됩니다.',
+        '왼쪽 아래 단추 줄은 그중 얼마만큼을 볼지 정합니다. 에이전트만 보고 싶을 때는 단추 하나로 파일 버블을 숨깁니다. 히트맵은 버블마다 얼마나 자주 읽혔는지, 또는 얼마나 자주 쓰였는지를 색으로 칠해 주어서 "어디에 힘이 들어갔나"를 어떤 요약보다 빨리 알려 줍니다.',
+        '작업 공간으로 돌아가면 세션에 붙여 둔 메모 포스트잇이 있습니다. 그 대화에 관한 메모가 그 대화 곁에 남습니다. 영상의 두 번째 에이전트는 Claude Code가 아니라 Codex로 돌아가는데, 같은 지도 위에 놓이고 같은 방식으로 다룹니다.',
+        '두 가지를 잠깐씩 더 보여 드립니다. 머리줄의 고리는 요금제 사용량입니다. 큰 작업을 시작하기 전에 5시간 한도와 주간 한도를 얼마나 썼는지 알 수 있습니다. 커맨드 센터는 프로젝트의 모든 세션을 누가 누구를 기다리는지에 따라 나열합니다. 에이전트가 많아질수록 더 중요해집니다.',
+        'Vibisual은 Apache-2.0 무료 오픈소스이고 Windows, macOS, Linux에서 동작합니다. Claude CLI가 PATH에 있어야 합니다. 내 실행 위에도 이런 지도가 있었으면 한다면 설치 파일은 릴리스 페이지에 있습니다.',
+      ] },
     { id:'space', date:'2026-08-18', tag:'에세이', read:'6분', author:'Vibisual',
       title:'터미널을 공간으로 그린 이유',
       excerpt:'로그는 무슨 일이 있었는지 순서대로 알려줍니다. 맵은 지금 무엇이 어디에 있는지 알려줍니다. 에이전트 실행에 필요한 건 두 번째입니다.',
