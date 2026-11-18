@@ -3,7 +3,7 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://vibisual.pro/</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://vibisual.pro/"/>
@@ -67,7 +67,7 @@
   </url>
   <url>
     <loc>https://vibisual.pro/docs/</loc>
-    <lastmod>2026-08-31</lastmod>
+    <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://vibisual.pro/docs/"/>
@@ -76,7 +76,7 @@
   </url>
   <url>
     <loc>https://vibisual.pro/docs/install/</loc>
-    <lastmod>2026-08-04</lastmod>
+    <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://vibisual.pro/docs/install/"/>
@@ -84,8 +84,17 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://vibisual.pro/docs/install/"/>
   </url>
   <url>
+    <loc>https://vibisual.pro/docs/engines/</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vibisual.pro/docs/engines/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://vibisual.pro/docs/engines/?lang=ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vibisual.pro/docs/engines/"/>
+  </url>
+  <url>
     <loc>https://vibisual.pro/docs/graph/</loc>
-    <lastmod>2026-08-18</lastmod>
+    <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://vibisual.pro/docs/graph/"/>
@@ -94,7 +103,7 @@
   </url>
   <url>
     <loc>https://vibisual.pro/docs/workspace/</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://vibisual.pro/docs/workspace/"/>
@@ -102,8 +111,17 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://vibisual.pro/docs/workspace/"/>
   </url>
   <url>
+    <loc>https://vibisual.pro/docs/apps/</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vibisual.pro/docs/apps/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://vibisual.pro/docs/apps/?lang=ko"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vibisual.pro/docs/apps/"/>
+  </url>
+  <url>
     <loc>https://vibisual.pro/docs/hooks/</loc>
-    <lastmod>2026-08-04</lastmod>
+    <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://vibisual.pro/docs/hooks/"/>
@@ -112,7 +130,7 @@
   </url>
   <url>
     <loc>https://vibisual.pro/docs/settings/</loc>
-    <lastmod>2026-08-04</lastmod>
+    <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://vibisual.pro/docs/settings/"/>
