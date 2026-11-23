@@ -3,18 +3,18 @@
   "methodology": "abacus-browser-marker-v2",
   "source": "https://abacus.jasoncameron.dev/get/vibisual-pro/site-total",
   "counterValue": 368,
-  "collectionStartedAt": "2026-11-22T23:48:42.180Z",
-  "asOf": "2026-11-22T23:48:42.490Z",
-  "snapshot": "/metrics/visitors/snapshots/2026-11-22T23-48-42.490Z.json",
-  "evidenceSha256": "7e1fe31928fa455242d937fe2d059c07b7558e188fcd9f0ee6d96bc0fec878f4",
+  "collectionStartedAt": "2026-11-23T04:04:46.403Z",
+  "asOf": "2026-11-23T04:04:46.813Z",
+  "snapshot": "/metrics/visitors/snapshots/2026-11-23T04-04-46.813Z.json",
+  "evidenceSha256": "f1eb13461d8bb33a64ed0aa2f7c9b6a4fc3bf081a35444f30a0f4c28c23399a5",
   "sourceResponseSha256": "d7c6159a31b71fc52bad19ba65f738f0debb827c7f7de7b7fd3123c34ab52869",
   "previous": {
-    "snapshot": "/metrics/visitors/snapshots/2026-11-22T03-22-21.881Z.json",
-    "evidenceSha256": "3d09496d1309cbcda70bc6b273863fe991a836d20bfc51a2957259de9d0d732c",
-    "asOf": "2026-11-22T03:22:21.881Z",
-    "counterValue": 366
+    "snapshot": "/metrics/visitors/snapshots/2026-11-22T23-48-42.490Z.json",
+    "evidenceSha256": "7e1fe31928fa455242d937fe2d059c07b7558e188fcd9f0ee6d96bc0fec878f4",
+    "asOf": "2026-11-22T23:48:42.490Z",
+    "counterValue": 368
   },
-  "changeFromPrevious": 2,
+  "changeFromPrevious": 0,
   "caveats": {
     "publicWritableCounter": true,
     "verifiedPeople": null,
